@@ -593,25 +593,6 @@ h3 { font-size: 1.1rem; margin: 1.6em 0 .4em; }
   display: block;
   width: 100%;
   height: auto;
-  cursor: zoom-in;      /* 手機點一下開原圖，字才看得清楚 */
-}
-
-/* 這行提示只有手機需要 */
-.flow-tip {
-  display: none;
-  text-align: center;
-  font-size: .85rem;
-  color: var(--ink-soft);
-  margin: 2px 0 0;
-}
-@media (max-width: 760px) {
-  .flow-tip { display: block; }
-}
-
-/* 桌機的圖已經夠大，不用再點開 */
-@media (min-width: 761px) {
-  .flow a { pointer-events: none; }
-  .flow img { cursor: default; }
 }
 
 .flow-foot {

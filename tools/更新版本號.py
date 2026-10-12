@@ -94,13 +94,15 @@ def check_font():
 def main():
     os.chdir(ROOT)
 
-    # 要加版本號的檔案：自己的 CSS、JS 與字型
+    # 要加版本號的檔案：CSS、JS、字型，還有圖片
+    # 圖片也要，因為換圖時常常沿用同一個檔名（例如重做設計稿後換掉 step-5.jpg），
+    # 沒有版本號的話使用者會繼續看到舊圖。
     targets = {}
-    for folder in ("assets", "data", "assets/fonts"):
+    for folder in ("assets", "data", "assets/fonts", "images"):
         if not os.path.isdir(folder):
             continue
         for name in sorted(os.listdir(folder)):
-            if name.endswith((".css", ".js", ".woff2")):
+            if name.endswith((".css", ".js", ".woff2", ".jpg", ".jpeg", ".png", ".webp", ".svg")):
                 rel = folder + "/" + name
                 targets[rel] = file_hash(rel)
 
