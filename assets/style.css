@@ -7,7 +7,7 @@
    =========================================================== */
 @font-face {
   font-family: "Huninn";
-  src: url("fonts/huninn-subset.woff2?v=16030d29") format("woff2");
+  src: url("fonts/huninn-subset.woff2?v=ed51b115") format("woff2");
   font-weight: 400 700;
   font-style: normal;
   font-display: swap;
@@ -586,35 +586,77 @@ h3 { font-size: 1.1rem; margin: 1.6em 0 .4em; }
 .flow-head h1 { margin: 0 0 6px; font-size: 1.8rem; }
 .flow-head p  { margin: 0; color: var(--ink-soft); font-size: .95rem; }
 
-/* 步驟清單：直接用設計稿的六張橫幅，寬度自動縮放 */
-.flow { list-style: none; margin: 0; padding: 0; }
+/* 五個步驟：版面與配色照設計稿，文字照貓窩官方公告 */
+.steps5 { list-style: none; margin: 0; padding: 0; }
 
-.flow li { margin: 0 0 14px; }
-
-.flow img {
-  display: block;
-  width: 100%;
-  height: auto;
-  cursor: zoom-in;      /* 點一下開原圖，手機才看得清楚字 */
+.step {
+  display: grid;
+  grid-template-columns: 66px 1fr auto;
+  align-items: center;
+  gap: 16px;
+  border-radius: 26px;
+  padding: 18px 24px;
+  margin-bottom: 16px;
 }
 
-/* 這行提示只有手機需要，桌機的圖已經夠大 */
-.flow-tip {
-  display: none;
-  text-align: center;
-  font-size: .85rem;
-  color: var(--ink-soft);
-  margin: 2px 0 0;
-}
-@media (max-width: 760px) {
-  .flow-tip { display: block; }
+/* 大數字圓圈 */
+.step-num {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #fff;
 }
 
-/* 桌機的圖已經接近原尺寸，不需要再點開放大，
-   所以把點擊關掉，游標也不要顯示成放大鏡。 */
-@media (min-width: 761px) {
-  .flow a { pointer-events: none; }
-  .flow img { cursor: default; }
+/* step 1 的彩色膠囊標籤 */
+.step-tag {
+  display: inline-block;
+  margin-bottom: 7px;
+  padding: 3px 18px;
+  border-radius: 999px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  background: #fff;
+}
+
+.step-body p { margin: 0; font-size: 1.06rem; line-height: 1.75; }
+
+/* 右邊的貓咪（從設計稿裁出來去背的） */
+.step-cat { width: 150px; height: auto; }
+.step.s2 .step-cat,
+.step.s5 .step-cat { width: 188px; }   /* 這兩張是橫幅構圖 */
+
+/* 每一步的配色，照設計稿 */
+.s1 { background: #E6F2FE; }  .s1 .step-num { background: #5B8DD9; }  .s1 .step-tag { color: #2F5E9E; }
+.s2 { background: #FCF2F3; }  .s2 .step-num { background: #E0808F; }  .s2 .step-tag { color: #B04C5C; }
+.s3 { background: #EAF6F4; }  .s3 .step-num { background: #5FA87C; }  .s3 .step-tag { color: #357051; }
+.s4 { background: #EDF1FD; }  .s4 .step-num { background: #8678C0; }  .s4 .step-tag { color: #5B4E95; }
+.s5 { background: #FFF9E9; }  .s5 .step-num { background: #DFA449; }  .s5 .step-tag { color: #96661A; }
+
+@media (max-width: 900px) {
+  .step-cat { width: 118px; }
+  .step.s2 .step-cat,
+  .step.s5 .step-cat { width: 148px; }
+}
+
+/* 手機：數字與文字一行，貓咪放到下面置中 */
+@media (max-width: 620px) {
+  .step {
+    grid-template-columns: 48px 1fr;
+    gap: 13px;
+    padding: 18px 18px 14px;
+  }
+  .step-num { width: 44px; height: 44px; font-size: 1.4rem; align-self: start; }
+  .step-cat {
+    grid-column: 1 / -1;
+    width: 128px;
+    justify-self: center;
+    margin-top: 2px;
+  }
+  .step.s2 .step-cat,
+  .step.s5 .step-cat { width: 168px; }
 }
 
 .flow-foot {
