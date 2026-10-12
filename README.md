@@ -46,6 +46,17 @@ python -m http.server 8099
 - `assets/style.css` — 全站樣式，**配色集中在檔案最上面那一段**
 - `assets/site.js` — 共用程式（選單、資料渲染、影片播放器）
 
+### 改完 assets/ 或 data/ 要跑這個
+
+瀏覽器會把 CSS 和 JS 暫存 10 分鐘，不處理的話使用者可能拿到
+「新的網頁 ＋ 舊的程式」，畫面會壞掉。推上 GitHub 之前跑一次：
+
+```bash
+python tools/更新版本號.py
+```
+
+它會在網頁引用檔案的網址後面加上內容版本號，內容一變瀏覽器就會重新抓。
+
 影片採「點一下才載入」，頁面載入時不會連到 YouTube，
 訪客按了播放才載入，且走 `youtube-nocookie` 網域。
 

@@ -98,7 +98,7 @@ window.CAT_DATA = {
       "status": "wait",
       "sex": "待確認",
       "age": "待確認",
-      "color": "稀釋三花（灰＋奶油＋白）",
+      "color": "淡三花（灰＋奶油＋白）",
       "colorType": "三花貓",
       "feature": "",
       "personality": "送養會上會躺著給人摸",
