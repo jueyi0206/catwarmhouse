@@ -288,6 +288,8 @@ h3 { font-size: 1.1rem; margin: 1.6em 0 .4em; }
 .tag-wait { background: var(--wait-bg); color: var(--wait); }
 .tag-done { background: var(--done-bg); color: var(--done); }
 .tag-ask  { background: var(--todo-bg); color: var(--todo); }
+/* 毛色分類標籤（等家的貓咪用這個，不顯示狀態） */
+.tag-color { background: var(--brand-lt); color: var(--brand-dk); }
 
 /* 篩選鈕 */
 .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 4px; }

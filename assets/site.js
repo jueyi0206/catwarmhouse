@@ -27,22 +27,14 @@ function initNav() {
   });
 }
 
-/* ---------- 狀態對應的中文與樣式 ---------- */
-var STATUS = {
-  wait:    { text: '等家中',     cls: 'tag-ok'   },
-  talking: { text: '洽談中',     cls: 'tag-wait' },
-  home:    { text: '已找到家',   cls: 'tag-done' },
-  ask:     { text: '資料待確認', cls: 'tag-ask'  }
-};
-
-function statusOf(cat) {
-  return STATUS[cat.status] || STATUS.ask;
-}
+/* ---------- 毛色分類 ----------
+   「等家的貓咪」頁用毛色篩選。這六類跟篩選鈕、cats.js 的 colorType 必須一致，
+   要增減分類的話三個地方要一起改：
+   1. 下面這個 COLORS　2. cats.html 的篩選鈕　3. cats.js 每隻貓的 colorType */
+var COLORS = ['黑貓', '白貓', '賓士貓', '三花貓', '橘貓', '虎斑貓'];
 
 /* ---------- 把一隻貓畫成一張卡片 ---------- */
 function catCard(cat) {
-  var s = statusOf(cat);
-
   // 照片：有填 photo 就用照片，沒填就顯示一個貓咪圖示佔位
   var photo = cat.photo
     ? '<img src="images/' + cat.photo + '" alt="' + cat.name + '">'
@@ -53,11 +45,16 @@ function catCard(cat) {
     return v && v !== '待確認' && v !== '年齡不詳';
   }).join('・');
 
+  // 標籤顯示毛色分類。等家的貓咪一律都是等家中，所以不顯示狀態。
+  var tag = cat.colorType
+    ? '<span class="tag tag-color">' + cat.colorType + '</span>'
+    : '';
+
   return '' +
     '<a class="cat-card" href="cat.html?id=' + cat.id + '">' +
       '<div class="cat-photo">' + photo + '</div>' +
       '<div class="cat-body">' +
-        '<span class="tag ' + s.cls + '">' + s.text + '</span>' +
+        tag +
         '<h3>' + cat.name + '</h3>' +
         (meta ? '<p class="cat-meta">' + meta + '</p>' : '') +
         '<p class="cat-desc">' + (cat.personality || '') + '</p>' +
@@ -76,14 +73,16 @@ function initCatList() {
   var limit = parseInt(box.dataset.limit, 10);
 
   function render(filter) {
+    // filter 是毛色分類（黑貓、白貓…），'all' 代表全部
     var list = all.filter(function (c) {
-      return filter === 'all' ? true : c.status === filter;
+      return filter === 'all' ? true : c.colorType === filter;
     });
     if (limit) list = list.slice(0, limit);
 
     box.innerHTML = list.length
       ? list.map(catCard).join('')
-      : '<p class="lead">這個分類目前沒有貓咪。</p>';
+      : '<p class="lead">目前沒有這個毛色的貓咪在等家。<br>' +
+        '<a href="cats.html">看看全部的貓咪 →</a></p>';
   }
 
   // 篩選鈕（有放 .filters 的頁面才會啟用）
@@ -108,8 +107,7 @@ function initStats() {
   var cats = window.CAT_DATA.cats || [];
 
   var map = {
-    'stat-wait':    cats.filter(function (c) { return c.status === 'wait'; }).length,
-    'stat-total':   cats.length,
+    'stat-wait':    cats.length,                               // 等家的貓咪一律都是等家中
     'stat-adopted': (window.CAT_DATA.adopted || []).length
   };
 
@@ -188,7 +186,11 @@ function initCatDetail() {
 
   document.title = cat.name + '｜日日暖暖中途貓窩';
 
-  var s = statusOf(cat);
+  // 已經找到家的貓才顯示狀態標籤；等家中的改顯示毛色分類
+  var tag = cat.status === 'home'
+    ? '<span class="tag tag-done">已找到家</span>'
+    : (cat.colorType ? '<span class="tag tag-color">' + cat.colorType + '</span>' : '');
+
   var photo = cat.photo
     ? '<img src="images/' + cat.photo + '" alt="' + cat.name + '">'
     : '<span aria-hidden="true" style="font-size:5rem">🐈</span>';
@@ -209,7 +211,7 @@ function initCatDetail() {
     '<div class="cols" style="align-items:start">' +
       '<div class="cat-photo" style="border-radius:var(--radius)">' + photo + '</div>' +
       '<div>' +
-        '<span class="tag ' + s.cls + '">' + s.text + '</span>' +
+        tag +
         '<h1 style="margin-top:.2em">' + cat.name + '</h1>' +
         '<div class="card">' +
           rows.map(function (r) {
