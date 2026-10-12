@@ -586,62 +586,29 @@ h3 { font-size: 1.1rem; margin: 1.6em 0 .4em; }
 .flow-head h1 { margin: 0 0 6px; font-size: 1.8rem; }
 .flow-head p  { margin: 0; color: var(--ink-soft); font-size: .95rem; }
 
-/* 步驟清單 */
+/* 步驟清單：直接用設計稿的六張橫幅，寬度自動縮放 */
 .flow { list-style: none; margin: 0; padding: 0; }
 
-.flow-step {
-  position: relative;
-  display: grid;
-  grid-template-columns: 56px 1fr auto auto;
-  align-items: center;
-  gap: 14px;
-  border-radius: 22px;
-  padding: 20px 22px;
-  margin-bottom: 16px;
+.flow li { margin: 0 0 14px; }
+
+.flow img {
+  display: block;
+  width: 100%;
+  height: auto;
+  cursor: zoom-in;      /* 點一下開原圖，手機才看得清楚字 */
 }
 
-/* 編號圓圈 */
-.flow-num {
-  width: 46px; height: 46px;
-  border-radius: 50%;
-  display: grid; place-items: center;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #fff;
-  align-self: start;
-}
-
-.flow-body h2 {
-  display: inline-block;
-  margin: 0 0 8px;
-  padding: 3px 16px;
-  border-radius: 999px;
-  font-size: 1.15rem;
-  background: rgba(255, 255, 255, .75);
-}
-.flow-body p { margin: 0; font-size: .97rem; }
-
-/* 右邊的貓咪說話框 */
-.flow-say {
-  margin: 0;
-  font-size: .82rem;
-  line-height: 1.55;
+/* 這行提示只有手機需要，桌機的圖已經夠大 */
+.flow-tip {
+  display: none;
   text-align: center;
+  font-size: .85rem;
   color: var(--ink-soft);
-  background: #fff;
-  border-radius: 16px;
-  padding: 10px 14px;
-  max-width: 11em;
-  box-shadow: var(--shadow);
+  margin: 2px 0 0;
 }
-
-/* 每一步的配色（照設計稿） */
-.s1 { background: #E6F2FE; }  .s1 .flow-num { background: #5B8DD9; }  .s1 .flow-body h2 { color: #2F5E9E; }
-.s2 { background: #FCF2F3; }  .s2 .flow-num { background: #E0808F; }  .s2 .flow-body h2 { color: #B04C5C; }
-.s3 { background: #EAF6F4; }  .s3 .flow-num { background: #5FA87C; }  .s3 .flow-body h2 { color: #357051; }
-.s4 { background: #EDF1FD; }  .s4 .flow-num { background: #8678C0; }  .s4 .flow-body h2 { color: #5B4E95; }
-.s5 { background: #FFF9E9; }  .s5 .flow-num { background: #DFA449; }  .s5 .flow-body h2 { color: #96661A; }
-.s6 { background: #E8F5FE; }  .s6 .flow-num { background: #5B8DD9; }  .s6 .flow-body h2 { color: #2F5E9E; }
+@media (max-width: 760px) {
+  .flow-tip { display: block; }
+}
 
 .flow-foot {
   text-align: center;
@@ -650,57 +617,8 @@ h3 { font-size: 1.1rem; margin: 1.6em 0 .4em; }
   margin: 26px 0 8px;
 }
 
-/* 手機：說話框移到文字下面，不要擠成一條 */
+/* 手機：標題小一點 */
 @media (max-width: 640px) {
-  .flow-step {
-    grid-template-columns: 46px 1fr;
-    gap: 12px;
-    padding: 18px;
-  }
-  .flow-num { width: 40px; height: 40px; font-size: 1.3rem; }
-  .flow-say {
-    grid-column: 1 / -1;
-    max-width: none;
-    text-align: left;
-    margin-top: 4px;
-  }
-  .flow-say br { display: none; }   /* 手機上讓它自己換行就好 */
   .flow-head h1 { font-size: 1.5rem; }
 }
-
-/* 貓咪插圖（從設計稿裁出來去背的） */
-.flow-cat {
-  width: 150px;
-  height: auto;
-  align-self: center;
-}
-.flow-step.s3 .flow-cat,
-.flow-step.s5 .flow-cat { width: 185px; }   /* 這兩張是橫幅構圖，寬一點才看得清 */
-
-@media (max-width: 900px) {
-  .flow-cat { width: 120px; }
-  .flow-step.s3 .flow-cat,
-  .flow-step.s5 .flow-cat { width: 145px; }
-}
-
-/* 手機：編號＋文字一行，貓咪和對話框並排在下面 */
-@media (max-width: 640px) {
-  .flow-step { grid-template-columns: 46px 1fr auto; }
-  .flow-body { grid-column: 2 / -1; }
-  .flow-cat {
-    grid-column: 1 / 3;
-    width: 112px;
-    justify-self: center;
-    margin-top: 6px;
-  }
-  .flow-step.s3 .flow-cat,
-  .flow-step.s5 .flow-cat { width: 134px; }
-  .flow-say {
-    grid-column: 3 / -1;
-    align-self: center;
-    margin-top: 6px;
-    max-width: 10em;
-    text-align: center;
-  }
-  .flow-say br { display: revert; }
 }
