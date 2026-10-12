@@ -552,3 +552,103 @@ h3 { font-size: 1.1rem; margin: 1.6em 0 .4em; }
   width: 100%; height: 100%;
   border: 0;
 }
+
+/* ===========================================================
+   領養流程（adopt.html）
+   版面照若瑩的設計稿做成網頁元素，手機會自動換行，
+   文字可以選取、搜尋得到，之後改字也不用重做圖。
+   設計稿原檔在「設計稿/領養流程_設計稿.jpg」。
+   =========================================================== */
+
+/* 標題區：黃色圓角底 */
+.flow-head {
+  background: #FDF0D5;
+  border-radius: 22px;
+  padding: 22px 26px 18px;
+  margin: 8px 0 28px;
+  text-align: center;
+}
+.flow-head h1 { margin: 0 0 6px; font-size: 1.8rem; }
+.flow-head p  { margin: 0; color: var(--ink-soft); font-size: .95rem; }
+
+/* 步驟清單 */
+.flow { list-style: none; margin: 0; padding: 0; }
+
+.flow-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  border-radius: 22px;
+  padding: 20px 22px;
+  margin-bottom: 16px;
+}
+
+/* 編號圓圈 */
+.flow-num {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  align-self: start;
+}
+
+.flow-body h2 {
+  display: inline-block;
+  margin: 0 0 8px;
+  padding: 3px 16px;
+  border-radius: 999px;
+  font-size: 1.15rem;
+  background: rgba(255, 255, 255, .75);
+}
+.flow-body p { margin: 0; font-size: .97rem; }
+
+/* 右邊的貓咪說話框 */
+.flow-say {
+  margin: 0;
+  font-size: .82rem;
+  line-height: 1.55;
+  text-align: center;
+  color: var(--ink-soft);
+  background: #fff;
+  border-radius: 16px;
+  padding: 10px 14px;
+  max-width: 11em;
+  box-shadow: var(--shadow);
+}
+
+/* 每一步的配色（照設計稿） */
+.s1 { background: #E3EDF9; }  .s1 .flow-num { background: #5B8DD9; }  .s1 .flow-body h2 { color: #2F5E9E; }
+.s2 { background: #FBE4E8; }  .s2 .flow-num { background: #E0808F; }  .s2 .flow-body h2 { color: #B04C5C; }
+.s3 { background: #DFEEE4; }  .s3 .flow-num { background: #5FA87C; }  .s3 .flow-body h2 { color: #357051; }
+.s4 { background: #E6E2F3; }  .s4 .flow-num { background: #8678C0; }  .s4 .flow-body h2 { color: #5B4E95; }
+.s5 { background: #FBEBD2; }  .s5 .flow-num { background: #DFA449; }  .s5 .flow-body h2 { color: #96661A; }
+.s6 { background: #E3EDF9; }  .s6 .flow-num { background: #5B8DD9; }  .s6 .flow-body h2 { color: #2F5E9E; }
+
+.flow-foot {
+  text-align: center;
+  color: var(--brand-dk);
+  font-weight: 700;
+  margin: 26px 0 8px;
+}
+
+/* 手機：說話框移到文字下面，不要擠成一條 */
+@media (max-width: 640px) {
+  .flow-step {
+    grid-template-columns: 46px 1fr;
+    gap: 12px;
+    padding: 18px;
+  }
+  .flow-num { width: 40px; height: 40px; font-size: 1.3rem; }
+  .flow-say {
+    grid-column: 1 / -1;
+    max-width: none;
+    text-align: left;
+    margin-top: 4px;
+  }
+  .flow-say br { display: none; }   /* 手機上讓它自己換行就好 */
+  .flow-head h1 { font-size: 1.5rem; }
+}
