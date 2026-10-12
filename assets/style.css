@@ -610,6 +610,13 @@ h3 { font-size: 1.1rem; margin: 1.6em 0 .4em; }
   .flow-tip { display: block; }
 }
 
+/* 桌機的圖已經接近原尺寸，不需要再點開放大，
+   所以把點擊關掉，游標也不要顯示成放大鏡。 */
+@media (min-width: 761px) {
+  .flow a { pointer-events: none; }
+  .flow img { cursor: default; }
+}
+
 .flow-foot {
   text-align: center;
   color: var(--brand-dk);
