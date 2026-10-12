@@ -1,5 +1,5 @@
 /* ===========================================================
-   日日暖暖貓之窩 官方網站 — 共用程式
+   日日暖暖中途貓窩 官方網站 — 共用程式
    -----------------------------------------------------------
    這個檔負責三件事：
    1. 手機版的選單開關
@@ -186,7 +186,7 @@ function initCatDetail() {
     return;
   }
 
-  document.title = cat.name + '｜日日暖暖貓之窩';
+  document.title = cat.name + '｜日日暖暖中途貓窩';
 
   var s = statusOf(cat);
   var photo = cat.photo
@@ -327,7 +327,7 @@ function initTipDetail() {
     return;
   }
 
-  document.title = tip.title + '｜日日暖暖貓之窩';
+  document.title = tip.title + '｜日日暖暖中途貓窩';
 
   box.innerHTML = '' +
     '<p><a href="tips.html">← 回到養貓小知識</a></p>' +
