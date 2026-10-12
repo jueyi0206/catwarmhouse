@@ -1,0 +1,552 @@
+/* ===========================================================
+   日日暖暖貓之窩 官方網站 — 共用樣式
+   -----------------------------------------------------------
+   顏色一律用下面 :root 的變數，不要在個別地方寫死色碼，
+   以後負責視覺的夥伴要調整配色只要改這一段就好。
+   =========================================================== */
+
+:root {
+  /* 主色調取自貓窩 LOGO：藍色圓章 + 橘色放射線 + 白底
+     整體走「藍白」：底色是極淡的藍白，藍色負責結構（按鈕、選單、步驟），
+     橘色只留給強調處（統計數字、價格），讓畫面不會太冷。 */
+  --bg:        #F6F9FD;   /* 頁面底色：極淡的藍白 */
+  --surface:   #FFFFFF;   /* 卡片底色：純白 */
+  --brand:     #3459C3;   /* 主色：LOGO 的藍，按鈕與重點 */
+  --brand-dk:  #2A47A0;   /* 主色加深：滑過按鈕時、連結文字 */
+  --brand-lt:  #E8EFFB;   /* 藍色極淡：選單滑過時的底色 */
+  --band-bg:   #E9F0FA;   /* 淡藍：大區塊的底色 */
+  --accent:    #EF8C53;   /* 強調色：LOGO 的橘 */
+  --accent-dk: #D4703A;   /* 強調色加深 */
+  --ink:       #26314A;   /* 主要文字：深藍灰，比純黑柔和 */
+  --ink-soft:  #5F6B82;   /* 次要文字 */
+  --line:      #DFE6F2;   /* 分隔線 */
+
+  /* 狀態標籤顏色 */
+  --ok:        #2E7247;   /* 待領養（顏色夠深，小字才看得清楚） */
+  --ok-bg:     #E7F4EC;
+  --wait:      #8A6410;   /* 洽談中 */
+  --wait-bg:   #FBF2DC;
+  --done:      #665775;   /* 已找到家 */
+  --done-bg:   #F0ECF5;
+  --todo:      #C0392B;   /* 待貓窩確認（雛形用，上線前移除） */
+  --todo-bg:   #FDECEA;
+
+  --radius:    16px;
+  --shadow:    0 2px 12px rgba(38, 49, 74, .08);
+  --wrap:      1080px;    /* 內容最大寬度 */
+}
+
+/* ---------- 基礎 ---------- */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei",
+               "Helvetica Neue", Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+a   { color: var(--brand-dk); }
+
+.wrap {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 0 20px;   /* 手機左右留白 */
+}
+
+h1, h2, h3 { line-height: 1.4; letter-spacing: .01em; }
+h1 { font-size: 1.9rem; margin: 0 0 .5em; }
+h2 { font-size: 1.45rem; margin: 2.4em 0 .8em; }
+h3 { font-size: 1.1rem; margin: 1.6em 0 .4em; }
+
+/* ---------- 雛形提示橫幅（正式上線前整段刪掉） ---------- */
+.proto-bar {
+  background: #26314A;
+  color: #DCE5F5;
+  font-size: .82rem;
+  text-align: center;
+  padding: 7px 16px;
+  line-height: 1.5;
+}
+
+/* ---------- 頁首與導覽 ---------- */
+.site-head {
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.head-inner {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 1.05rem;
+  white-space: nowrap;
+}
+/* 頁首的 LOGO 圖（images/logo-72.png，已經去背成圓形） */
+.logo-mark {
+  width: 44px; height: 44px;
+  flex-shrink: 0;
+}
+
+/* 首頁主視覺裡的大 LOGO */
+.hero-logo {
+  width: 132px; height: 132px;
+  margin: 0 0 18px;
+}
+@media (max-width: 560px) {
+  .hero-logo { width: 104px; height: 104px; }
+}
+.logo-sub {
+  display: block;
+  font-size: .68rem;
+  font-weight: 400;
+  color: var(--ink-soft);
+  letter-spacing: .08em;
+}
+
+.nav { margin-left: auto; }
+.nav ul {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: flex;
+  gap: 4px;
+}
+.nav a {
+  display: block;
+  padding: 8px 11px;
+  border-radius: 999px;
+  text-decoration: none;
+  color: var(--ink-soft);
+  font-size: .9rem;
+  white-space: nowrap;
+}
+.nav a:hover { background: var(--brand-lt); color: var(--brand-dk); }
+.nav a[aria-current="page"] {
+  background: var(--brand-lt);
+  color: var(--brand-dk);
+  font-weight: 700;
+}
+
+/* 手機漢堡鈕：桌機隱藏 */
+.nav-toggle {
+  display: none;
+  margin-left: auto;
+  background: var(--brand-lt);
+  border: 0;
+  border-radius: 10px;
+  width: 42px; height: 38px;
+  font-size: 1.2rem;
+  color: var(--brand-dk);
+  cursor: pointer;
+}
+
+@media (max-width: 1000px) {
+  .nav-toggle { display: block; }
+  .nav {
+    display: none;
+    position: absolute;
+    top: 100%; left: 0; right: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    padding: 8px 14px 16px;
+    margin: 0;
+  }
+  .nav.open { display: block; }
+  .nav ul { flex-direction: column; gap: 2px; }
+  .nav a { padding: 11px 12px; border-radius: 10px; }
+}
+
+/* ---------- 首頁主視覺 ---------- */
+.hero {
+  background: var(--band-bg);
+  border-bottom: 1px solid var(--line);
+  padding: 56px 0 60px;
+}
+.hero h1 { font-size: 2.1rem; max-width: 20em; }
+.hero p {
+  font-size: 1.08rem;
+  color: var(--ink-soft);
+  max-width: 34em;
+  margin: 0 0 1.8em;
+}
+
+/* ---------- 按鈕 ---------- */
+.btn, .btn-ghost {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: .97rem;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+.btn { background: var(--brand); color: #fff; }
+.btn:hover { background: var(--brand-dk); }
+.btn-ghost { color: var(--brand-dk); border-color: var(--brand); background: transparent; }
+.btn-ghost:hover { background: var(--brand-lt); }
+.btn-row { display: flex; flex-wrap: wrap; gap: 12px; }
+
+/* ---------- 數字統計 ---------- */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
+  margin: 36px 0;
+}
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 22px 18px;
+  text-align: center;
+}
+.stat b {
+  display: block;
+  font-size: 2rem;
+  color: var(--accent-dk);
+  line-height: 1.2;
+}
+.stat span { font-size: .9rem; color: var(--ink-soft); }
+
+/* ---------- 貓咪卡片 ---------- */
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 20px;
+  margin: 28px 0;
+}
+
+.cat-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.cat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(38, 49, 74, .14);
+}
+
+.cat-photo {
+  aspect-ratio: 4 / 3;
+  background: var(--band-bg);
+  display: grid; place-items: center;
+  color: #B6C5E0;
+  font-size: 2.6rem;
+  overflow: hidden;
+}
+.cat-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+.cat-body { padding: 16px 18px 20px; flex: 1; }
+.cat-body h3 { margin: 0 0 4px; font-size: 1.18rem; }
+.cat-meta {
+  font-size: .86rem;
+  color: var(--ink-soft);
+  margin: 0 0 10px;
+}
+.cat-desc { font-size: .92rem; margin: 0; }
+
+/* 狀態標籤 */
+.tag {
+  display: inline-block;
+  font-size: .76rem;
+  font-weight: 700;
+  padding: 3px 11px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+}
+.tag-ok   { background: var(--ok-bg);   color: var(--ok); }
+.tag-wait { background: var(--wait-bg); color: var(--wait); }
+.tag-done { background: var(--done-bg); color: var(--done); }
+.tag-ask  { background: var(--todo-bg); color: var(--todo); }
+
+/* 篩選鈕 */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 4px; }
+.filters button {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink-soft);
+  border-radius: 999px;
+  padding: 7px 16px;
+  font-size: .88rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+.filters button:hover { border-color: var(--brand); color: var(--brand-dk); }
+.filters button.on {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ---------- 一般內容區塊 ---------- */
+/* 注意：只設上下，不要寫成 padding: 10px 0 40px，
+   那會把 .wrap 的左右留白蓋掉，手機上文字會貼到螢幕邊緣。*/
+.section { padding-top: 10px; padding-bottom: 40px; }
+.band {
+  background: var(--band-bg);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 44px 0;
+  margin-top: 48px;
+}
+.band h2 { margin-top: 0; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px 26px;
+  margin: 18px 0;
+}
+.card h3:first-child { margin-top: 0; }
+
+.cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.lead { font-size: 1.06rem; color: var(--ink-soft); max-width: 36em; }
+
+/* 流程步驟 */
+.steps { list-style: none; counter-reset: s; padding: 0; margin: 24px 0; }
+.steps li {
+  counter-increment: s;
+  position: relative;
+  padding: 0 0 26px 26px;
+  border-left: 2px solid var(--line);
+  margin-left: 18px;
+}
+.steps li:last-child { border-left-color: transparent; padding-bottom: 0; }
+.steps li::before {
+  content: counter(s);
+  position: absolute;
+  left: -19px; top: -4px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--brand);
+  color: #fff;
+  font-weight: 700;
+  display: grid; place-items: center;
+}
+.steps b { display: block; font-size: 1.05rem; padding-top: 2px; }
+
+/* ---------- 待確認標記（雛形專用，上線前請全部處理掉） ---------- */
+.todo {
+  background: var(--todo-bg);
+  border-left: 4px solid var(--todo);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin: 16px 0;
+  font-size: .93rem;
+}
+.todo::before {
+  content: "⚠️ 這段要貓窩確認後替換";
+  display: block;
+  font-weight: 700;
+  color: var(--todo);
+  font-size: .8rem;
+  margin-bottom: 6px;
+  letter-spacing: .03em;
+}
+.todo p:last-child { margin-bottom: 0; }
+
+/* ---------- 頁尾 ---------- */
+.site-foot {
+  background: var(--ink);
+  color: #D6DEEE;
+  margin-top: 60px;
+  padding: 44px 0 28px;
+  font-size: .9rem;
+}
+.site-foot a { color: #FFBE8C; }   /* 深藍底上留一點橘，呼應 LOGO */
+.foot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 28px;
+}
+.site-foot h4 { margin: 0 0 10px; font-size: .95rem; color: #fff; }
+.site-foot ul { list-style: none; margin: 0; padding: 0; }
+.site-foot li { margin-bottom: 6px; }
+.foot-note {
+  border-top: 1px solid rgba(255, 255, 255, .14);
+  margin-top: 30px; padding-top: 18px;
+  font-size: .8rem;
+  color: #9AA6BC;
+}
+
+/* 跳到主要內容（給使用鍵盤與讀螢幕軟體的人） */
+.skip {
+  position: absolute; left: -9999px;
+  background: var(--brand); color: #fff;
+  padding: 10px 18px; z-index: 100;
+}
+.skip:focus { left: 10px; top: 10px; }
+
+/* ===========================================================
+   最新消息 / 義賣 / 養貓小知識
+   如果決定不要某一區，把對應的樣式連同頁面一起刪掉就好。
+   =========================================================== */
+
+/* ---------- 小標籤（分類） ---------- */
+.chip {
+  display: inline-block;
+  background: var(--brand-lt);
+  color: var(--brand-dk);
+  font-size: .76rem;
+  font-weight: 700;
+  padding: 3px 11px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+}
+
+/* ---------- 消息列表 ---------- */
+.news-list { margin: 24px 0; }
+
+.news-item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 14px;
+}
+.news-item h3 { margin: 2px 0 6px; font-size: 1.12rem; }
+.news-item p  { margin: 0 0 6px; }
+
+.news-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.news-head time {
+  font-size: .85rem;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+.news-head .chip { margin-bottom: 0; }
+
+/* 示範資料：加條紋底，一眼看出不是真的消息（上線前這些都要刪掉） */
+.news-item.is-demo {
+  background: repeating-linear-gradient(
+    45deg, var(--surface) 0 10px, var(--todo-bg) 10px 20px);
+}
+
+/* ---------- 義賣商品 ---------- */
+.price {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent-dk);
+  margin: 0 0 8px;
+}
+
+/* ---------- 知識文章 ---------- */
+.draft-note {
+  margin: 10px 0 0;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--todo);
+}
+
+.article { max-width: 36em; }
+.article p { margin: 0 0 1.1em; }
+
+/* ---------- YouTube 影片（點一下才載入） ---------- */
+.video-embed {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background-color: var(--band-bg);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  margin: 12px 0 20px;
+  max-width: 560px;
+}
+/* 封面壓一層深色，播放鈕才看得清楚 */
+.video-embed::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: rgba(38, 49, 74, .32);
+  transition: background .15s ease;
+}
+.video-embed:hover::after { background: rgba(38, 49, 74, .45); }
+.video-embed[data-loaded]::after { display: none; }
+
+.video-play {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  width: 66px; height: 66px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--brand);
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+  padding-left: 5px;          /* 三角形視覺置中 */
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(38, 49, 74, .35);
+}
+.video-embed:hover .video-play { background: var(--brand-dk); }
+
+.video-note {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  z-index: 2;
+  padding: 8px 14px;
+  font-size: .78rem;
+  color: #fff;
+  background: linear-gradient(transparent, rgba(38, 49, 74, .75));
+  text-align: center;
+}
+
+/* Shorts（直式影片）：播放框改成直式，寬度也要限制，不然在電腦上會超高 */
+.video-embed.is-short {
+  aspect-ratio: 9 / 16;
+  max-width: 300px;
+}
+
+/* 封面圖（貓咪自己的照片，或 YouTube 縮圖） */
+.video-cover {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+.video-embed iframe {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  border: 0;
+}
