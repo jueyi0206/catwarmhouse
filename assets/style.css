@@ -1,4 +1,19 @@
 /* ===========================================================
+   中文圓體：jf open 粉圓體（justfont 開源，SIL OFL 授權，可免費商用）
+   這個檔只收了網站用到的字，所以從 4.7 MB 變成約 200 KB。
+   產生方式：python tools/產生字型.py
+   font-display: swap 的意思是——字型還沒載完時先用電腦內建字型顯示，
+   使用者不會看到一片空白，載完才換過去。
+   =========================================================== */
+@font-face {
+  font-family: "Huninn";
+  src: url("fonts/huninn-subset.woff2?v=16030d29") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ===========================================================
    日日暖暖中途貓窩 官方網站 — 共用樣式
    -----------------------------------------------------------
    顏色一律用下面 :root 的變數，不要在個別地方寫死色碼，
@@ -43,7 +58,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
-  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei",
+  font-family: "Huninn", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei",
                "Helvetica Neue", Arial, sans-serif;
   font-size: 17px;
   line-height: 1.75;
@@ -577,7 +592,7 @@ h3 { font-size: 1.1rem; margin: 1.6em 0 .4em; }
 .flow-step {
   position: relative;
   display: grid;
-  grid-template-columns: 56px 1fr auto;
+  grid-template-columns: 56px 1fr auto auto;
   align-items: center;
   gap: 14px;
   border-radius: 22px;
@@ -621,12 +636,12 @@ h3 { font-size: 1.1rem; margin: 1.6em 0 .4em; }
 }
 
 /* 每一步的配色（照設計稿） */
-.s1 { background: #E3EDF9; }  .s1 .flow-num { background: #5B8DD9; }  .s1 .flow-body h2 { color: #2F5E9E; }
-.s2 { background: #FBE4E8; }  .s2 .flow-num { background: #E0808F; }  .s2 .flow-body h2 { color: #B04C5C; }
-.s3 { background: #DFEEE4; }  .s3 .flow-num { background: #5FA87C; }  .s3 .flow-body h2 { color: #357051; }
-.s4 { background: #E6E2F3; }  .s4 .flow-num { background: #8678C0; }  .s4 .flow-body h2 { color: #5B4E95; }
-.s5 { background: #FBEBD2; }  .s5 .flow-num { background: #DFA449; }  .s5 .flow-body h2 { color: #96661A; }
-.s6 { background: #E3EDF9; }  .s6 .flow-num { background: #5B8DD9; }  .s6 .flow-body h2 { color: #2F5E9E; }
+.s1 { background: #E6F2FE; }  .s1 .flow-num { background: #5B8DD9; }  .s1 .flow-body h2 { color: #2F5E9E; }
+.s2 { background: #FCF2F3; }  .s2 .flow-num { background: #E0808F; }  .s2 .flow-body h2 { color: #B04C5C; }
+.s3 { background: #EAF6F4; }  .s3 .flow-num { background: #5FA87C; }  .s3 .flow-body h2 { color: #357051; }
+.s4 { background: #EDF1FD; }  .s4 .flow-num { background: #8678C0; }  .s4 .flow-body h2 { color: #5B4E95; }
+.s5 { background: #FFF9E9; }  .s5 .flow-num { background: #DFA449; }  .s5 .flow-body h2 { color: #96661A; }
+.s6 { background: #E8F5FE; }  .s6 .flow-num { background: #5B8DD9; }  .s6 .flow-body h2 { color: #2F5E9E; }
 
 .flow-foot {
   text-align: center;
@@ -651,4 +666,41 @@ h3 { font-size: 1.1rem; margin: 1.6em 0 .4em; }
   }
   .flow-say br { display: none; }   /* 手機上讓它自己換行就好 */
   .flow-head h1 { font-size: 1.5rem; }
+}
+
+/* 貓咪插圖（從設計稿裁出來去背的） */
+.flow-cat {
+  width: 150px;
+  height: auto;
+  align-self: center;
+}
+.flow-step.s3 .flow-cat,
+.flow-step.s5 .flow-cat { width: 185px; }   /* 這兩張是橫幅構圖，寬一點才看得清 */
+
+@media (max-width: 900px) {
+  .flow-cat { width: 120px; }
+  .flow-step.s3 .flow-cat,
+  .flow-step.s5 .flow-cat { width: 145px; }
+}
+
+/* 手機：編號＋文字一行，貓咪和對話框並排在下面 */
+@media (max-width: 640px) {
+  .flow-step { grid-template-columns: 46px 1fr auto; }
+  .flow-body { grid-column: 2 / -1; }
+  .flow-cat {
+    grid-column: 1 / 3;
+    width: 112px;
+    justify-self: center;
+    margin-top: 6px;
+  }
+  .flow-step.s3 .flow-cat,
+  .flow-step.s5 .flow-cat { width: 134px; }
+  .flow-say {
+    grid-column: 3 / -1;
+    align-self: center;
+    margin-top: 6px;
+    max-width: 10em;
+    text-align: center;
+  }
+  .flow-say br { display: revert; }
 }
