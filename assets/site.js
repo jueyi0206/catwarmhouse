@@ -28,10 +28,28 @@ function initNav() {
 }
 
 /* ---------- 毛色分類 ----------
-   「等家的貓咪」頁用毛色篩選。這六類跟篩選鈕、cats.js 的 colorType 必須一致，
-   要增減分類的話三個地方要一起改：
-   1. 下面這個 COLORS　2. cats.html 的篩選鈕　3. cats.js 每隻貓的 colorType */
-var COLORS = ['黑貓', '白貓', '賓士貓', '三花貓', '橘貓', '虎斑貓'];
+   分類清單寫在 data/cats.js 的「_毛色分類」，篩選鈕會照著自動產生。
+   以後要再細分，改資料檔那一行就好，這個檔不用動。 */
+function colorList() {
+  var list = window.CAT_DATA && window.CAT_DATA._毛色分類;
+  return (list && list.length) ? list : [];
+}
+
+/* 檢查資料有沒有填到清單外的毛色——打錯字的話篩選鈕會選不到那隻貓，
+   在瀏覽器的 Console（F12）會看到提醒。 */
+function checkColorTypes(cats) {
+  var ok = colorList();
+  if (!ok.length) return;
+  var bad = cats.filter(function (c) {
+    return c.colorType && ok.indexOf(c.colorType) < 0;
+  });
+  if (bad.length) {
+    console.warn('[日日暖暖] 這些貓的毛色不在分類清單裡，篩選鈕會選不到：',
+      bad.map(function (c) { return c.name + '（' + c.colorType + '）'; }).join('、'),
+      '\n可用的分類：' + ok.join('、') +
+      '\n改 data/cats.js 最上面的「_毛色分類」可以新增分類。');
+  }
+}
 
 /* ---------- 把一隻貓畫成一張卡片 ---------- */
 function catCard(cat) {
@@ -72,6 +90,22 @@ function initCatList() {
   var all = window.CAT_DATA.cats || [];
   var limit = parseInt(box.dataset.limit, 10);
 
+  checkColorTypes(all);
+
+  // 篩選鈕照資料檔的分類清單自動產生。
+  // 只顯示「真的有貓」的分類，免得點進去都是空的。
+  var bar = document.getElementById('cat-filters');
+  if (bar) {
+    var used = colorList().filter(function (c) {
+      return all.some(function (cat) { return cat.colorType === c; });
+    });
+    bar.innerHTML =
+      '<button class="on" data-filter="all">全部</button>' +
+      used.map(function (c) {
+        return '<button data-filter="' + c + '">' + c + '</button>';
+      }).join('');
+  }
+
   function render(filter) {
     // filter 是毛色分類（黑貓、白貓…），'all' 代表全部
     var list = all.filter(function (c) {
@@ -86,7 +120,6 @@ function initCatList() {
   }
 
   // 篩選鈕（有放 .filters 的頁面才會啟用）
-  var bar = document.querySelector('.filters');
   if (bar) {
     bar.addEventListener('click', function (e) {
       if (e.target.tagName !== 'BUTTON') return;
