@@ -898,3 +898,24 @@ body[class*="theme-"] .cat-sheet {
 @media (prefers-reduced-motion: reduce) {
   .cats-hero.is-in { animation: none; }
 }
+
+/* ===========================================================
+   底紋：貓掌、愛心、小魚、閃光，很淡地鋪在卡片區後面
+   讓頁面下半部不要太空，但不能跟貓咪照片搶注意力，
+   所以透明度壓得很低（.5 的不透明度 ＋ 本來就很淡的藍灰色）。
+   =========================================================== */
+.paw-bg {
+  position: relative;
+}
+.paw-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url("../images/pattern-paws.svg?v=193bd485") 0 0 / 190px auto repeat;
+  opacity: .5;
+  pointer-events: none;
+}
+@media (max-width: 620px) {
+  .paw-bg::before { background-size: 150px auto; }
+}
