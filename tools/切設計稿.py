@@ -83,18 +83,27 @@ def main(src, prefix, skip=0):
     # ---- 第二步：左側量出真正的上下界 ----
     left = has_ink[:, int(W * 0.04):int(W * 0.22)].sum(axis=1)
 
-    bands = []
+    # 先算每一條真正的「頂」：圓圈突出到卡片上方，要往上找
+    tops = []
     for idx, (top, bot) in enumerate(rough):
-        # 往上找時不可以越過上一條的底部，否則會帶到它的圓角
+        # 不可越過上一條的底部，否則會帶到它的圓角
         ceiling = rough[idx - 1][1] + 2 if idx > 0 else 0
         t = top
         while t > ceiling and t > top - 60:
             if left[max(t - 2, 0):t + 2].sum() == 0:
                 break
             t -= 1
-        # 下緣不用找：圓圈只突出卡片的上緣，往下找會吃到下一條的圓圈
-        b = min(bot + 3, H - 1)
-        bands.append((t, b, top, bot))
+        tops.append(t)
+
+    # 再定每一條的「底」。
+    # 下一條的圓圈可能突出到只差一兩個像素的地方，
+    # 所以底部不能單純 +3，必須停在下一條的頂之前，
+    # 否則這一條的底部會帶到下一條圓圈的頭。
+    bands = []
+    for idx, (top, bot) in enumerate(rough):
+        limit = tops[idx + 1] - 4 if idx + 1 < len(tops) else H - 1   # 退 4px：JPEG 柔邊會暈開
+        b = min(bot + 3, limit)
+        bands.append((tops[idx], b, top, bot))
 
     os.makedirs(OUT_DIR, exist_ok=True)
     total = 0.0
