@@ -30,6 +30,28 @@ function initNav() {
 /* ---------- 毛色分類 ----------
    分類清單寫在 data/cats.js 的「_毛色分類」，篩選鈕會照著自動產生。
    以後要再細分，改資料檔那一行就好，這個檔不用動。 */
+/* 「等家的貓咪」頁首橫幅：換成目前篩選的毛色場景。
+   用的是 cats.js 裡的「_毛色主題」對應表，跟單隻貓頁的背景同一套，
+   所以點進去之後畫面是連貫的。 */
+function setHero(filter) {
+  var hero = document.getElementById('cats-hero');
+  if (!hero) return;
+  var themes = (window.CAT_DATA && window.CAT_DATA['_毛色主題']) || {};
+  var name = (filter && filter !== 'all' && themes[filter]) ? themes[filter] : 'all';
+  if (hero.dataset.now === name) return;
+  hero.dataset.now = name;
+  // 路徑要用網頁本身算出來的絕對網址。
+  // 直接寫 "images/hero/..." 的話，瀏覽器會當成相對於 style.css 的位置
+  // （變成 assets/images/hero/...），圖就找不到了。
+  var base = new URL('images/hero/', location.href).href;
+  hero.style.setProperty('--hero-m', 'url("' + base + name + '-m.jpg")');
+  hero.style.setProperty('--hero-d', 'url("' + base + name + '-d.jpg")');
+  // 重播一次淡入，讓換場景看得出來
+  hero.classList.remove('is-in');
+  void hero.offsetWidth;
+  hero.classList.add('is-in');
+}
+
 function colorList() {
   var list = window.CAT_DATA && window.CAT_DATA._毛色分類;
   return (list && list.length) ? list : [];
@@ -127,6 +149,8 @@ function initCatList() {
       ? list.map(catCard).join('')
       : '<p class="lead">目前沒有這個毛色的貓咪在等家。<br>' +
         '<a href="cats.html">看看全部的貓咪 →</a></p>';
+
+    setHero(filter);
   }
 
   // 篩選鈕（有放 .filters 的頁面才會啟用）

@@ -844,3 +844,57 @@ body[class*="theme-"] .cat-sheet {
     margin-right: auto;
   }
 }
+
+/* ===========================================================
+   「等家的貓咪」頁首橫幅
+   插畫會跟著選的毛色換（圖片網址由 site.js 設定成 --hero-m／--hero-d）。
+   標題疊在插畫上，所以插畫的那一側要留白：
+   手機版左半邊留白、電腦版中間留白。
+   =========================================================== */
+.cats-hero {
+  position: relative;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+}
+
+/* 手機：插畫整條完整顯示在上面，文字排在它下面。
+   插畫的留白在左半邊，但手機螢幕窄，文字疊上去還是會卡到貓咪，
+   所以乾脆上下排，兩邊都看得清楚。 */
+.cats-hero::before {
+  content: "";
+  display: block;
+  width: 100%;
+  aspect-ratio: 5 / 2;              /* 跟手機版插畫同比例 */
+  background: var(--hero-m) center / 100% 100% no-repeat;
+}
+.cats-hero-text { width: 100%; padding-top: 14px; padding-bottom: 18px; }
+.cats-hero h1 { margin: 0 0 .3em; }
+.cats-hero .lead { margin: 0; }
+
+/* 換毛色時淡淡地滑進來，讓人注意到場景換了 */
+@keyframes hero-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+.cats-hero.is-in { animation: hero-in .45s ease both; }
+
+/* 電腦：插畫當背景鋪滿，標題疊在中間的留白區 */
+@media (min-width: 761px) {
+  .cats-hero {
+    background: var(--hero-d) center / cover no-repeat, var(--bg);
+    display: flex;
+    align-items: center;
+    min-height: 290px;
+  }
+  .cats-hero::before { content: none; }
+  .cats-hero-text { text-align: center; padding: 24px 0; }
+  .cats-hero .lead { margin-left: auto; margin-right: auto; }
+  /* 字下墊一層很淡的白，插畫再花都讀得清楚 */
+  .cats-hero-text > * {
+    text-shadow: 0 1px 0 rgba(255, 255, 255, .9), 0 0 12px rgba(255, 255, 255, .95);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cats-hero.is-in { animation: none; }
+}
