@@ -50,7 +50,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "已結紮；疫苗等醫療資訊以貓窩公告為準",
       "story": "待貓窩提供",
-      "photo": "",
+      "photos": ["cats/cream-1.jpg", "cats/cream-2.jpg"],
       "video": "",
       "confirmed": "2026-10-11"
     },
@@ -67,7 +67,7 @@ window.CAT_DATA = {
       "fit": "適合獨貓家庭（跟其他貓相處不來）",
       "health": "結紮與疫苗狀況待貓窩確認",
       "story": "待貓窩提供",
-      "photo": "",
+      "photos": ["cats/chienchien-1.jpg", "cats/chienchien-2.jpg"],
       "video": "https://www.youtube.com/shorts/C0uIE9S-S30",
       "confirmed": "2026-10-02"
     },
@@ -84,7 +84,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photo": "",
+      "photos": ["cats/sher-1.jpg", "cats/sher-2.jpg"],
       "video": "https://www.youtube.com/shorts/tz7MHrf1ybk",
       "confirmed": ""
     },
@@ -101,7 +101,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photo": "",
+      "photos": ["cats/panmao-1.jpg", "cats/panmao-2.jpg"],
       "video": "",
       "confirmed": ""
     },
@@ -118,7 +118,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photo": "",
+      "photos": ["cats/jill-1.jpg"],
       "video": "",
       "confirmed": ""
     },
@@ -135,7 +135,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photo": "",
+      "photos": ["cats/jinbao-1.jpg", "cats/jinbao-2.jpg", "cats/jinbao-3.jpg"],
       "video": "",
       "confirmed": ""
     },
@@ -152,7 +152,24 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photo": "",
+      "photos": ["cats/pianpian-1.jpg"],
+      "video": "",
+      "confirmed": ""
+    },
+    {
+      "id": "doudou",
+      "name": "兜兜",
+      "status": "wait",
+      "sex": "待確認",
+      "age": "待確認",
+      "color": "白底灰虎斑",
+      "colorType": "虎斑貓",
+      "feature": "",
+      "personality": "待貓窩補充",
+      "fit": "待貓窩確認",
+      "health": "待貓窩確認",
+      "story": "",
+      "photos": ["cats/doudou-1.jpg"],
       "video": "",
       "confirmed": ""
     }

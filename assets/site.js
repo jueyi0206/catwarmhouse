@@ -51,11 +51,21 @@ function checkColorTypes(cats) {
   }
 }
 
+/* ---------- 取得一隻貓的照片清單 ----------
+   新寫法是 photos: ["a.jpg", "b.jpg", "c.jpg"]，
+   舊的 photo: "a.jpg" 也還能用，會當成只有一張。 */
+function photosOf(cat) {
+  if (cat.photos && cat.photos.length) return cat.photos.filter(Boolean);
+  return cat.photo ? [cat.photo] : [];
+}
+
 /* ---------- 把一隻貓畫成一張卡片 ---------- */
 function catCard(cat) {
   // 照片：有填 photo 就用照片，沒填就顯示一個貓咪圖示佔位
-  var photo = cat.photo
-    ? '<img src="images/' + cat.photo + '" alt="' + cat.name + '">'
+  // 列表只放第一張，點進去才看到全部
+  var first = photosOf(cat)[0];
+  var photo = first
+    ? '<img src="images/' + first + '" alt="' + cat.name + '" loading="lazy">'
     : '<span aria-hidden="true">🐈</span>';
 
   // 第二行小字：性別・花色・年齡，空的欄位自動跳過
@@ -175,8 +185,9 @@ function videoBlock(item) {
   // YouTube 縮圖先抓高畫質版（1280×720），抓不到時 onerror 自動退回標準版，
   // 因為標準版只有 480×360，放進直式框會糊。
   var yt = 'https://img.youtube.com/vi/' + id + '/';
-  var cover = item.photo
-    ? '<img class="video-cover" src="images/' + item.photo + '" alt="">'
+  var coverPhoto = photosOf(item)[0];
+  var cover = coverPhoto
+    ? '<img class="video-cover" src="images/' + coverPhoto + '" alt="">'
     : '<img class="video-cover" src="' + yt + 'maxresdefault.jpg" alt="" ' +
       'onerror="this.onerror=null;this.src=\'' + yt + 'hqdefault.jpg\'">';
   return '' +
@@ -198,6 +209,47 @@ document.addEventListener('click', function (e) {
     '?autoplay=1&rel=0" title="影片" frameborder="0" allowfullscreen ' +
     'allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"></iframe>';
 });
+
+/* ---------- 單隻貓頁的照片拼貼 ----------
+   照片張數不同，排法就不同，原則是「不擁擠、活潑」：
+   0 張：一個空相框放貓咪圖示
+   1 張：一張大的，微微歪
+   2 張：一左上、一右下，交疊一點（照概念圖）
+   3 張：左邊一張大的，右邊上下兩張小的
+   4～5 張：上面照 3 張的排法，其餘排在下面一列小相框
+   相框是 images/frame-scallop.svg（波浪郵票邊）。 */
+function framed(src, alt, cls) {
+  var inner = src
+    ? '<img src="images/' + src + '" alt="' + alt + '" loading="lazy">'
+    : '<span class="pf-empty" aria-hidden="true">🐈</span>';
+  return '<figure class="pf-item ' + (cls || '') + '">' + inner + '</figure>';
+}
+
+function photoCollage(cat) {
+  var list = photosOf(cat);
+  var n = list.length;
+  var alt = function (i) { return cat.name + (n > 1 ? '的照片 ' + (i + 1) : ''); };
+  var hearts = '<span class="pf-heart h1" aria-hidden="true"></span>' +
+               '<span class="pf-heart h2" aria-hidden="true"></span>';
+
+  if (n <= 1) {
+    return '<div class="pf pf-1">' + framed(list[0], alt(0), 'a') + hearts + '</div>';
+  }
+  if (n === 2) {
+    return '<div class="pf pf-2">' +
+      framed(list[0], alt(0), 'a') + framed(list[1], alt(1), 'b') + hearts + '</div>';
+  }
+  var main = '<div class="pf pf-3">' +
+    framed(list[0], alt(0), 'a') + framed(list[1], alt(1), 'b') +
+    framed(list[2], alt(2), 'c') + hearts + '</div>';
+  if (n === 3) return main;
+
+  // 第 4、5 張排在下面一列，太多會擠，最多放到 5 張
+  var rest = list.slice(3, 5).map(function (src, i) {
+    return framed(src, alt(i + 3), 'r' + (i % 2));
+  }).join('');
+  return main + '<div class="pf-row">' + rest + '</div>';
+}
 
 /* ---------- 3. 單隻貓的詳細頁 ---------- */
 function initCatDetail() {
@@ -231,9 +283,7 @@ function initCatDetail() {
     ? '<span class="tag tag-done">已找到家</span>'
     : (cat.colorType ? '<span class="tag tag-color">' + cat.colorType + '</span>' : '');
 
-  var photo = cat.photo
-    ? '<img src="images/' + cat.photo + '" alt="' + cat.name + '">'
-    : '<span aria-hidden="true" style="font-size:5rem">🐈</span>';
+  var photo = photoCollage(cat);
 
   // 資料表：空的欄位不顯示，避免一整排「待確認」
   var rows = [
@@ -251,7 +301,7 @@ function initCatDetail() {
   box.innerHTML = '<div class="cat-sheet">' +
     '<p><a href="cats.html">← 回到等家的貓咪</a></p>' +
     '<div class="cols" style="align-items:start">' +
-      '<div class="cat-photo" style="border-radius:var(--radius)">' + photo + '</div>' +
+      photo +
       '<div>' +
         tag +
         '<h1 style="margin-top:.2em">' + cat.name + '</h1>' +
