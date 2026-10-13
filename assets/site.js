@@ -181,13 +181,13 @@ function videoBlock(item) {
   if (!id) return '';
   // Shorts 是直式影片，播放框要跟著直式，不然左右會是一片黑
   var isShort = /\/shorts\//.test(String(item.video));
-  // 封面優先用貓咪自己的照片；沒照片才用 YouTube 縮圖。
+  // 封面用影片自己在 YouTube 上的縮圖——影片的封面就該是影片的畫面。
+  // （想換成別張圖的話，在 cats.js 填 videoCover，例如 "cats/sher-1.jpg"）
   // YouTube 縮圖先抓高畫質版（1280×720），抓不到時 onerror 自動退回標準版，
   // 因為標準版只有 480×360，放進直式框會糊。
   var yt = 'https://img.youtube.com/vi/' + id + '/';
-  var coverPhoto = photosOf(item)[0];
-  var cover = coverPhoto
-    ? '<img class="video-cover" src="images/' + coverPhoto + '" alt="">'
+  var cover = item.videoCover
+    ? '<img class="video-cover" src="images/' + item.videoCover + '" alt="">'
     : '<img class="video-cover" src="' + yt + 'maxresdefault.jpg" alt="" ' +
       'onerror="this.onerror=null;this.src=\'' + yt + 'hqdefault.jpg\'">';
   return '' +
@@ -250,6 +250,17 @@ function photoCollage(cat) {
   }).join('');
   return main + '<div class="pf-row">' + rest + '</div>';
 }
+
+// 手機沒有滑鼠：點一下照片 = 電腦上滑鼠移過去的效果（擺正、放大、浮上來）。
+// 點同一張會收回，點別張就換那張，點照片以外的地方全部收回。
+document.addEventListener('click', function (e) {
+  var item = e.target.closest ? e.target.closest('.pf-item') : null;
+  var active = document.querySelectorAll('.pf-item.is-active');
+  for (var i = 0; i < active.length; i++) {
+    if (active[i] !== item) active[i].classList.remove('is-active');
+  }
+  if (item) item.classList.toggle('is-active');
+});
 
 /* ---------- 3. 單隻貓的詳細頁 ---------- */
 function initCatDetail() {
