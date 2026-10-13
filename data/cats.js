@@ -171,7 +171,7 @@ window.CAT_DATA = {
       "story": "",
       "photos": ["cats/doudou-1.jpg"],
       "video": "",
-      "confirmed": ""
+      "confirmed": "2026-10-13 毛色確認"
     }
   ],
 
