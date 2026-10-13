@@ -7,7 +7,7 @@
    =========================================================== */
 @font-face {
   font-family: "Huninn";
-  src: url("fonts/huninn-subset.woff2?v=ed51b115") format("woff2");
+  src: url("fonts/huninn-subset.woff2?v=a0f44105") format("woff2");
   font-weight: 400 700;
   font-style: normal;
   font-display: swap;
@@ -606,4 +606,48 @@ h3 { font-size: 1.1rem; margin: 1.6em 0 .4em; }
 @media (max-width: 640px) {
   .flow-head h1 { font-size: 1.5rem; }
 }
+
+/* ===========================================================
+   單隻貓介紹頁：依毛色換背景
+   對應表在 data/cats.js 的「_毛色主題」。
+   目前先用漸層色當底；插畫做好之後，在每個主題加上 background-image，
+   漸層會自動變成插畫還沒載入時的底色。
+   =========================================================== */
+
+/* 內容放在半透明白卡片裡，背景再花、再暗都讀得清楚 */
+.cat-sheet {
+  background: rgba(255, 255, 255, .92);
+  border-radius: 24px;
+  padding: 22px 26px 28px;
+  box-shadow: 0 6px 28px rgba(38, 49, 74, .12);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
+@media (max-width: 620px) {
+  .cat-sheet { padding: 16px 16px 22px; border-radius: 20px; }
+}
+
+body[class*="theme-"] {
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center top;
+}
+
+/* 卡片上方留一段空間，讓背景插畫的主場景露出來。
+   手機上卡片幾乎佔滿寬度，左右只剩兩條細邊，
+   所以插畫的重點要畫在「上方」，這一段就是給它的舞台。 */
+body[class*="theme-"] .cat-sheet {
+  margin-top: clamp(96px, 22vw, 180px);
+}
+
+.theme-night  { background: linear-gradient(180deg, #1F2B4D 0%, #2F3D6B 60%, #3D4A7A 100%); }
+.theme-snow   { background: linear-gradient(180deg, #EEF5FC 0%, #F8FBFF 55%, #FFFFFF 100%); }
+.theme-piano  { background: linear-gradient(180deg, #ECEEF2 0%, #F6F7F9 55%, #DFE2E8 100%); }
+.theme-garden { background: linear-gradient(180deg, #FFF4EE 0%, #FDEDE6 55%, #F6F1E4 100%); }
+.theme-autumn { background: linear-gradient(180deg, #F8ECDD 0%, #F2DFC8 55%, #EBD2B4 100%); }
+.theme-sunset { background: linear-gradient(180deg, #FFF3E2 0%, #FFE6C6 55%, #FFD8AE 100%); }
+.theme-forest { background: linear-gradient(180deg, #EEF6EA 0%, #E2EFDA 55%, #D5E8CB 100%); }
+
+/* 夜晚主題底色很暗：卡片外的少數元素（例如找不到貓時的訊息）改成淺色字 */
+.theme-night main > .wrap > h1,
+.theme-night main > .wrap > .lead { color: #F2F4FA; }

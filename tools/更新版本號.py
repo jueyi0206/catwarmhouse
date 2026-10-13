@@ -91,8 +91,41 @@ def check_font():
         print("字型檢查：網站用到的字都有收錄，不用重做字型。")
 
 
+def check_css_braces():
+    """檢查 CSS 的大括號有沒有成對。
+
+    多一個或少一個 }，瀏覽器不會報錯，只會「默默丟掉下一條規則」，
+    畫面就少了某個樣式卻找不到原因（2026-10-13 真的遇過：
+    一個多餘的 } 把單隻貓頁的白卡片整條吃掉）。
+    """
+    for path in ("assets/style.css",):
+        if not os.path.exists(path):
+            continue
+        s = io.open(path, encoding="utf-8").read()
+        body = re.sub(r"/\*.*?\*/", lambda m: re.sub(r"[^\n]", " ", m.group(0)), s, flags=re.S)
+        depth, line, problems = 0, 1, []
+        for ch in body:
+            if ch == "\n":
+                line += 1
+            elif ch == "{":
+                depth += 1
+            elif ch == "}":
+                depth -= 1
+                if depth < 0:
+                    problems.append("第 %d 行多了一個 }" % line)
+                    depth = 0
+        if depth > 0:
+            problems.append("檔案結尾還有 %d 個 { 沒有關起來" % depth)
+        if problems:
+            print()
+            print("⚠️  " + path + " 的大括號不成對，會讓後面的樣式失效：")
+            for p in problems:
+                print("    " + p)
+
+
 def main():
     os.chdir(ROOT)
+    check_css_braces()
 
     # 要加版本號的檔案：CSS、JS、字型，還有圖片
     # 圖片也要，因為換圖時常常沿用同一個檔名（例如重做設計稿後換掉 step-5.jpg），

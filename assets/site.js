@@ -219,6 +219,13 @@ function initCatDetail() {
 
   document.title = cat.name + '｜日日暖暖中途貓窩';
 
+  // 依毛色套用背景主題（白貓→雪地、黑貓→夜晚…）。
+  // 對應表寫在 data/cats.js 的「_毛色主題」，背景圖本身寫在 style.css。
+  var themes = window.CAT_DATA['_毛色主題'] || {};
+  if (cat.colorType && themes[cat.colorType]) {
+    document.body.classList.add('theme-' + themes[cat.colorType]);
+  }
+
   // 已經找到家的貓才顯示狀態標籤；等家中的改顯示毛色分類
   var tag = cat.status === 'home'
     ? '<span class="tag tag-done">已找到家</span>'
@@ -239,7 +246,9 @@ function initCatDetail() {
     ['健康狀況', cat.health]
   ].filter(function (r) { return r[1]; });
 
-  box.innerHTML = '' +
+  // 整段內容包在一張半透明白卡片裡（.cat-sheet），
+  // 不管背後是雪地還是黑夜，字都讀得清楚。
+  box.innerHTML = '<div class="cat-sheet">' +
     '<p><a href="cats.html">← 回到等家的貓咪</a></p>' +
     '<div class="cols" style="align-items:start">' +
       '<div class="cat-photo" style="border-radius:var(--radius)">' + photo + '</div>' +
@@ -261,7 +270,8 @@ function initCatDetail() {
         // 註：cats.js 的 confirmed 是內部備註，刻意不顯示在網頁上，
         //     資料確認狀況統一看「進度.html」。
       '</div>' +
-    '</div>';
+    '</div>' +
+  '</div>';
 }
 
 /* ===========================================================
