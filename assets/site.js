@@ -46,6 +46,30 @@ function setHero(filter) {
   var base = new URL('images/hero/', location.href).href;
   hero.style.setProperty('--hero-m', 'url("' + base + name + '-m.jpg")');
   hero.style.setProperty('--hero-d', 'url("' + base + name + '-d.jpg")');
+  // 底紋的顏色也跟著換，呼應該主題的場景
+  var TONE = {
+    all:    '#8FA6C8',   // 預設的藍灰
+    night:  '#6E7CAE',   // 夜空的藍紫
+    snow:   '#9CBBDC',   // 雪地的淡藍
+    piano:  '#A3A8B6',   // 鋼琴的灰
+    garden: '#D7A08F',   // 花園的暖粉
+    autumn: '#C89A69',   // 秋天的褐
+    sunset: '#E2A271',   // 夕陽的橘
+    forest: '#8FA89A'    // 晨霧森林的灰綠
+  };
+  var paw = document.querySelector('.paw-bg');
+  if (paw) {
+    var layer = paw.querySelector('.paw-layer');
+    if (!layer) {
+      layer = document.createElement('div');
+      layer.className = 'paw-layer';
+      paw.insertBefore(layer, paw.firstChild);
+    }
+    // 直接換整張圖，不是改顏色——改顏色時瀏覽器不一定會重繪遮罩
+    var pawUrl = new URL('images/paws/' + (TONE[name] ? name : 'all') + '.svg', location.href).href;
+    layer.style.setProperty('--paw-art', 'url("' + pawUrl + '")');
+  }
+
   // 重播一次淡入，讓換場景看得出來
   hero.classList.remove('is-in');
   void hero.offsetWidth;

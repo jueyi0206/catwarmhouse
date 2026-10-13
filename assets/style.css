@@ -907,15 +907,21 @@ body[class*="theme-"] .cat-sheet {
 .paw-bg {
   position: relative;
 }
-.paw-bg::before {
-  content: "";
+/* 底紋用「遮罩」而不是直接貼圖：
+   同一張 SVG 就能換成任何顏色，不必為每個毛色各做一張圖。
+
+   注意：底紋是一層真的 div（.paw-layer），不是 ::before。
+   偽元素換顏色時瀏覽器不一定會重繪（實測 Chrome 就不會），
+   用真的元素才穩。 */
+.paw-layer {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: url("../images/pattern-paws.svg?v=193bd485") 0 0 / 190px auto repeat;
-  opacity: .5;
+  background: var(--paw-art) 0 0 / 190px auto repeat;
+  opacity: .55;
   pointer-events: none;
+  transition: opacity .3s ease;
 }
 @media (max-width: 620px) {
-  .paw-bg::before { background-size: 150px auto; }
+  .paw-layer { background-size: 150px auto; }
 }
