@@ -652,7 +652,9 @@ body[class*="theme-"] .cat-sheet {
 .theme-garden { background: linear-gradient(180deg, #FFF4EE 0%, #FDEDE6 55%, #F6F1E4 100%); }
 .theme-autumn { background: linear-gradient(180deg, #F8ECDD 0%, #F2DFC8 55%, #EBD2B4 100%); }
 .theme-sunset { background: linear-gradient(180deg, #FFF3E2 0%, #FFE6C6 55%, #FFD8AE 100%); }
-.theme-forest { background: linear-gradient(180deg, #EEF6EA 0%, #E2EFDA 55%, #D5E8CB 100%); }
+/* 虎斑貓是灰虎斑，所以是「霧灰綠」的晨霧森林，不是鮮綠色；
+   帶一點綠才不會跟賓士貓的中性灰白撞在一起 */
+.theme-forest { background: linear-gradient(180deg, #F0F3F1 0%, #E4EAE6 55%, #D9E1DC 100%); }
 
 /* 夜晚主題底色很暗：卡片外的少數元素（例如找不到貓時的訊息）改成淺色字 */
 .theme-night main > .wrap > h1,
