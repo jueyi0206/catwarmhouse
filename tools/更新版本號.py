@@ -131,7 +131,7 @@ def main():
     # 圖片也要，因為換圖時常常沿用同一個檔名（例如重做設計稿後換掉 step-5.jpg），
     # 沒有版本號的話使用者會繼續看到舊圖。
     targets = {}
-    for folder in ("assets", "data", "assets/fonts", "images"):
+    for folder in ("assets", "data", "assets/fonts", "images", "images/bg"):
         if not os.path.isdir(folder):
             continue
         for name in sorted(os.listdir(folder)):
@@ -154,6 +154,14 @@ def main():
             new = re.sub(
                 r'(url\("fonts/' + re.escape(name) + r')(\?v=[0-9a-f]+)?(")',
                 lambda m: m.group(1) + "?v=" + targets[font] + m.group(3),
+                new,
+            )
+        # CSS 裡用到的背景插畫（url("../images/bg/xxx.jpg")）也要加版本號，
+        # 重做插畫沿用同一個檔名時，使用者才不會看到舊圖
+        for img in [p for p in targets if p.startswith("images/")]:
+            new = re.sub(
+                r'(url\("\.\./' + re.escape(img) + r')(\?v=[0-9a-f]+)?(")',
+                lambda m, img=img: m.group(1) + "?v=" + targets[img] + m.group(3),
                 new,
             )
         if new != s:

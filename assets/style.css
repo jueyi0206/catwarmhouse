@@ -641,7 +641,13 @@ body[class*="theme-"] .cat-sheet {
 }
 
 .theme-night  { background: linear-gradient(180deg, #1F2B4D 0%, #2F3D6B 60%, #3D4A7A 100%); }
-.theme-snow   { background: linear-gradient(180deg, #EEF5FC 0%, #F8FBFF 55%, #FFFFFF 100%); }
+/* 雪地已經有插畫：底色用插畫最下緣的顏色，圖片和底色才接得起來 */
+.theme-snow {
+  background: #EEF5FF;
+  --art-m: url("../images/bg/snow-m.jpg?v=1a24d3be");
+  --art-d: url("../images/bg/snow-d.jpg?v=0233c8a5");
+  --hero-gap: 50vw;          /* 手機上卡片往下推多少，讓雪景主場景露出來 */
+}
 .theme-piano  { background: linear-gradient(180deg, #ECEEF2 0%, #F6F7F9 55%, #DFE2E8 100%); }
 .theme-garden { background: linear-gradient(180deg, #FFF4EE 0%, #FDEDE6 55%, #F6F1E4 100%); }
 .theme-autumn { background: linear-gradient(180deg, #F8ECDD 0%, #F2DFC8 55%, #EBD2B4 100%); }
@@ -672,7 +678,7 @@ body[class*="theme-"] .cat-sheet {
   margin: 0;
   aspect-ratio: 1;
   padding: 9.5%;                    /* 相框的奶油色留邊 */
-  background: url("../images/frame-scallop.svg") center / 100% 100% no-repeat;
+  background: url("../images/frame-scallop.svg?v=68725538") center / 100% 100% no-repeat;
   filter: drop-shadow(0 5px 10px rgba(74, 29, 12, .16));
   transform: rotate(var(--r, 0deg));
   transition: transform .25s ease;
@@ -723,7 +729,7 @@ body[class*="theme-"] .cat-sheet {
 .pf-heart {
   position: absolute;
   aspect-ratio: 1;
-  background: url("../images/deco-heart.svg") center / contain no-repeat;
+  background: url("../images/deco-heart.svg?v=1591f9bb") center / contain no-repeat;
   z-index: 5;
   pointer-events: none;
 }
@@ -736,4 +742,41 @@ body[class*="theme-"] .cat-sheet {
 
 @media (prefers-reduced-motion: reduce) {
   .pf-item { transition: none; }
+}
+
+/* ===========================================================
+   有插畫的主題（在主題裡設定 --art-m／--art-d 就會啟用）
+
+   頁面會往下捲很長（之後還會加影片），所以手機和電腦分開處理：
+
+   手機：插畫當成頁首的大圖，「跟著頁面捲走」。
+         主場景在最上面完整露出，往下捲兩側接著圖片下半部的小裝飾，
+         再往下就是跟插畫下緣同色的底色。
+         （手機上卡片幾乎佔滿寬度，如果背景固定不動，主場景會一直被卡片蓋住）
+
+   電腦：插畫「固定不動」，內容在上面捲。
+         不管捲到多下面，左右兩側的裝飾都一直看得到。
+   =========================================================== */
+@media (max-width: 760px) {
+  body[class*="theme-"] main {
+    background: var(--art-m, none) center top / 100% auto no-repeat;
+  }
+  body[class*="theme-"] .cat-sheet {
+    margin-top: var(--hero-gap, clamp(96px, 22vw, 180px));
+  }
+}
+@media (min-width: 761px) {
+  body[class*="theme-"]::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: var(--art-d, none) center / cover no-repeat;
+  }
+  /* 電腦上卡片窄一點，兩側的插畫才露得出來 */
+  body[class*="theme-"] .cat-sheet {
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
