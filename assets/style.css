@@ -641,20 +641,51 @@ body[class*="theme-"] .cat-sheet {
 }
 
 .theme-night  { background: linear-gradient(180deg, #1F2B4D 0%, #2F3D6B 60%, #3D4A7A 100%); }
-/* 雪地已經有插畫：底色用插畫最下緣的顏色，圖片和底色才接得起來 */
-.theme-snow {
-  background: #EEF5FF;
-  --art-m: url("../images/bg/snow-m.jpg?v=1a24d3be");
-  --art-d: url("../images/bg/snow-d.jpg?v=0233c8a5");
-  --hero-gap: 50vw;          /* 手機上卡片往下推多少，讓雪景主場景露出來 */
+/* 七種毛色主題。底色取自該主題手機版插畫的最下緣，
+   圖片捲完之後接上底色，看不出接縫。
+   --hero-gap 是手機上卡片往下推多少，讓插畫的主場景完整露出來。 */
+.theme-night {  
+  background: #44517E;                  /* 夜晚（黑貓） */
+  --art-m: url("../images/bg/night-m.jpg?v=4a218857");
+  --art-d: url("../images/bg/night-d.jpg?v=53bcf0ac");
+  --hero-gap: 52vw;
 }
-.theme-piano  { background: linear-gradient(180deg, #ECEEF2 0%, #F6F7F9 55%, #DFE2E8 100%); }
-.theme-garden { background: linear-gradient(180deg, #FFF4EE 0%, #FDEDE6 55%, #F6F1E4 100%); }
-.theme-autumn { background: linear-gradient(180deg, #F8ECDD 0%, #F2DFC8 55%, #EBD2B4 100%); }
-.theme-sunset { background: linear-gradient(180deg, #FFF3E2 0%, #FFE6C6 55%, #FFD8AE 100%); }
-/* 虎斑貓是灰虎斑，所以是「霧灰綠」的晨霧森林，不是鮮綠色；
-   帶一點綠才不會跟賓士貓的中性灰白撞在一起 */
-.theme-forest { background: linear-gradient(180deg, #F0F3F1 0%, #E4EAE6 55%, #D9E1DC 100%); }
+.theme-snow {   
+  background: #EEF5FF;                  /* 雪地（白貓） */
+  --art-m: url("../images/bg/snow-m.jpg?v=b484380e");
+  --art-d: url("../images/bg/snow-d.jpg?v=0a1cf138");
+  --hero-gap: 50vw;
+}
+.theme-piano {  
+  background: #EEEFF3;                  /* 鋼琴（賓士貓） */
+  --art-m: url("../images/bg/piano-m.jpg?v=b575b5a7");
+  --art-d: url("../images/bg/piano-d.jpg?v=947298c8");
+  --hero-gap: 50vw;
+}
+.theme-garden { 
+  background: #FEEDE5;                  /* 花園（三花貓） */
+  --art-m: url("../images/bg/garden-m.jpg?v=6b6fd32b");
+  --art-d: url("../images/bg/garden-d.jpg?v=0f2ed8db");
+  --hero-gap: 54vw;
+}
+.theme-autumn { 
+  background: #F7E8D8;                  /* 秋天（玳瑁貓） */
+  --art-m: url("../images/bg/autumn-m.jpg?v=b372d14e");
+  --art-d: url("../images/bg/autumn-d.jpg?v=108cd832");
+  --hero-gap: 52vw;
+}
+.theme-sunset { 
+  background: #FED0A4;                  /* 夕陽（橘貓） */
+  --art-m: url("../images/bg/sunset-m.jpg?v=e5b102ca");
+  --art-d: url("../images/bg/sunset-d.jpg?v=1c3e777a");
+  --hero-gap: 46vw;
+}
+.theme-forest { 
+  background: #D6E0DB;                  /* 晨霧森林（灰虎斑貓） */
+  --art-m: url("../images/bg/forest-m.jpg?v=554f9bcd");
+  --art-d: url("../images/bg/forest-d.jpg?v=0df9cdaa");
+  --hero-gap: 54vw;
+}
 
 /* 夜晚主題底色很暗：卡片外的少數元素（例如找不到貓時的訊息）改成淺色字 */
 .theme-night main > .wrap > h1,
