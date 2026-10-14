@@ -38,7 +38,7 @@ function initNav() {
    不認得就退回 JPG（兩種檔案都有，只會下載其中一種）。
    只問一次，答案記起來。 */
 // ?v= 的數字由 tools/更新版本號.py 自動換掉（見下面 HERO_V 那一行）
-var HERO_V = '?v=8b8a3d18';
+var HERO_V = '?v=998d7668';
 // 手機版和電腦版的橫幅是兩張不同的圖，這裡記住現在是哪一種螢幕
 var heroWide = window.matchMedia('(min-width: 761px)');
 var _heroExt = null;
