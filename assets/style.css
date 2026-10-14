@@ -897,25 +897,24 @@ body[class*="theme-"] .cat-sheet {
      淺色的插畫用深藍字、夜晚的深藍底用白字，對比都在 8:1 以上
      （無障礙標準是 4.5:1）。
      陰影放得很淡，只是防止字剛好壓到星星或貓耳朵時邊緣糊掉。 */
-  .cats-hero-text h1,
-  .cats-hero-text .lead {
-    color: var(--hero-ink, var(--ink));
-    text-shadow: var(--hero-ink-shadow, 0 1px 2px rgba(255, 255, 255, .75));
-  }
+  /* 標題放在一張半透明的白卡片上。
+     不透明的卡片會像貼上去的方塊，所以這裡只有 62% 白，
+     插畫的顏色和線條會透出來，卡片是「浮在插畫上」而不是蓋住它。
+     再加上背後模糊（毛玻璃），邊界就更不像一刀切下去的。
+     沒有邊框、沒有實線陰影，只靠深淺差讓它浮起來。
 
-  /* 文字底下墊一層很淡的霧。
-     不是卡片——沒有邊框、沒有陰影、沒有固定的角，
-     用放射漸層從中心往外淡掉，邊界是看不見的，
-     所以它只是讓那一塊「安靜下來」，不會變成一個貼上去的方塊。
-     顏色由 site.js 跟著主題換（淺色插畫用白霧、夜晚用深藍霧）。 */
-  .cats-hero-veil {
-    max-width: 38em;
+     62% 是量出來的下限：最暗的夜晚主題透上來之後，
+     深藍字的對比還有 5.4:1（無障礙標準 4.5:1）。再透就讀不清楚了。 */
+  .cats-hero-text h1,
+  .cats-hero-text .lead { color: var(--ink); }
+  .cats-hero-card {
+    max-width: 36em;
     margin: 0 auto;
-    padding: 26px 44px 28px;
-    background: radial-gradient(ellipse 72% 80% at 50% 50%,
-                var(--hero-veil, rgba(255, 255, 255, .5)) 0%,
-                var(--hero-veil, rgba(255, 255, 255, .5)) 38%,
-                transparent 78%);
+    padding: 20px 40px 22px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, .62);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
   }
 }
 

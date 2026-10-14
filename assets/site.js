@@ -50,14 +50,6 @@ function setHero(filter) {
   hero.style.setProperty('--hero-m', 'url("' + base + name + '-m.jpg' + v + '")');
   hero.style.setProperty('--hero-d', 'url("' + base + name + '-d.jpg' + v + '")');
 
-  // 標題的顏色也跟著換。
-  // 只有夜晚是深色底，字要轉白；其餘七張都是淺色插畫，維持深藍字。
-  var dark = (name === 'night');
-  hero.style.setProperty('--hero-ink', dark ? '#FFFFFF' : '#26314A');
-  hero.style.setProperty('--hero-ink-shadow',
-    dark ? '0 1px 6px rgba(16, 24, 48, .75)' : '0 1px 2px rgba(255, 255, 255, .75)');
-  hero.style.setProperty('--hero-veil',
-    dark ? 'rgba(18, 26, 52, .5)' : 'rgba(255, 255, 255, .5)');
 
   // 底紋的顏色也跟著換，呼應該主題的場景
   var TONE = {
