@@ -903,16 +903,19 @@ body[class*="theme-"] .cat-sheet {
      再加上背後模糊（毛玻璃），邊界就更不像一刀切下去的。
      沒有邊框、沒有實線陰影，只靠深淺差讓它浮起來。
 
-     62% 是量出來的下限：最暗的夜晚主題透上來之後，
-     深藍字的對比還有 5.4:1（無障礙標準 4.5:1）。再透就讀不清楚了。 */
+     顏色由 site.js 跟著主題換：七張淺色插畫用白色的條配深藍字，
+     夜晚是深藍底，改用深色的條配白字——同樣一條色帶，
+     在深色插畫上用白色會很刺眼，用深色反而幾乎看不出來。
+     這樣兩邊都能壓到 38% 左右（原本白條要 62% 才夠），
+     而文字對比還有 9.8:1 以上（無障礙標準 4.5:1）。 */
   .cats-hero-text h1,
-  .cats-hero-text .lead { color: var(--ink); }
+  .cats-hero-text .lead { color: var(--hero-ink, var(--ink)); }
   .cats-hero-card {
     max-width: 46em;
     margin: 0 auto;
     padding: 22px 72px 24px;
     border-radius: 999px;            /* 膠囊形：圓角等於高度的一半 */
-    background: rgba(255, 255, 255, .62);
+    background: var(--hero-band, rgba(255, 255, 255, .38));
     -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
   }

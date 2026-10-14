@@ -73,6 +73,13 @@ function setHero(filter) {
   var prop   = heroWide.matches ? '--hero-d' : '--hero-m';
   hero.style.setProperty(prop, 'url("' + base + name + suffix + ext + v + '")');
 
+  // 標題那條色帶的顏色。只有夜晚是深色插畫，用深色的條配白字；
+  // 其餘七張淺色插畫用白色的條配深藍字。
+  var dark = (name === 'night');
+  hero.style.setProperty('--hero-ink', dark ? '#FFFFFF' : '#26314A');
+  hero.style.setProperty('--hero-band',
+    dark ? 'rgba(16, 24, 48, .42)' : 'rgba(255, 255, 255, .38)');
+
 
   // 底紋的顏色也跟著換，呼應該主題的場景
   var TONE = {
