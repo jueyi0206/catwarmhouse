@@ -864,8 +864,9 @@ body[class*="theme-"] .cat-sheet {
   content: "";
   display: block;
   width: 100%;
-  aspect-ratio: 5 / 2;              /* 跟手機版插畫同比例 */
-  background: var(--hero-m) center / 100% 100% no-repeat;
+  aspect-ratio: 5 / 2;              /* 跟手機版插畫同比例（插畫要畫成 5:2，
+                                       用 cover 填滿，寧可裁邊也不要拉變形） */
+  background: var(--hero-m) center / cover no-repeat;
 }
 .cats-hero-text { width: 100%; padding-top: 14px; padding-bottom: 18px; }
 .cats-hero h1 { margin: 0 0 .3em; }
