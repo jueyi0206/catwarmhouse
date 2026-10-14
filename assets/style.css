@@ -890,9 +890,27 @@ body[class*="theme-"] .cat-sheet {
   .cats-hero::before { content: none; }
   .cats-hero-text { text-align: center; padding: 24px 0; }
   .cats-hero .lead { margin-left: auto; margin-right: auto; }
-  /* 字下墊一層很淡的白，插畫再花都讀得清楚 */
-  .cats-hero-text > * {
-    text-shadow: 0 1px 0 rgba(255, 255, 255, .9), 0 0 12px rgba(255, 255, 255, .95);
+
+  /* 標題放在一張白色小卡片上。
+     原本是靠文字外圍打白光，但那要插畫夠淡才讀得清楚——
+     夜晚主題是深藍底，深色的字配白光反而糊成一團。
+     改成實體卡片，不管底下的插畫是亮是暗、是花是素，對比都一樣穩。
+     卡片只包住文字本身（寬度隨內容），兩側的貓咪照樣看得見。 */
+  .cats-hero-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .cats-hero-card {
+    display: inline-block;
+    max-width: 34em;
+    padding: 18px 34px 20px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, .9);
+    border: 1px solid rgba(255, 255, 255, .85);
+    box-shadow: 0 6px 22px rgba(31, 43, 77, .14);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
   }
 }
 

@@ -123,9 +123,35 @@ def check_css_braces():
                 print("    " + p)
 
 
+def stamp_hero():
+    """頁首橫幅的網址是 site.js 組出來的，HTML 裡看不到，加不了版本號。
+
+    橫幅換新圖時檔名不變（snow-d.jpg 永遠叫 snow-d.jpg），
+    所以這裡把 images/hero/ 全部檔案的內容算成一個 hash，
+    寫進 site.js 的 '?v=...'，換圖後使用者才會重新抓。
+    """
+    folder = os.path.join("images", "hero")
+    if not os.path.isdir(folder):
+        return
+    h = hashlib.sha1()
+    for name in sorted(os.listdir(folder)):
+        with open(os.path.join(folder, name), "rb") as f:
+            h.update(name.encode("utf-8"))
+            h.update(f.read())
+    ver = h.hexdigest()[:8]
+
+    path = os.path.join("assets", "site.js")
+    s = io.open(path, encoding="utf-8").read()
+    new = re.sub(r"var v = '\?v=[0-9a-zA-Z_]+'", "var v = '?v=" + ver + "'", s)
+    if new != s:
+        io.open(path, "w", encoding="utf-8").write(new)
+    print("頁首橫幅版本號：v=" + ver)
+
+
 def main():
     os.chdir(ROOT)
     check_css_braces()
+    stamp_hero()
 
     # 要加版本號的檔案：CSS、JS、字型，還有圖片
     # 圖片也要，因為換圖時常常沿用同一個檔名（例如重做設計稿後換掉 step-5.jpg），

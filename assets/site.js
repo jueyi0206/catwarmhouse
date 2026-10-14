@@ -44,8 +44,11 @@ function setHero(filter) {
   // 直接寫 "images/hero/..." 的話，瀏覽器會當成相對於 style.css 的位置
   // （變成 assets/images/hero/...），圖就找不到了。
   var base = new URL('images/hero/', location.href).href;
-  hero.style.setProperty('--hero-m', 'url("' + base + name + '-m.jpg")');
-  hero.style.setProperty('--hero-d', 'url("' + base + name + '-d.jpg")');
+  // ?v= 的數字由 tools/更新版本號.py 自動換掉。
+  // 橫幅換新圖時檔名不變，沒有這一段的話使用者會繼續看到快取裡的舊圖。
+  var v = '?v=d9515c48';
+  hero.style.setProperty('--hero-m', 'url("' + base + name + '-m.jpg' + v + '")');
+  hero.style.setProperty('--hero-d', 'url("' + base + name + '-d.jpg' + v + '")');
   // 底紋的顏色也跟著換，呼應該主題的場景
   var TONE = {
     all:    '#8FA6C8',   // 預設的藍灰
