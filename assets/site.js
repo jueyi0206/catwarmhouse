@@ -38,6 +38,31 @@ function initNav() {
    不認得就退回 JPG（兩種檔案都有，只會下載其中一種）。
    只問一次，答案記起來。 */
 // ?v= 的數字由 tools/更新版本號.py 自動換掉（見下面 HERO_V 那一行）
+/* ===========================================================
+   義賣小舖要不要出現在網站上
+
+   true  ＝ 正常顯示
+   false ＝ 整個藏起來（選單、首頁那張卡片、頁尾的連結都不見）
+
+   名稱還沒定案、或還不確定要不要做的時候，改成 false 就好，
+   頁面本身不會被刪掉，改回 true 隨時可以放出來。
+   （直接輸入 shop.html 的網址還是進得去，只是沒有任何地方連到它。）
+   =========================================================== */
+var 顯示義賣小舖 = true;
+
+function applyShopSwitch() {
+  if (顯示義賣小舖) return;
+  // 選單、頁尾裡的連結（整個項目一起藏）
+  document.querySelectorAll('a[href="shop.html"]').forEach(function (a) {
+    var box = a.closest('li') || a.closest('.card') || a;
+    box.style.display = 'none';
+  });
+  // 沒有連結、但講的是義賣的區塊，在 HTML 標了 data-shop
+  document.querySelectorAll('[data-shop]').forEach(function (el) {
+    el.style.display = 'none';
+  });
+}
+
 var HERO_V = '?v=998d7668';
 // 手機版和電腦版的橫幅是兩張不同的圖，這裡記住現在是哪一種螢幕
 var heroWide = window.matchMedia('(min-width: 761px)');
@@ -252,6 +277,33 @@ function initCatList() {
   }
 
   render('all');
+}
+
+/* ---------- 找到家的貓 ----------
+   用法：在頁面放 <div id="adopted-list"></div>
+   資料來自 data/cats.js 的 adopted（貓咪送養後整段搬過去）。
+   名單還是空的時候，保留頁面上原本寫的「整理中」那張卡片。 */
+function initAdoptedList() {
+  var box = document.getElementById('adopted-list');
+  if (!box || !window.CAT_DATA) return;
+
+  var list = window.CAT_DATA.adopted || [];
+  if (!list.length) return;        // 空的就不要蓋掉「整理中」的訊息
+
+  box.className = 'cat-grid';
+  box.innerHTML = list.map(catCard).join('');
+
+  // 有來源連結的，在名單下面統一列出出處
+  var cited = list.filter(function (c) { return c.source; });
+  if (cited.length) {
+    var p = document.createElement('p');
+    p.className = 'sources';
+    p.innerHTML = '資料與照片出處：' + cited.map(function (c) {
+      return '<a href="' + c.source + '" target="_blank" rel="noopener">' +
+             c.name + '</a>';
+    }).join('、');
+    box.parentNode.insertBefore(p, box.nextSibling);
+  }
 }
 
 /* ---------- 統計數字 ---------- */
@@ -592,6 +644,8 @@ function initGames() {
 document.addEventListener('DOMContentLoaded', function () {
   initNav();
   initCatList();
+  initAdoptedList();
+  applyShopSwitch();
   initStats();
   initCatDetail();
   initNews();

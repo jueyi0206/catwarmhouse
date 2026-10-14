@@ -15,7 +15,7 @@
 <!-- 製作中，先不讓搜尋引擎收錄。正式上線時刪掉下面這一行。 -->
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="images/favicon.png?v=e05dc69b" type="image/png">
-<link rel="stylesheet" href="assets/style.css?v=c2c36e67">
+<link rel="stylesheet" href="assets/style.css?v=40072a72">
 </head>
 <body>
 
@@ -58,9 +58,13 @@
     <p class="lead">牠們曾經在這裡等，現在都有自己的家了。<br>
        這一頁是為了讓還在考慮的人知道：這件事真的會發生。</p>
 
-    <div class="card" style="text-align:center; padding:48px 26px">
-      <p style="font-size:3rem; margin:0">🏡</p>
-      <p class="lead" style="margin:8px auto 0">成功案例名單正在整理中。</p>
+    <!-- 名單由 data/cats.js 的 adopted 自動產生。
+         還是空的時候，下面這張「整理中」的卡片會留著。 -->
+    <div id="adopted-list">
+      <div class="card" style="text-align:center; padding:48px 26px">
+        <p style="font-size:3rem; margin:0">🏡</p>
+        <p class="lead" style="margin:8px auto 0">成功案例名單正在整理中。</p>
+      </div>
     </div>
 
     <h2>也想給一隻貓一個家嗎？</h2>
@@ -109,7 +113,7 @@
   </div>
 </footer>
 
-<script src="data/cats.js?v=e34749f1"></script>
-<script src="assets/site.js?v=87998803"></script>
+<script src="data/cats.js?v=5c662af0"></script>
+<script src="assets/site.js?v=c9769174"></script>
 </body>
 </html>

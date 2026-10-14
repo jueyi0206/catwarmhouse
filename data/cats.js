@@ -176,5 +176,9 @@ window.CAT_DATA = {
   ],
 
   "_已找到家名單說明": "下面這一區是「找到家的貓」頁面的資料來源。雛形階段刻意留空，因為成功案例名單必須由貓窩提供，不能由瑞億或 Claude 推測。拿到名單後照 cats 的格式加進來，status 填 home。",
-  "adopted": []
+  // 找到家的貓。貓咪送養後，把牠整段從上面的 cats 搬過來，
+  // status 改成 "home"，並加一個 source 欄位放資料出處
+  // （從官方 FB／IG 整理來的，要附上原貼文連結）：
+  //   "source": "https://www.facebook.com/…"
+    "adopted": []
 };
