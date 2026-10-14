@@ -142,7 +142,8 @@ def stamp_hero():
 
     path = os.path.join("assets", "site.js")
     s = io.open(path, encoding="utf-8").read()
-    new = re.sub(r"var v = '\?v=[0-9a-zA-Z_]+'", "var v = '?v=" + ver + "'", s)
+    new = re.sub(r"var HERO_V = '\?v=[0-9a-zA-Z_]+'",
+                 "var HERO_V = '?v=" + ver + "'", s)
     if new != s:
         io.open(path, "w", encoding="utf-8").write(new)
     print("頁首橫幅版本號：v=" + ver)

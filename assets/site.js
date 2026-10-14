@@ -33,6 +33,26 @@ function initNav() {
 /* 「等家的貓咪」頁首橫幅：換成目前篩選的毛色場景。
    用的是 cats.js 裡的「_毛色主題」對應表，跟單隻貓頁的背景同一套，
    所以點進去之後畫面是連貫的。 */
+/* 橫幅用 WebP，檔案大約只有 JPG 的一半（同樣畫質），手機上差很多。
+   WebP 是 2020 年後的瀏覽器才全面支援，所以這裡先問瀏覽器認不認得，
+   不認得就退回 JPG（兩種檔案都有，只會下載其中一種）。
+   只問一次，答案記起來。 */
+// ?v= 的數字由 tools/更新版本號.py 自動換掉（見下面 HERO_V 那一行）
+var HERO_V = '?v=8b8a3d18';
+// 手機版和電腦版的橫幅是兩張不同的圖，這裡記住現在是哪一種螢幕
+var heroWide = window.matchMedia('(min-width: 761px)');
+var _heroExt = null;
+function heroExt() {
+  if (_heroExt) return _heroExt;
+  try {
+    var c = document.createElement('canvas');
+    _heroExt = c.toDataURL('image/webp').indexOf('data:image/webp') === 0 ? '.webp' : '.jpg';
+  } catch (e) {
+    _heroExt = '.jpg';
+  }
+  return _heroExt;
+}
+
 function setHero(filter) {
   var hero = document.getElementById('cats-hero');
   if (!hero) return;
@@ -44,11 +64,14 @@ function setHero(filter) {
   // 直接寫 "images/hero/..." 的話，瀏覽器會當成相對於 style.css 的位置
   // （變成 assets/images/hero/...），圖就找不到了。
   var base = new URL('images/hero/', location.href).href;
-  // ?v= 的數字由 tools/更新版本號.py 自動換掉。
-  // 橫幅換新圖時檔名不變，沒有這一段的話使用者會繼續看到快取裡的舊圖。
-  var v = '?v=d9515c48';
-  hero.style.setProperty('--hero-m', 'url("' + base + name + '-m.jpg' + v + '")');
-  hero.style.setProperty('--hero-d', 'url("' + base + name + '-d.jpg' + v + '")');
+  var ext = heroExt();
+  // 橫幅換新圖時檔名不變，沒有版本號的話使用者會繼續看到快取裡的舊圖
+  var v = HERO_V;
+  // 只設定「這個螢幕用得到」的那一張。
+  // 兩張都設的話，瀏覽器連另一個版面的圖也會一起抓下來（白白多下載一張）。
+  var suffix = heroWide.matches ? '-d' : '-m';
+  var prop   = heroWide.matches ? '--hero-d' : '--hero-m';
+  hero.style.setProperty(prop, 'url("' + base + name + suffix + ext + v + '")');
 
 
   // 底紋的顏色也跟著換，呼應該主題的場景
@@ -74,6 +97,15 @@ function setHero(filter) {
     var pawUrl = new URL('images/paws/' + (TONE[name] ? name : 'all') + '.svg', location.href).href;
     layer.style.setProperty('--paw-art', 'url("' + pawUrl + '")');
   }
+
+  // 轉成橫的、或把視窗拉寬拉窄跨過分界時，換成另一個版面的圖
+  if (!hero.dataset.watching) {
+    hero.dataset.watching = '1';
+    var relayout = function () { hero.dataset.now = ''; setHero(hero.dataset.filter || 'all'); };
+    if (heroWide.addEventListener) heroWide.addEventListener('change', relayout);
+    else heroWide.addListener(relayout);
+  }
+  hero.dataset.filter = filter || 'all';
 
   // 重播一次淡入，讓換場景看得出來
   hero.classList.remove('is-in');
@@ -165,6 +197,24 @@ function initCatList() {
       used.map(function (c) {
         return '<button data-filter="' + c + '">' + c + '</button>';
       }).join('');
+
+    // 滑鼠移到篩選鈕上（或用鍵盤 tab 到它）就先把那張橫幅抓下來，
+    // 真的點下去時圖已經在快取裡，換場景是瞬間的。
+    // 只抓一次，而且是在使用者「看起來要點了」才抓，不會一開始就下載八張。
+    var warmed = {};
+    bar.addEventListener('mouseover', warm);
+    bar.addEventListener('focusin', warm);
+    function warm(e) {
+      var btn = e.target.closest ? e.target.closest('button[data-filter]') : null;
+      if (!btn) return;
+      var f = btn.dataset.filter;
+      var themes = (window.CAT_DATA && window.CAT_DATA['_毛色主題']) || {};
+      var name = (f && f !== 'all' && themes[f]) ? themes[f] : 'all';
+      if (warmed[name]) return;
+      warmed[name] = true;
+      var suffix = heroWide.matches ? '-d' : '-m';
+      new Image().src = new URL('images/hero/' + name + suffix + heroExt() + HERO_V, location.href).href;
+    }
   }
 
   function render(filter) {
