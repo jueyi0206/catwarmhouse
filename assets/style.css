@@ -891,26 +891,31 @@ body[class*="theme-"] .cat-sheet {
   .cats-hero-text { text-align: center; padding: 24px 0; }
   .cats-hero .lead { margin-left: auto; margin-right: auto; }
 
-  /* 標題放在一張白色小卡片上。
-     原本是靠文字外圍打白光，但那要插畫夠淡才讀得清楚——
-     夜晚主題是深藍底，深色的字配白光反而糊成一團。
-     改成實體卡片，不管底下的插畫是亮是暗、是花是素，對比都一樣穩。
-     卡片只包住文字本身（寬度隨內容），兩側的貓咪照樣看得見。 */
-  .cats-hero-text {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  /* 標題的顏色跟著主題換，不加任何底板。
+     量過每張橫幅中間那塊，底色幾乎是平的（最暗和最亮只差個位數），
+     所以不需要墊卡片或打光，只要把字調成跟底色相反的深淺就夠：
+     淺色的插畫用深藍字、夜晚的深藍底用白字，對比都在 8:1 以上
+     （無障礙標準是 4.5:1）。
+     陰影放得很淡，只是防止字剛好壓到星星或貓耳朵時邊緣糊掉。 */
+  .cats-hero-text h1,
+  .cats-hero-text .lead {
+    color: var(--hero-ink, var(--ink));
+    text-shadow: var(--hero-ink-shadow, 0 1px 2px rgba(255, 255, 255, .75));
   }
-  .cats-hero-card {
-    display: inline-block;
-    max-width: 34em;
-    padding: 18px 34px 20px;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, .9);
-    border: 1px solid rgba(255, 255, 255, .85);
-    box-shadow: 0 6px 22px rgba(31, 43, 77, .14);
-    -webkit-backdrop-filter: blur(3px);
-    backdrop-filter: blur(3px);
+
+  /* 文字底下墊一層很淡的霧。
+     不是卡片——沒有邊框、沒有陰影、沒有固定的角，
+     用放射漸層從中心往外淡掉，邊界是看不見的，
+     所以它只是讓那一塊「安靜下來」，不會變成一個貼上去的方塊。
+     顏色由 site.js 跟著主題換（淺色插畫用白霧、夜晚用深藍霧）。 */
+  .cats-hero-veil {
+    max-width: 38em;
+    margin: 0 auto;
+    padding: 26px 44px 28px;
+    background: radial-gradient(ellipse 72% 80% at 50% 50%,
+                var(--hero-veil, rgba(255, 255, 255, .5)) 0%,
+                var(--hero-veil, rgba(255, 255, 255, .5)) 38%,
+                transparent 78%);
   }
 }
 
