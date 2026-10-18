@@ -314,9 +314,13 @@ function storyCard(cat) {
   }
   var date = '';
   if (cat.homeDate) {
+    // 跨年的話後面那個日期也要寫年份，不然「10 月 24 日 → 5 月 3 日」
+    // 會看起來像倒退回去
+    var 跨年 = cat.inDate &&
+               cat.inDate.slice(0, 4) !== cat.homeDate.slice(0, 4);
     date = cat.inDate
       ? 寫日期(cat.inDate, true) + ' 來到貓窩　→　' +
-        寫日期(cat.homeDate, false) + ' 找到家'
+        寫日期(cat.homeDate, 跨年) + ' 找到家'
       : 寫日期(cat.homeDate, true) + '　找到家';
     date = '<p class="story-date">' + date + '</p>';
   }
