@@ -51,7 +51,7 @@ window.CAT_DATA = {
       "health": "已結紮；疫苗等醫療資訊以貓窩公告為準",
       "story": "待貓窩提供",
       "photos": ["cats/cream-1.jpg", "cats/cream-2.jpg"],
-      "video": "",
+      "video": "https://www.youtube.com/shorts/Bq_afoAB8ng",
       "confirmed": "2026-10-11"
     },
     {
@@ -238,6 +238,39 @@ window.CAT_DATA = {
         { "label": "送養日（官方 IG）", "url": "https://www.instagram.com/p/DWQRZRgEdg_/" }
       ],
       "confirmed": "⚠️ 入住日期不詳（貼文只說「安置至今 13 個月」），所以只標找到家的日期"
+    },
+    {
+      "id": "lanlan",
+      "name": "嵐嵐",
+      "status": "home",
+      "homeDate": "2026-03-22",
+      "story": [
+        "嵐嵐是約莫半年前在台中屯區某大學周邊拾獲的小貓。小巧的她喜歡窩在角落觀察情勢，會特地找美美貓姐姐或小玲貓姐姐當防護；後來熟悉了房間，就在裡面自由奔跑，但從不追趕其他貓同伴，自己開心玩這樣。偶爾也會攀上門、或凳上桌子看著房外的大家，似乎在偷學其他貓同伴的各種招數。",
+        "嵐嵐也喜歡趴在志工身上，當起稱職的有聲呼嚕暖暖包——小小一隻，呼嚕聲可是氣很足呢。用餐時很有自己的想法，常吃個幾口就又開始四處跑，非得來回吃個好幾次，把吃飼料當串場活動。",
+        "她是貓窩大家的掌上明珠，每天都要被每個志工抱到才行，實在是討喜又令人感到幸福的孩子。祝福嵐嵐平安快樂長大，像她的名字一樣，始終是輕柔舒爽的山嵐——接下來這份日常中的幸福感，就要讓給新家人去體驗了。"
+      ],
+      "photos": ["adopted/lanlan-1.jpg", "adopted/lanlan-2.jpg", "adopted/lanlan-3.jpg"],
+      "sources": [
+        { "label": "送養日（官方 IG）", "url": "https://www.instagram.com/p/DWNWTI2lPjY/" }
+      ],
+      "confirmed": ""
+    },
+    {
+      "id": "koria",
+      "name": "可麗亞",
+      "status": "home",
+      "homeDate": "2026-02-16",
+      "story": [
+        "伶俐小精靈可麗亞，終於等到守護她的家人了——還在舊曆年到新家領了紅包過年。當初她是嗅到愛媽食物袋就自動出現的兩個月大小小孩，被隔離住在小房間的時間特別長，直到捱過、戰勝了體內的病毒，才出來和貓室友們交朋友。",
+        "她親人也親貓（但抱不住），尤其喜歡看志工洗碗，常常一副準備把流理台當泳池的樣子。她不怕水，會主動去喝水、還玩冰塊，而且總是保持自身的乾淨和規矩。",
+        "在多人詢問之後，可麗亞等到了氣質相近、從互動細節就看得出打從心底尊重貓咪的媽媽。可以放心交出去了，一起祝福她嶄新的家貓生活。"
+      ],
+      "photos": ["adopted/koria-1.jpg", "adopted/koria-2.jpg", "adopted/koria-3.jpg"],
+      "photoCaptions": ["", "", "送養日，跟新家人一起回家"],
+      "sources": [
+        { "label": "送養日（官方 IG）", "url": "https://www.instagram.com/p/DU19ahgEuhs/" }
+      ],
+      "confirmed": ""
     }
   ]
 };
