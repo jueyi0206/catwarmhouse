@@ -290,20 +290,46 @@ function initAdoptedList() {
   var list = window.CAT_DATA.adopted || [];
   if (!list.length) return;        // 空的就不要蓋掉「整理中」的訊息
 
-  box.className = 'cat-grid';
-  box.innerHTML = list.map(catCard).join('');
+  // 新的排前面。沒填日期的排最後，不會把有日期的擠掉。
+  list = list.slice().sort(function (a, b) {
+    return (b.homeDate || '').localeCompare(a.homeDate || '');
+  });
 
-  // 有來源連結的，在名單下面統一列出出處
-  var cited = list.filter(function (c) { return c.source; });
-  if (cited.length) {
-    var p = document.createElement('p');
-    p.className = 'sources';
-    p.innerHTML = '資料與照片出處：' + cited.map(function (c) {
-      return '<a href="' + c.source + '" target="_blank" rel="noopener">' +
-             c.name + '</a>';
-    }).join('、');
-    box.parentNode.insertBefore(p, box.nextSibling);
+  box.className = 'story-list';
+  box.innerHTML = list.map(storyCard).join('');
+}
+
+/* 一隻貓一則故事：照片在左、文字在右，手機上則是上下排。
+   故事是從官方 FB／IG 的貼文整理的，所以每一則都要附原文連結。 */
+function storyCard(cat) {
+  var first = photosOf(cat)[0];
+  var photo = first
+    ? '<img src="images/' + first + '" alt="' + cat.name + '" loading="lazy">'
+    : '<span aria-hidden="true">🐈</span>';
+
+  // 2026-08-08 → 2026 年 8 月 8 日
+  var date = '';
+  if (cat.homeDate) {
+    var d = cat.homeDate.split('-');
+    date = '<p class="story-date">' + d[0] + ' 年 ' + (+d[1]) + ' 月 ' +
+           (+d[2]) + ' 日　找到家</p>';
   }
+
+  var src = cat.source
+    ? '<p class="story-src"><a href="' + cat.source + '" target="_blank" ' +
+      'rel="noopener">原文在' + (cat.sourceName || '官方社群') + ' →</a></p>'
+    : '';
+
+  return '' +
+    '<article class="story">' +
+      '<div class="story-photo">' + photo + '</div>' +
+      '<div class="story-body">' +
+        date +
+        '<h3>' + cat.name + '</h3>' +
+        '<p>' + (cat.story || '') + '</p>' +
+        src +
+      '</div>' +
+    '</article>';
 }
 
 /* ---------- 統計數字 ---------- */

@@ -7,7 +7,7 @@
    =========================================================== */
 @font-face {
   font-family: "Huninn";
-  src: url("fonts/huninn-subset.woff2?v=e793e689") format("woff2");
+  src: url("fonts/huninn-subset.woff2?v=d62befa3") format("woff2");
   font-weight: 400 700;
   font-style: normal;
   font-display: swap;
@@ -976,10 +976,36 @@ body[class*="theme-"] .cat-sheet {
   line-height: 1.8;
 }
 
-/* 出處連結（找到家的貓）：資料從官方 FB／IG 整理來的，要註明出處 */
-.sources {
-  margin: 18px 0 0;
-  font-size: .92rem;
-  color: var(--ink-soft);
+/* ===========================================================
+   找到家的貓：一隻貓一則故事
+   故事是從官方 FB／IG 的貼文整理的，每一則都附原文連結。
+   手機上下排、電腦左右排（照片固定寬度，文字吃剩下的空間）。
+   =========================================================== */
+.story-list { display: grid; gap: 22px; margin-top: 26px; }
+
+.story {
+  display: grid;
+  gap: 18px;
+  padding: 18px;
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow: 0 2px 10px rgba(31, 43, 77, .06);
 }
-.sources a { color: inherit; }
+.story-photo {
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--band-bg);
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  font-size: 2.6rem;
+}
+.story-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.story-body h3 { margin: 2px 0 8px; }
+.story-body p { margin: 0 0 10px; }
+.story-date { font-size: .9rem; color: var(--ink-soft); }
+.story-src { margin: 0; font-size: .92rem; }
+
+@media (min-width: 681px) {
+  .story { grid-template-columns: 220px 1fr; align-items: start; gap: 24px; padding: 22px; }
+}

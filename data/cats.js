@@ -180,5 +180,18 @@ window.CAT_DATA = {
   // status 改成 "home"，並加一個 source 欄位放資料出處
   // （從官方 FB／IG 整理來的，要附上原貼文連結）：
   //   "source": "https://www.facebook.com/…"
-    "adopted": []
+    "adopted": [
+    {
+      "id": "zhizhi",
+      "name": "梔梔",
+      "status": "home",
+      "colorType": "虎斑貓",
+      "homeDate": "2026-08-08",
+      "story": "在暴風雨來臨前順利救援到的小貓。安置後還不到一個月，梔梔來不及去當送養會的紅牌，就先等到新家了。新家人是由認養夥伴轉介而來，已經有相當的養貓經驗，環境也早就準備好，等著迎接牠。",
+      "photos": ["adopted/zhizhi-1.jpg"],
+      "source": "https://www.instagram.com/p/DbyG4JuFH6G/",
+      "sourceName": "官方 IG",
+      "confirmed": "⚠️ 照片是從 IG 截圖裁下來的，畫質一般，之後換成原圖；年份 2026 是依 IG 沒顯示年份推定；名字用的是繁體的「梔」，IG 貼文上是簡體寫法，要確認"
+    }
+  ]
 };
