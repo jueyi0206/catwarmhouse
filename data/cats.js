@@ -191,7 +191,7 @@ window.CAT_DATA = {
       "photos": ["adopted/zhizhi-1.jpg"],
       "source": "https://www.instagram.com/p/DbyG4JuFH6G/",
       "sourceName": "官方 IG",
-      "confirmed": "⚠️ 照片是從 IG 截圖裁下來的，畫質一般，之後換成原圖；年份 2026 是依 IG 沒顯示年份推定；名字用的是繁體的「梔」，IG 貼文上是簡體寫法，要確認"
+      "confirmed": "⚠️ 照片是從 IG 截圖裁下來的，畫質一般，之後換成原圖（名字與年份已確認）"
     }
   ]
 };
