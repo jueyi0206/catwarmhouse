@@ -7,7 +7,7 @@
    =========================================================== */
 @font-face {
   font-family: "Huninn";
-  src: url("fonts/huninn-subset.woff2?v=fc8459e3") format("woff2");
+  src: url("fonts/huninn-subset.woff2?v=b3b78736") format("woff2");
   font-weight: 400 700;
   font-style: normal;
   font-display: swap;
@@ -1001,6 +1001,19 @@ body[class*="theme-"] .cat-sheet {
   font-size: 2.6rem;
 }
 .story-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* 第二張以後的照片：小一點，不裁切（合照常常是橫的） */
+.story-media { display: grid; gap: 12px; align-content: start; }
+.story-extra { margin: 0; }
+.story-extra img {
+  width: 100%; display: block;
+  border-radius: 12px;
+}
+.story-extra figcaption {
+  margin-top: 6px;
+  font-size: .85rem;
+  color: var(--ink-soft);
+}
 .story-body h3 { margin: 2px 0 8px; }
 .story-body p { margin: 0 0 10px; }
 .story-date { font-size: .9rem; color: var(--ink-soft); }

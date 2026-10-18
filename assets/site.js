@@ -302,10 +302,20 @@ function initAdoptedList() {
 /* 一隻貓一則故事：照片在左、文字在右，手機上則是上下排。
    故事是從官方 FB／IG 的貼文整理的，所以每一則都要附原文連結。 */
 function storyCard(cat) {
-  var first = photosOf(cat)[0];
-  var photo = first
-    ? '<img src="images/' + first + '" alt="' + cat.name + '" loading="lazy">'
+  var pics = photosOf(cat);
+  var caps = cat.photoCaptions || [];
+  var photo = pics[0]
+    ? '<img src="images/' + pics[0] + '" alt="' + cat.name + '" loading="lazy">'
     : '<span aria-hidden="true">🐈</span>';
+
+  // 第二張以後擺在主照片下面，小一點，可以加一句說明
+  var more = pics.slice(1).map(function (src, i) {
+    var cap = caps[i + 1];
+    return '<figure class="story-extra">' +
+             '<img src="images/' + src + '" alt="' + cat.name + '" loading="lazy">' +
+             (cap ? '<figcaption>' + cap + '</figcaption>' : '') +
+           '</figure>';
+  }).join('');
 
   // 日期：有入住日就寫成「來到貓窩 → 找到家」，看得出等了多久
   function 寫日期(v, 全年) {
@@ -345,7 +355,9 @@ function storyCard(cat) {
 
   return '' +
     '<article class="story">' +
-      '<div class="story-photo">' + photo + '</div>' +
+      '<div class="story-media">' +
+        '<div class="story-photo">' + photo + '</div>' + more +
+      '</div>' +
       '<div class="story-body">' +
         date +
         '<h3>' + cat.name + '</h3>' +
