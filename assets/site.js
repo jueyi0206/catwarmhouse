@@ -328,7 +328,8 @@ function storyCard(cat) {
 
   // 出處。sources 是清單（一隻貓常常有好幾篇貼文）；
   // 舊的寫法只有一個 source，也還能用。
-  var list = cat.sources || (cat.source
+  var list = (cat.sources || []).filter(function (o) { return o.url; });
+  if (!list.length) list = (cat.source
     ? [{ label: '原文在' + (cat.sourceName || '官方社群'), url: cat.source }]
     : []);
   var src = list.length
