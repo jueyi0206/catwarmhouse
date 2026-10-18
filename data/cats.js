@@ -194,12 +194,12 @@ window.CAT_DATA = {
         "檢查、驅蟲、安置之後，大家熱烈討論名字，最後叫她梔梔，取自梔子花的發想。梔子花的花語是「守候的愛」——是她先帶著愛躲在停車場，像是知道會有愛貓的人在風雨中等她。",
         "安置後還不到一個月，梔梔來不及去當送養會的紅牌，就先等到新家了。新家人是由認養夥伴轉介而來，已經有相當的養貓經驗，環境也早就準備好，等著迎接她。"
       ],
-      "photos": ["adopted/zhizhi-1.jpg"],
+      "photos": ["adopted/zhizhi-1.jpg", "adopted/zhizhi-2.jpg", "adopted/zhizhi-3.jpg"],
       "sources": [
         { "label": "新入住（官方 IG）", "url": "https://www.instagram.com/p/DaYFC_jIDXZ/" },
         { "label": "送養日（官方 IG）", "url": "https://www.instagram.com/p/DbyG4JuFH6G/" }
       ],
-      "confirmed": "⚠️ 照片是從 IG 截圖裁下來的，畫質一般，之後換成原圖"
+      "confirmed": ""
     },
     {
       "id": "shu",
