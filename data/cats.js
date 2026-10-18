@@ -213,13 +213,13 @@ window.CAT_DATA = {
         "暖編還另外稱她「光速小妞」。平常很不容易捕捉到她的日常身影，常常一秒就飛出鏡頭外；志工為了找她找到心急如焚，回頭又發現她早就靜悄悄地偷溜出來吃乾乾，或是躲在其他大貓身旁——都不知道她什麼時候把貓窩探得這麼熟門熟路。",
         "現在的認養家人跟小曙一樣年紀輕輕。剛開始貓窩有諸多考慮，求學、就業、未來規劃總是變數很多；但懂事的他們理解這份擔憂，多花了不少時間與貓窩認識了解，還常撥空從外縣市大老遠騎車來貓窩陪小曙、跟她熟悉。看過這些互動細節之後，貓窩決定放心讓小曙跟著這對有為青年回家。"
       ],
-      "photos": ["adopted/shu-1.jpg", "adopted/shu-2.jpg"],
-      "photoCaptions": ["", "送養日，跟新家人一起回家"],
+      "photos": ["adopted/shu-1.jpg", "adopted/shu-3.jpg", "adopted/shu-2.jpg"],
+      "photoCaptions": ["", "", "送養日，跟新家人一起回家"],
       "sources": [
         { "label": "新入住（官方 IG）", "url": "https://www.instagram.com/p/DQKIcH7kq8j/" },
         { "label": "送養日（官方 IG）", "url": "https://www.instagram.com/p/DX4eTCvksr2/" }
       ],
-      "confirmed": "⚠️ 兩個網址哪篇對哪篇是依 IG 代碼先後推定的，要確認；照片是從截圖裁的，之後換原圖"
+      "confirmed": ""
     },
     {
       "id": "huihui",
