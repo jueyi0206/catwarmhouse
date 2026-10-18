@@ -307,17 +307,35 @@ function storyCard(cat) {
     ? '<img src="images/' + first + '" alt="' + cat.name + '" loading="lazy">'
     : '<span aria-hidden="true">🐈</span>';
 
-  // 2026-08-08 → 2026 年 8 月 8 日
+  // 日期：有入住日就寫成「來到貓窩 → 找到家」，看得出等了多久
+  function 寫日期(v, 全年) {
+    var d = v.split('-');
+    return (全年 ? d[0] + ' 年 ' : '') + (+d[1]) + ' 月 ' + (+d[2]) + ' 日';
+  }
   var date = '';
   if (cat.homeDate) {
-    var d = cat.homeDate.split('-');
-    date = '<p class="story-date">' + d[0] + ' 年 ' + (+d[1]) + ' 月 ' +
-           (+d[2]) + ' 日　找到家</p>';
+    date = cat.inDate
+      ? 寫日期(cat.inDate, true) + ' 來到貓窩　→　' +
+        寫日期(cat.homeDate, false) + ' 找到家'
+      : 寫日期(cat.homeDate, true) + '　找到家';
+    date = '<p class="story-date">' + date + '</p>';
   }
 
-  var src = cat.source
-    ? '<p class="story-src"><a href="' + cat.source + '" target="_blank" ' +
-      'rel="noopener">原文在' + (cat.sourceName || '官方社群') + ' →</a></p>'
+  // 故事可以是一段字串，也可以是好幾段（陣列）
+  var story = cat.story || '';
+  if (typeof story === 'string') story = story ? [story] : [];
+  var body = story.map(function (t) { return '<p>' + t + '</p>'; }).join('');
+
+  // 出處。sources 是清單（一隻貓常常有好幾篇貼文）；
+  // 舊的寫法只有一個 source，也還能用。
+  var list = cat.sources || (cat.source
+    ? [{ label: '原文在' + (cat.sourceName || '官方社群'), url: cat.source }]
+    : []);
+  var src = list.length
+    ? '<p class="story-src">出處：' + list.map(function (o) {
+        return '<a href="' + o.url + '" target="_blank" rel="noopener">' +
+               o.label + '</a>';
+      }).join('　') + '</p>'
     : '';
 
   return '' +
@@ -326,7 +344,7 @@ function storyCard(cat) {
       '<div class="story-body">' +
         date +
         '<h3>' + cat.name + '</h3>' +
-        '<p>' + (cat.story || '') + '</p>' +
+        body +
         src +
       '</div>' +
     '</article>';
