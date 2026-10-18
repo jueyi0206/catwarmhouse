@@ -279,6 +279,24 @@ function initCatList() {
   render('all');
 }
 
+/* ---------- 底紋 ----------
+   淡淡的貓掌、愛心、小魚鋪在內容後面，整個網站的頁面都有。
+   「等家的貓咪」那一頁會跟著選的毛色換顏色（在 setHero 裡處理），
+   其他頁面用預設的藍灰色那張。
+
+   為什麼圖是用 JS 設定的：寫在 CSS 裡的話，相對路徑會被當成
+   相對於 style.css 的位置（變成 assets/images/...），圖就找不到了。 */
+function initPaw() {
+  document.querySelectorAll('.paw-bg').forEach(function (box) {
+    if (box.querySelector(':scope > .paw-layer')) return;
+    var layer = document.createElement('div');
+    layer.className = 'paw-layer';
+    layer.style.setProperty('--paw-art',
+      'url("' + new URL('images/paws/all.svg', location.href).href + '")');
+    box.insertBefore(layer, box.firstChild);
+  });
+}
+
 /* ---------- 找到家的貓 ----------
    用法：在頁面放 <div id="adopted-list"></div>
    資料來自 data/cats.js 的 adopted（貓咪送養後整段搬過去）。
@@ -704,6 +722,7 @@ function initGames() {
 /* ---------- 啟動 ---------- */
 document.addEventListener('DOMContentLoaded', function () {
   initNav();
+  initPaw();
   initCatList();
   initAdoptedList();
   applyShopSwitch();
