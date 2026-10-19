@@ -372,7 +372,7 @@ function storyCard(cat) {
     : '';
 
   return '' +
-    '<article class="story">' +
+    '<article class="story" id="' + cat.id + '">' +
       '<div class="story-media">' +
         '<div class="story-photo">' + photo + '</div>' + more +
       '</div>' +
@@ -383,6 +383,33 @@ function storyCard(cat) {
         src +
       '</div>' +
     '</article>';
+}
+
+/* ---------- 找到家的貓：一排小縮圖 ----------
+   放在「等家的貓咪」頁尾，只有照片和名字，點了連到完整的故事頁。
+   用法：<div id="adopted-strip" data-limit="6"></div> */
+function initAdoptedStrip() {
+  var box = document.getElementById('adopted-strip');
+  if (!box || !window.CAT_DATA) return;
+
+  var list = (window.CAT_DATA.adopted || []).slice().sort(function (a, b) {
+    return (b.homeDate || '').localeCompare(a.homeDate || '');
+  });
+  var limit = parseInt(box.dataset.limit, 10);
+  if (limit) list = list.slice(0, limit);
+  if (!list.length) return;
+
+  box.className = 'home-strip';
+  box.innerHTML = list.map(function (cat) {
+    var first = photosOf(cat)[0];
+    var photo = first
+      ? '<img src="images/' + first + '" alt="" loading="lazy">'
+      : '<span aria-hidden="true">🐈</span>';
+    return '<a class="home-chip" href="adopted.html#' + cat.id + '">' +
+             '<span class="home-photo">' + photo + '</span>' +
+             '<span class="home-name">' + cat.name + '</span>' +
+           '</a>';
+  }).join('');
 }
 
 /* ---------- 統計數字 ---------- */
@@ -725,6 +752,7 @@ document.addEventListener('DOMContentLoaded', function () {
   initPaw();
   initCatList();
   initAdoptedList();
+  initAdoptedStrip();
   applyShopSwitch();
   initStats();
   initCatDetail();

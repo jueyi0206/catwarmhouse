@@ -984,6 +984,8 @@ body[class*="theme-"] .cat-sheet {
 .story-list { display: grid; gap: 22px; margin-top: 26px; }
 
 .story {
+  /* 從縮圖點進來時會跳到這一則，留點空間免得被上面固定的選單蓋住 */
+  scroll-margin-top: 90px;
   display: grid;
   gap: 18px;
   padding: 18px;
@@ -1021,4 +1023,51 @@ body[class*="theme-"] .cat-sheet {
 
 @media (min-width: 681px) {
   .story { grid-template-columns: 220px 1fr; align-items: start; gap: 24px; padding: 22px; }
+}
+
+/* ===========================================================
+   找到家的貓：一排小縮圖（放在「等家的貓咪」頁尾）
+   只有照片和名字，點了連到完整的故事。
+   手機上可以橫向滑動，不會把頁面撐長。
+   =========================================================== */
+.home-strip {
+  display: flex;
+  gap: 14px;
+  margin: 16px 0 18px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scrollbar-width: thin;
+}
+.home-chip {
+  flex: 0 0 auto;
+  width: 96px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--ink);
+}
+.home-photo {
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--band-bg);
+  font-size: 2rem;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(31, 43, 77, .12);
+  transition: transform .2s ease;
+}
+.home-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.home-chip:hover .home-photo,
+.home-chip:focus-visible .home-photo { transform: scale(1.06) rotate(-2deg); }
+.home-name {
+  display: block;
+  margin-top: 8px;
+  font-size: .92rem;
+}
+
+@media (max-width: 620px) {
+  .home-chip, .home-photo { width: 84px; }
+  .home-photo { height: 84px; }
 }
