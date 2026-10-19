@@ -1037,9 +1037,30 @@ body[class*="theme-"] .cat-sheet {
   overflow-x: auto;
   padding-bottom: 6px;
   scrollbar-width: thin;
+  position: relative;
+  /* 電腦上用滑鼠拖著跑，游標要看得出來可以拖 */
+  cursor: grab;
+  /* 手機滑到每一張會自動對齊，不會停在半張貓臉 */
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+.home-strip.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+/* 拖的時候不要選到文字 */
+.home-strip.is-dragging * { user-select: none; }
+
+/* 右邊還有東西的時候，蓋一塊漸層當提示 */
+.home-strip-wrap { position: relative; }
+.home-strip-wrap.has-more::after {
+  content: "";
+  position: absolute;
+  top: 0; right: 0; bottom: 10px;
+  width: 56px;
+  pointer-events: none;
+  background: linear-gradient(to right, rgba(246, 249, 253, 0), var(--bg));
 }
 .home-chip {
   flex: 0 0 auto;
+  scroll-snap-align: start;
   width: 96px;
   text-align: center;
   text-decoration: none;

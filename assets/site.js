@@ -313,76 +313,63 @@ function initAdoptedList() {
     return (b.homeDate || '').localeCompare(a.homeDate || '');
   });
 
-  box.className = 'story-list';
-  box.innerHTML = list.map(storyCard).join('');
+  box.className = 'cat-grid';
+  box.innerHTML = list.map(adoptedCard).join('');
 }
 
 /* 一隻貓一則故事：照片在左、文字在右，手機上則是上下排。
    故事是從官方 FB／IG 的貼文整理的，所以每一則都要附原文連結。 */
-function storyCard(cat) {
-  var pics = photosOf(cat);
-  var caps = cat.photoCaptions || [];
-  var photo = pics[0]
-    ? '<img src="images/' + pics[0] + '" alt="' + cat.name + '" loading="lazy">'
-    : '<span aria-hidden="true">🐈</span>';
-
-  // 第二張以後擺在主照片下面，小一點，可以加一句說明
-  var more = pics.slice(1).map(function (src, i) {
-    var cap = caps[i + 1];
-    return '<figure class="story-extra">' +
-             '<img src="images/' + src + '" alt="' + cat.name + '" loading="lazy">' +
-             (cap ? '<figcaption>' + cap + '</figcaption>' : '') +
-           '</figure>';
-  }).join('');
-
-  // 日期：有入住日就寫成「來到貓窩 → 找到家」，看得出等了多久
-  function 寫日期(v, 全年) {
+/* 「2025-10-24 來到貓窩 → 2026-05-03 找到家」這種日期字串。
+   跨年的話後面那個也寫年份，不然看起來像倒退回去。 */
+function homeDateLine(cat) {
+  if (!cat.homeDate) return '';
+  function 寫(v, 全年) {
     var d = v.split('-');
     return (全年 ? d[0] + ' 年 ' : '') + (+d[1]) + ' 月 ' + (+d[2]) + ' 日';
   }
-  var date = '';
-  if (cat.homeDate) {
-    // 跨年的話後面那個日期也要寫年份，不然「10 月 24 日 → 5 月 3 日」
-    // 會看起來像倒退回去
-    var 跨年 = cat.inDate &&
-               cat.inDate.slice(0, 4) !== cat.homeDate.slice(0, 4);
-    date = cat.inDate
-      ? 寫日期(cat.inDate, true) + ' 來到貓窩　→　' +
-        寫日期(cat.homeDate, 跨年) + ' 找到家'
-      : 寫日期(cat.homeDate, true) + '　找到家';
-    date = '<p class="story-date">' + date + '</p>';
-  }
+  if (!cat.inDate) return 寫(cat.homeDate, true) + '　找到家';
+  var 跨年 = cat.inDate.slice(0, 4) !== cat.homeDate.slice(0, 4);
+  return 寫(cat.inDate, true) + ' 來到貓窩　→　' + 寫(cat.homeDate, 跨年) + ' 找到家';
+}
 
-  // 故事可以是一段字串，也可以是好幾段（陣列）
-  var story = cat.story || '';
-  if (typeof story === 'string') story = story ? [story] : [];
-  var body = story.map(function (t) { return '<p>' + t + '</p>'; }).join('');
-
-  // 出處。sources 是清單（一隻貓常常有好幾篇貼文）；
-  // 舊的寫法只有一個 source，也還能用。
+/* 出處連結：一隻貓常常有好幾篇貼文 */
+function sourceLine(cat) {
   var list = (cat.sources || []).filter(function (o) { return o.url; });
-  if (!list.length) list = (cat.source
-    ? [{ label: '原文在' + (cat.sourceName || '官方社群'), url: cat.source }]
-    : []);
-  var src = list.length
-    ? '<p class="story-src">出處：' + list.map(function (o) {
-        return '<a href="' + o.url + '" target="_blank" rel="noopener">' +
-               o.label + '</a>';
-      }).join('　') + '</p>'
-    : '';
+  if (!list.length && cat.source) {
+    list = [{ label: '原文在' + (cat.sourceName || '官方社群'), url: cat.source }];
+  }
+  if (!list.length) return '';
+  return '<p class="story-src">出處：' + list.map(function (o) {
+    return '<a href="' + o.url + '" target="_blank" rel="noopener">' + o.label + '</a>';
+  }).join('　') + '</p>';
+}
+
+/* 「找到家的貓」清單上的一張卡片。
+   故事很長，全部攤在同一頁會捲不完，所以這裡只放照片、名字、
+   日期和開頭一句，點進去才看完整的故事（cat.html?id=…）。 */
+function adoptedCard(cat) {
+  var first = photosOf(cat)[0];
+  var photo = first
+    ? '<img src="images/' + first + '" alt="" loading="lazy">'
+    : '<span aria-hidden="true">🐈</span>';
+
+  // 開頭一句當摘要：切到第一個句號為止，太長就截斷
+  var story = cat.story || '';
+  if (typeof story !== 'string') story = story[0] || '';
+  var cut = story.indexOf('。');
+  var teaser = cut > 0 ? story.slice(0, cut + 1) : story;
+  if (teaser.length > 46) teaser = teaser.slice(0, 46) + '…';
 
   return '' +
-    '<article class="story" id="' + cat.id + '">' +
-      '<div class="story-media">' +
-        '<div class="story-photo">' + photo + '</div>' + more +
-      '</div>' +
-      '<div class="story-body">' +
-        date +
+    '<a class="cat-card" href="cat.html?id=' + cat.id + '">' +
+      '<div class="cat-photo">' + photo + '</div>' +
+      '<div class="cat-body">' +
+        (cat.homeDate ? '<span class="tag tag-done">已找到家</span>' : '') +
         '<h3>' + cat.name + '</h3>' +
-        body +
-        src +
+        '<p class="cat-meta">' + homeDateLine(cat) + '</p>' +
+        '<p class="cat-desc">' + teaser + '</p>' +
       '</div>' +
-    '</article>';
+    '</a>';
 }
 
 /* ---------- 找到家的貓：一排小縮圖 ----------
@@ -405,11 +392,67 @@ function initAdoptedStrip() {
     var photo = first
       ? '<img src="images/' + first + '" alt="" loading="lazy">'
       : '<span aria-hidden="true">🐈</span>';
-    return '<a class="home-chip" href="adopted.html#' + cat.id + '">' +
+    return '<a class="home-chip" href="cat.html?id=' + cat.id + '">' +
              '<span class="home-photo">' + photo + '</span>' +
              '<span class="home-name">' + cat.name + '</span>' +
            '</a>';
   }).join('');
+
+  dragToScroll(box);
+  markOverflow(box);
+  window.addEventListener('resize', function () { markOverflow(box); });
+  box.addEventListener('scroll', function () { markOverflow(box); });
+}
+
+/* 一排放不下的時候，右邊顯示一塊漸層當提示；滑到底就收起來。
+   （手機看得到捲軸、電腦看不到，不提示的話沒人知道後面還有。） */
+function markOverflow(box) {
+  var more = box.scrollWidth - box.clientWidth - box.scrollLeft > 8;
+  // 提示的漸層貼在外層容器上。
+  // 本來想用 CSS 的 :has() 讓外層自己判斷，但實測瀏覽器不會跟著重算，
+  // 所以直接把 class 加在外層。
+  var wrap = box.parentElement;
+  if (wrap && wrap.classList.contains('home-strip-wrap')) {
+    wrap.classList.toggle('has-more', more);
+  }
+}
+
+/* 電腦沒有手指可以滑，所以讓滑鼠可以直接拖著跑。
+   拖超過 4 像素就當成「在拖」，放開時不要觸發連結，
+   不然每次拖完都會跳走。 */
+function dragToScroll(box) {
+  var down = false, moved = false, startX = 0, startLeft = 0;
+
+  box.addEventListener('pointerdown', function (e) {
+    if (e.pointerType === 'touch') return;        // 手機維持原本的滑動
+    down = true; moved = false;
+    startX = e.clientX;
+    startLeft = box.scrollLeft;
+  });
+
+  box.addEventListener('pointermove', function (e) {
+    if (!down) return;
+    var dx = e.clientX - startX;
+    if (Math.abs(dx) > 4) {
+      moved = true;
+      box.classList.add('is-dragging');
+      box.setPointerCapture(e.pointerId);
+    }
+    if (moved) box.scrollLeft = startLeft - dx;
+  });
+
+  function end() {
+    down = false;
+    box.classList.remove('is-dragging');
+    // 放開之後才把「剛剛在拖」的狀態清掉，click 才攔得到
+    setTimeout(function () { moved = false; }, 0);
+  }
+  box.addEventListener('pointerup', end);
+  box.addEventListener('pointercancel', end);
+
+  box.addEventListener('click', function (e) {
+    if (moved) { e.preventDefault(); }
+  }, true);
 }
 
 /* ---------- 統計數字 ---------- */
@@ -563,6 +606,15 @@ function initCatDetail() {
     : (cat.colorType ? '<span class="tag tag-color">' + cat.colorType + '</span>' : '');
 
   var photo = photoCollage(cat);
+  var 已送養 = cat.status === 'home';
+
+  // 故事可以是一段字串，也可以是好幾段（已送養的貓多半是好幾段）
+  var story = cat.story || '';
+  if (typeof story === 'string') story = (story && story !== '待貓窩提供') ? [story] : [];
+  var storyHtml = story.length
+    ? '<h3>' + (已送養 ? '牠的故事' : '牠的故事') + '</h3>' +
+      story.map(function (t) { return '<p>' + t + '</p>'; }).join('')
+    : '';
 
   // 資料表：空的欄位不顯示，避免一整排「待確認」
   var rows = [
@@ -578,24 +630,35 @@ function initCatDetail() {
   // 整段內容包在一張半透明白卡片裡（.cat-sheet），
   // 不管背後是雪地還是黑夜，字都讀得清楚。
   box.innerHTML = '<div class="cat-sheet">' +
-    '<p><a href="cats.html">← 回到等家的貓咪</a></p>' +
+    (已送養
+      ? '<p><a href="adopted.html">← 回到找到家的貓</a></p>'
+      : '<p><a href="cats.html">← 回到等家的貓咪</a></p>') +
     '<div class="cols" style="align-items:start">' +
       photo +
       '<div>' +
         tag +
         '<h1 style="margin-top:.2em">' + cat.name + '</h1>' +
-        '<div class="card">' +
-          rows.map(function (r) {
-            return '<p style="margin:.3em 0"><b>' + r[0] + '</b>｜' + r[1] + '</p>';
-          }).join('') +
-        '</div>' +
-        (cat.story && cat.story !== '待貓窩提供'
-          ? '<h3>牠的故事</h3><p>' + cat.story + '</p>' : '') +
+        (已送養 && cat.homeDate
+          ? '<p class="story-date">' + homeDateLine(cat) + '</p>' : '') +
+        (rows.length
+          ? '<div class="card">' +
+              rows.map(function (r) {
+                return '<p style="margin:.3em 0"><b>' + r[0] + '</b>｜' + r[1] + '</p>';
+              }).join('') +
+            '</div>'
+          : '') +
+        storyHtml +
         videoBlock(cat) +
-        '<p class="btn-row" style="margin-top:24px">' +
-          '<a class="btn" href="adopt.html">先看領養流程</a>' +
-          '<a class="btn-ghost" href="https://www.facebook.com/profile.php?id=100063882136906" target="_blank" rel="noopener">到 FB 私訊詢問</a>' +
-        '</p>' +
+        (已送養 ? sourceLine(cat) : '') +
+        (已送養
+          ? '<p class="btn-row" style="margin-top:24px">' +
+              '<a class="btn" href="cats.html">看看等家的貓咪</a>' +
+              '<a class="btn-ghost" href="adopted.html">其他找到家的貓</a>' +
+            '</p>'
+          : '<p class="btn-row" style="margin-top:24px">' +
+              '<a class="btn" href="adopt.html">先看領養流程</a>' +
+              '<a class="btn-ghost" href="https://www.facebook.com/profile.php?id=100063882136906" target="_blank" rel="noopener">到 FB 私訊詢問</a>' +
+            '</p>') +
         // 註：cats.js 的 confirmed 是內部備註，刻意不顯示在網頁上，
         //     資料確認狀況統一看「進度.html」。
       '</div>' +

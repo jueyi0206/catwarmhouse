@@ -15,7 +15,7 @@
 <!-- 製作中，先不讓搜尋引擎收錄。正式上線時刪掉下面這一行。 -->
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="images/favicon.png?v=e05dc69b" type="image/png">
-<link rel="stylesheet" href="assets/style.css?v=638c9e2f">
+<link rel="stylesheet" href="assets/style.css?v=ffad8623">
 </head>
 <body>
 
@@ -75,10 +75,10 @@
 
     <h2>也看看已經找到家的貓</h2>
     <p>牠們曾經也在這一頁等過。</p>
-    <!-- 縮圖由 assets/site.js 照 data/cats.js 的 adopted 自動產生，
-         data-limit 是最多放幾隻。點任何一張都是連到「找到家的貓」。 -->
-    <div id="adopted-strip" data-limit="6"></div>
-    <p><a class="btn-ghost" href="adopted.html">看他們的故事 →</a></p>
+    <!-- 縮圖由 assets/site.js 照 data/cats.js 的 adopted 自動產生。
+         全部都放，放不下就往右滑（手機用手指、電腦用拖的）。
+         想限制數量的話加 data-limit="6" 這樣。 -->
+    <div class="home-strip-wrap"><div id="adopted-strip"></div></div>
 
     <h2>決定要詢問了嗎？</h2>
     <p>先看過領養流程與條件，再私訊貓窩官方臉書，我們會跟你好好聊。</p>
@@ -129,6 +129,6 @@
 </footer>
 
 <script src="data/cats.js?v=857bf175"></script>
-<script src="assets/site.js?v=44495845"></script>
+<script src="assets/site.js?v=8e828846"></script>
 </body>
 </html>
