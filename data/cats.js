@@ -50,7 +50,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "已結紮；疫苗等醫療資訊以貓窩公告為準",
       "story": "待貓窩提供",
-      "photos": ["cats/cream-1.jpg", "cats/cream-2.jpg"],
+      "photos": ["cats/cream-1.jpg", "cats/cream-2.jpg", "cats/cream-3.jpg"],
       "video": "https://www.youtube.com/shorts/Bq_afoAB8ng",
       "confirmed": "2026-10-11"
     },
@@ -67,7 +67,7 @@ window.CAT_DATA = {
       "fit": "適合獨貓家庭（跟其他貓相處不來）",
       "health": "結紮與疫苗狀況待貓窩確認",
       "story": "待貓窩提供",
-      "photos": ["cats/chienchien-1.jpg", "cats/chienchien-2.jpg"],
+      "photos": ["cats/chienchien-1.jpg", "cats/chienchien-2.jpg", "cats/chienchien-3.jpg"],
       "video": "https://www.youtube.com/shorts/C0uIE9S-S30",
       "confirmed": "2026-10-02"
     },
@@ -84,7 +84,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photos": ["cats/sher-1.jpg", "cats/sher-2.jpg"],
+      "photos": ["cats/sher-1.jpg", "cats/sher-2.jpg", "cats/sher-3.jpg"],
       "video": "https://www.youtube.com/shorts/tz7MHrf1ybk",
       "confirmed": ""
     },
@@ -101,7 +101,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photos": ["cats/panmao-1.jpg", "cats/panmao-2.jpg"],
+      "photos": ["cats/panmao-1.jpg", "cats/panmao-2.jpg", "cats/panmao-3.jpg"],
       "video": "",
       "confirmed": ""
     },
@@ -118,7 +118,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photos": ["cats/jill-1.jpg"],
+      "photos": ["cats/jill-1.jpg", "cats/jill-2.jpg", "cats/jill-3.jpg"],
       "video": "",
       "confirmed": ""
     },
@@ -152,7 +152,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photos": ["cats/pianpian-1.jpg"],
+      "photos": ["cats/pianpian-1.jpg", "cats/pianpian-2.jpg"],
       "video": "",
       "confirmed": ""
     },
@@ -186,7 +186,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photos": ["cats/xiaoling-1.jpg"],
+      "photos": ["cats/xiaoling-1.jpg", "cats/xiaoling-2.jpg", "cats/xiaoling-3.jpg"],
       "video": "",
       "confirmed": ""
     },
@@ -203,7 +203,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photos": ["cats/knight-1.jpg"],
+      "photos": ["cats/knight-1.jpg", "cats/knight-2.jpg", "cats/knight-3.jpg"],
       "video": "",
       "confirmed": ""
     },
@@ -220,7 +220,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photos": ["cats/huahua-1.jpg"],
+      "photos": ["cats/huahua-1.jpg", "cats/huahua-2.jpg", "cats/huahua-3.jpg"],
       "video": "",
       "confirmed": ""
     },
@@ -237,7 +237,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photos": ["cats/liuhai-1.jpg"],
+      "photos": ["cats/liuhai-1.jpg", "cats/liuhai-2.jpg", "cats/liuhai-3.jpg"],
       "video": "",
       "confirmed": ""
     },
@@ -254,7 +254,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photos": ["cats/atai-1.jpg"],
+      "photos": ["cats/atai-1.jpg", "cats/atai-2.jpg", "cats/atai-3.jpg"],
       "video": "",
       "confirmed": ""
     },
@@ -271,7 +271,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photos": ["cats/dama-1.jpg"],
+      "photos": ["cats/dama-1.jpg", "cats/dama-2.jpg", "cats/dama-3.jpg"],
       "video": "",
       "confirmed": ""
     },
@@ -288,7 +288,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photos": ["cats/dangdang-1.jpg"],
+      "photos": ["cats/dangdang-1.jpg", "cats/dangdang-2.jpg", "cats/dangdang-3.jpg"],
       "video": "",
       "confirmed": ""
     },
@@ -305,7 +305,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photos": ["cats/xiaokuan-1.jpg"],
+      "photos": ["cats/xiaokuan-1.jpg", "cats/xiaokuan-2.jpg", "cats/xiaokuan-3.jpg"],
       "video": "",
       "confirmed": ""
     },
@@ -356,7 +356,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photos": ["cats/queen-1.jpg"],
+      "photos": ["cats/queen-1.jpg", "cats/queen-2.jpg"],
       "video": "",
       "confirmed": ""
     },
@@ -373,7 +373,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photos": ["cats/shasha-1.jpg"],
+      "photos": ["cats/shasha-1.jpg", "cats/shasha-2.jpg", "cats/shasha-3.jpg"],
       "video": "",
       "confirmed": ""
     },
@@ -390,7 +390,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photos": ["cats/chocolate-1.jpg"],
+      "photos": ["cats/chocolate-1.jpg", "cats/chocolate-2.jpg"],
       "video": "",
       "confirmed": ""
     },
@@ -424,7 +424,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photos": ["cats/rourou-1.jpg"],
+      "photos": ["cats/rourou-1.jpg", "cats/rourou-2.jpg", "cats/rourou-3.jpg"],
       "video": "",
       "confirmed": ""
     },
@@ -441,7 +441,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photos": ["cats/damiao-1.jpg"],
+      "photos": ["cats/damiao-1.jpg", "cats/damiao-2.jpg"],
       "video": "",
       "confirmed": ""
     },
@@ -458,7 +458,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photos": ["cats/corona-1.jpg"],
+      "photos": ["cats/corona-1.jpg", "cats/corona-2.jpg", "cats/corona-3.jpg"],
       "video": "",
       "confirmed": ""
     },
@@ -475,7 +475,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photos": ["cats/pipi-1.jpg"],
+      "photos": ["cats/pipi-1.jpg", "cats/pipi-2.jpg"],
       "video": "",
       "confirmed": ""
     },
@@ -492,7 +492,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photos": ["cats/xiaohu-1.jpg"],
+      "photos": ["cats/xiaohu-1.jpg", "cats/xiaohu-2.jpg"],
       "video": "",
       "confirmed": ""
     },
@@ -509,7 +509,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photos": ["cats/baitou-1.jpg"],
+      "photos": ["cats/baitou-1.jpg", "cats/baitou-2.jpg"],
       "video": "",
       "confirmed": ""
     },
@@ -526,7 +526,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photos": ["cats/xiaozhi-1.jpg"],
+      "photos": ["cats/xiaozhi-1.jpg", "cats/xiaozhi-2.jpg"],
       "video": "",
       "confirmed": ""
     },
@@ -543,7 +543,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photos": ["cats/baobao-1.jpg"],
+      "photos": ["cats/baobao-1.jpg", "cats/baobao-2.jpg"],
       "video": "",
       "confirmed": ""
     },
