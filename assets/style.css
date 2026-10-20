@@ -1092,3 +1092,35 @@ body[class*="theme-"] .cat-sheet {
   .home-chip, .home-photo { width: 84px; }
   .home-photo { height: 84px; }
 }
+
+
+/* ---------- 手機版的貓咪列表 ----------
+   35 隻排成單欄的話整頁要捲 25 個畫面，所以手機改成兩欄，
+   而且一次只先放 12 隻（程式在 assets/site.js 的 initCatList）。*/
+@media (max-width: 760px) {
+  .cat-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .cat-body { padding: 10px 11px 13px; }
+  .cat-body h3 { font-size: 1.02rem; margin-bottom: 2px; }
+  .cat-meta { font-size: .76rem; margin: 0 0 6px; }
+  .cat-desc {
+    font-size: .82rem;
+    line-height: 1.45;
+    /* 個性長短不一，卡片會參差不齊，統一壓成兩行 */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .cat-body .tag { font-size: .72rem; padding: 2px 8px; }
+}
+
+.more-row {
+  display: flex;
+  justify-content: center;
+  margin: 18px 0 4px;
+}
+.more-row:empty { display: none; }
+.more-row button { cursor: pointer; }

@@ -64,6 +64,11 @@ function applyShopSwitch() {
 }
 
 var HERO_V = '?v=998d7668';
+
+// 貓咪照片的版本號。照片換新的時候檔名不變（cream-1.jpg 永遠叫 cream-1.jpg），
+// 沒有版本號的話，看過的人會一直看到瀏覽器快取裡的舊圖。
+// 數字一樣由 tools/更新版本號.py 自動換掉。
+var PHOTO_V = '?v=e9ca5678';
 // 手機版和電腦版的橫幅是兩張不同的圖，這裡記住現在是哪一種螢幕
 var heroWide = window.matchMedia('(min-width: 761px)');
 var _heroExt = null;
@@ -180,7 +185,7 @@ function catCard(cat) {
   // 列表只放第一張，點進去才看到全部
   var first = photosOf(cat)[0];
   var photo = first
-    ? '<img src="images/' + first + '" alt="' + cat.name + '" loading="lazy">'
+    ? '<img src="images/' + first + PHOTO_V + '" alt="' + cat.name + '" loading="lazy">'
     : '<span aria-hidden="true">🐈</span>';
 
   // 第二行小字：性別・花色・年齡，空的欄位自動跳過
@@ -214,6 +219,14 @@ function initCatList() {
 
   var all = window.CAT_DATA.cats || [];
   var limit = parseInt(box.dataset.limit, 10);
+
+  // 手機版一次先放這麼多隻，其餘按「看更多」才出來。
+  // 貓多了以後整頁會長到捲不完（35 隻要捲 25 個畫面），所以分批放。
+  // 電腦版排得下，一次全部列出來，不受影響。
+  var 每批 = 12;
+  var 窄螢幕 = window.matchMedia('(max-width: 760px)');
+  var 已顯示 = 每批;
+  var 目前篩選 = 'all';
 
   checkColorTypes(all);
 
@@ -249,20 +262,57 @@ function initCatList() {
     }
   }
 
-  function render(filter) {
+  // 「看更多」按鈕放在格子外面，不然它會變成格子裡的一格
+  function 更多列() {
+    var el = document.getElementById('cat-more');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'cat-more';
+      el.className = 'more-row';
+      box.parentNode.insertBefore(el, box.nextSibling);
+      el.addEventListener('click', function (e) {
+        if (!e.target.closest || !e.target.closest('button')) return;
+        已顯示 += 每批;
+        render(目前篩選, true);
+        // 焦點移到這批第一隻，用鍵盤或讀螢幕軟體的人才知道跑到哪了
+        var 卡片 = box.children[已顯示 - 每批];
+        if (卡片 && 卡片.focus) 卡片.focus({ preventScroll: true });
+      });
+    }
+    return el;
+  }
+
+  function render(filter, 接著看) {
+    if (filter !== undefined) 目前篩選 = filter;
+    if (!接著看) 已顯示 = 每批;   // 換篩選就從頭數
+
     // filter 是毛色分類（黑貓、白貓…），'all' 代表全部
     var list = all.filter(function (c) {
-      return filter === 'all' ? true : c.colorType === filter;
+      return 目前篩選 === 'all' ? true : c.colorType === 目前篩選;
     });
     if (limit) list = list.slice(0, limit);
 
-    box.innerHTML = list.length
-      ? list.map(catCard).join('')
+    // 首頁那種已經寫死數量的、還有電腦版，都一次列完
+    var 全列 = !!limit || !窄螢幕.matches;
+    var 這次顯示 = 全列 ? list : list.slice(0, 已顯示);
+
+    box.innerHTML = 這次顯示.length
+      ? 這次顯示.map(catCard).join('')
       : '<p class="lead">目前沒有這個毛色的貓咪在等家。<br>' +
         '<a href="cats.html">看看全部的貓咪 →</a></p>';
 
-    setHero(filter);
+    var 剩下 = list.length - 這次顯示.length;
+    更多列().innerHTML = 剩下 > 0
+      ? '<button class="btn-ghost" type="button">看更多貓咪（還有 ' + 剩下 + ' 隻）</button>'
+      : '';
+
+    setHero(目前篩選);
   }
+
+  // 轉橫、改視窗大小時，手機版和電腦版的規則不一樣，要重排一次
+  var 換排版 = function () { render(目前篩選, false); };
+  if (窄螢幕.addEventListener) 窄螢幕.addEventListener('change', 換排版);
+  else if (窄螢幕.addListener) 窄螢幕.addListener(換排版);
 
   // 篩選鈕（有放 .filters 的頁面才會啟用）
   if (bar) {
@@ -350,7 +400,7 @@ function sourceLine(cat) {
 function adoptedCard(cat) {
   var first = photosOf(cat)[0];
   var photo = first
-    ? '<img src="images/' + first + '" alt="" loading="lazy">'
+    ? '<img src="images/' + first + PHOTO_V + '" alt="" loading="lazy">'
     : '<span aria-hidden="true">🐈</span>';
 
   // 開頭一句當摘要：切到第一個句號為止，太長就截斷
@@ -390,7 +440,7 @@ function initAdoptedStrip() {
   box.innerHTML = list.map(function (cat) {
     var first = photosOf(cat)[0];
     var photo = first
-      ? '<img src="images/' + first + '" alt="" loading="lazy">'
+      ? '<img src="images/' + first + PHOTO_V + '" alt="" loading="lazy">'
       : '<span aria-hidden="true">🐈</span>';
     return '<a class="home-chip" href="cat.html?id=' + cat.id + '">' +
              '<span class="home-photo">' + photo + '</span>' +
@@ -531,7 +581,7 @@ document.addEventListener('click', function (e) {
    相框是 images/frame-scallop.svg（波浪郵票邊）。 */
 function framed(src, alt, cls) {
   var inner = src
-    ? '<img src="images/' + src + '" alt="' + alt + '" loading="lazy">'
+    ? '<img src="images/' + src + PHOTO_V + '" alt="' + alt + '" loading="lazy">'
     : '<span class="pf-empty" aria-hidden="true">🐈</span>';
   return '<figure class="pf-item ' + (cls || '') + '">' + inner + '</figure>';
 }

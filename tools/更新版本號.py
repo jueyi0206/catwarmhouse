@@ -123,6 +123,31 @@ def check_css_braces():
                 print("    " + p)
 
 
+def stamp_photos():
+    """貓咪照片的網址是 site.js 組出來的，HTML 裡看不到，加不了版本號。
+
+    換照片時檔名不變（cream-1.jpg 永遠叫 cream-1.jpg），
+    所以把 images/cats 和 images/adopted 的內容算成一個 hash，
+    寫進 site.js 的 PHOTO_V，換圖後使用者才會重新抓。
+    """
+    h = hashlib.sha1()
+    for folder in ("images/cats", "images/adopted"):
+        if not os.path.isdir(folder):
+            continue
+        for name in sorted(os.listdir(folder)):
+            with open(os.path.join(folder, name), "rb") as f:
+                h.update(name.encode("utf-8"))
+                h.update(f.read())
+    ver = h.hexdigest()[:8]
+    path = os.path.join("assets", "site.js")
+    s = io.open(path, encoding="utf-8").read()
+    new = re.sub(r"var PHOTO_V = '\?v=[0-9a-zA-Z_]+'",
+                 "var PHOTO_V = '?v=" + ver + "'", s)
+    if new != s:
+        io.open(path, "w", encoding="utf-8").write(new)
+        print("貓咪照片版本號 →", ver)
+
+
 def stamp_hero():
     """頁首橫幅的網址是 site.js 組出來的，HTML 裡看不到，加不了版本號。
 
@@ -153,6 +178,7 @@ def main():
     os.chdir(ROOT)
     check_css_braces()
     stamp_hero()
+    stamp_photos()
 
     # 要加版本號的檔案：CSS、JS、字型，還有圖片
     # 圖片也要，因為換圖時常常沿用同一個檔名（例如重做設計稿後換掉 step-5.jpg），
