@@ -272,7 +272,7 @@ h3 { font-size: 1.1rem; margin: 1.6em 0 .4em; }
 }
 
 .cat-photo {
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 1 / 1;   /* 正方形：首圖整張都看得到，不會切掉上下 */
   background: var(--band-bg);
   display: grid; place-items: center;
   color: #B6C5E0;
