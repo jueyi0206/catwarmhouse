@@ -68,7 +68,7 @@ var HERO_V = '?v=998d7668';
 // 貓咪照片的版本號。照片換新的時候檔名不變（cream-1.jpg 永遠叫 cream-1.jpg），
 // 沒有版本號的話，看過的人會一直看到瀏覽器快取裡的舊圖。
 // 數字一樣由 tools/更新版本號.py 自動換掉。
-var PHOTO_V = '?v=e9ca5678';
+var PHOTO_V = '?v=c01c55af';
 // 手機版和電腦版的橫幅是兩張不同的圖，這裡記住現在是哪一種螢幕
 var heroWide = window.matchMedia('(min-width: 761px)');
 var _heroExt = null;

@@ -12,6 +12,10 @@
   zoom    1.0 = 盡可能大的正方形；小於 1 會往外拉（貓變小、看得更完整）
           大於 1 會裁更近（貓變大）
 原圖唯讀，不會被改到。
+
+⚠ 2026-10-21 起 images/cats 放的是「沙龍照」版本（AI 重算的棚拍照），
+   由 tools/沙龍照裁切.py 產生。跑這支工具會把沙龍照蓋回真實照片，
+   要換回沙龍照就再跑一次 python tools/沙龍照裁切.py。
 """
 import json, os, sys
 from PIL import Image, ImageOps, ImageFilter, ImageDraw
