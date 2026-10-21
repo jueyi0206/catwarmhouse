@@ -54,8 +54,44 @@ def 找貓(im):
             int((x1 + 1 + 邊) * W / k), int((y1 + 1 + 邊) * H / k))
 
 
+def 背景色條(im, box, 方向):
+    """取出背景的顏色變化，做成一條一像素寬（或高）的色帶。
+
+    不能直接拿最邊邊那排像素來拉長——貓的身體常常碰到畫面邊緣，
+    那樣會把貓的毛色拉成一條（奧迪、小牙就中過）。
+    所以只從「貓的框以外」的區域取樣，取中位數避開雜訊。
+    """
+    W, H = im.size
+    x0, y0, x1, y1 = box
+    px = im.load()
+    角 = []
+    for ax in (2, W - 3):
+        for ay in (2, H - 3):
+            角.append(px[ax, ay])
+    底色 = tuple(sorted(c[i] for c in 角)[len(角) // 2] for i in range(3))
+
+    if 方向 == "直":          # 給左右用：每一列一個顏色
+        取樣 = [x for x in range(0, W, 4) if x < x0 or x >= x1]
+        條 = Image.new("RGB", (1, H), 底色)
+        if 取樣:
+            d = 條.load()
+            for y in range(H):
+                v = [px[x, y] for x in 取樣]
+                d[0, y] = tuple(sorted(c[i] for c in v)[len(v) // 2] for i in range(3))
+        return 條
+    else:                     # 給上下用：每一行一個顏色
+        取樣 = [y for y in range(0, H, 4) if y < y0 or y >= y1]
+        條 = Image.new("RGB", (W, 1), 底色)
+        if 取樣:
+            d = 條.load()
+            for x in range(W):
+                v = [px[x, y] for y in 取樣]
+                d[x, 0] = tuple(sorted(c[i] for c in v)[len(v) // 2] for i in range(3))
+        return 條
+
+
 def 延伸成正方形(im, box):
-    """把畫面補成正方形，貓置中。補出來的部分用邊緣像素拉開，接縫看不出來。"""
+    """把畫面補成正方形，貓置中。補出來的部分用背景色填，接縫看不出來。"""
     W, H = im.size
     x0, y0, x1, y1 = box
     w, h = x1 - x0, y1 - y0
@@ -63,23 +99,38 @@ def 延伸成正方形(im, box):
     cx, cy = (x0 + x1) // 2, (y0 + y1) // 2
     L, T = cx - S // 2, cy - S // 2           # 這個方框在原圖上的位置（可能超出去）
     canvas = Image.new("RGB", (S, S))
-    # 先把原圖能用的部分貼進去
     sx0, sy0 = max(0, L), max(0, T)
     sx1, sy1 = min(W, L + S), min(H, T + S)
     inner = im.crop((sx0, sy0, sx1, sy1))
     ox, oy = sx0 - L, sy0 - T
-    canvas.paste(inner, (ox, oy))
     iw, ih = inner.size
-    # 上下左右不足的地方，用最邊邊那一排像素拉開來填
+
+    直 = 背景色條(im, box, "直").crop((0, sy0, 1, sy1))     # 只要這段高度
+    橫 = 背景色條(im, box, "橫").crop((sx0, 0, sx1, 1))
     if oy > 0:
-        canvas.paste(inner.crop((0, 0, iw, 1)).resize((iw, oy)), (ox, 0))
+        canvas.paste(橫.resize((iw, oy)), (ox, 0))
     if oy + ih < S:
-        canvas.paste(inner.crop((0, ih - 1, iw, ih)).resize((iw, S - oy - ih)), (ox, oy + ih))
-    band = canvas.crop((ox, 0, ox + iw, S))
+        canvas.paste(橫.resize((iw, S - oy - ih)), (ox, oy + ih))
+    canvas.paste(inner, (ox, oy))
     if ox > 0:
-        canvas.paste(band.crop((0, 0, 1, S)).resize((ox, S)), (0, 0))
+        上 = 橫.resize((ox, 1)).load()[0, 0] if ox else None
+        左 = Image.new("RGB", (ox, S))
+        左.paste(直.resize((ox, ih)), (0, oy))
+        if oy > 0:
+            左.paste(Image.new("RGB", (ox, oy), 上), (0, 0))
+        if oy + ih < S:
+            左.paste(Image.new("RGB", (ox, S - oy - ih), 上), (0, oy + ih))
+        canvas.paste(左, (0, 0))
     if ox + iw < S:
-        canvas.paste(band.crop((iw - 1, 0, iw, S)).resize((S - ox - iw, S)), (ox + iw, 0))
+        ew = S - ox - iw
+        右 = Image.new("RGB", (ew, S))
+        右.paste(直.resize((ew, ih)), (0, oy))
+        角 = 橫.resize((ew, 1)).load()[ew - 1, 0]
+        if oy > 0:
+            右.paste(Image.new("RGB", (ew, oy), 角), (0, 0))
+        if oy + ih < S:
+            右.paste(Image.new("RGB", (ew, S - oy - ih), 角), (0, oy + ih))
+        canvas.paste(右, (ox + iw, 0))
     return canvas
 
 
