@@ -57,8 +57,10 @@ def 找貓(im):
 def 背景圖(im, box):
     """猜出「如果沒有貓，這張背景長什麼樣」，做成一張同尺寸的圖。
 
-    棚拍背景是平順的漸層，只要知道每一列左右兩邊的背景色就能重建，
-    中間用內插補，橫向的明暗變化也還原得出來。
+    棚拍背景不是平的——中間亮、四周暗（暗角），所以不能只取左右兩點內插，
+    那樣補出來的區域會偏暗，接上去就是一條明顯的色帶。
+    改成把畫面切成網格，每一格取一個背景色，貓蓋住的格子再從鄰居補回來，
+    最後放大成整張圖，暗角的明暗變化就還原得出來。
 
     取樣有兩道保險，因為貓常常碰到畫面邊緣：
     1. 貓的框往外推一點再排除，偵測框通常會比實際的貓小一圈
@@ -67,7 +69,8 @@ def 背景圖(im, box):
     W, H = im.size
     x0, y0, x1, y1 = box
     m = int(min(W, H) * 0.04)
-    x0, x1 = max(0, x0 - m), min(W, x1 + m)
+    x0, y0 = max(0, x0 - m), max(0, y0 - m)
+    x1, y1 = min(W, x1 + m), min(H, y1 + m)
     px = im.load()
 
     邊 = ([px[x, y] for x in range(0, W, 7) for y in (1, H - 2)] +
@@ -77,31 +80,35 @@ def 背景圖(im, box):
     def 像背景(c):
         return max(abs(c[i] - 底色[i]) for i in range(3)) < 50
 
-    左欄 = list(range(0, x0, 3))
-    右欄 = list(range(x1, W, 3))
-    兩側 = [[None] * H, [None] * H]
-    for y in range(H):
-        for i, 欄 in enumerate((左欄, 右欄)):
-            v = [px[x, y] for x in 欄 if 像背景(px[x, y])]
-            if len(v) >= 3:
-                兩側[i][y] = tuple(sorted(c[k] for c in v)[len(v) // 2] for k in range(3))
+    GW = 24
+    GH = max(2, round(GW * H / W))
+    格 = [[None] * GW for _ in range(GH)]
+    for j in range(GH):
+        for i in range(GW):
+            ax, bx = i * W // GW, (i + 1) * W // GW
+            ay, by = j * H // GH, (j + 1) * H // GH
+            sx = max(1, (bx - ax) // 7)
+            sy = max(1, (by - ay) // 7)
+            v = [px[x, y] for x in range(ax, bx, sx) for y in range(ay, by, sy)
+                 if not (x0 <= x < x1 and y0 <= y < y1) and 像背景(px[x, y])]
+            if len(v) >= 6:
+                格[j][i] = tuple(sorted(c[k] for c in v)[len(v) // 2] for k in range(3))
 
-    for col in 兩側:                       # 取不到的列，用上下最近的有效列補
-        最近 = None
-        for y in range(H):
-            if col[y]: 最近 = col[y]
-            elif 最近: col[y] = 最近
-        最近 = None
-        for y in range(H - 1, -1, -1):
-            if col[y]: 最近 = col[y]
-            elif 最近: col[y] = 最近
-
-    兩欄 = Image.new("RGB", (2, H), 底色)
-    d = 兩欄.load()
-    for y in range(H):
-        左, 右 = 兩側[0][y] or 兩側[1][y] or 底色, 兩側[1][y] or 兩側[0][y] or 底色
-        d[0, y], d[1, y] = 左, 右
-    return 兩欄.resize((W, H), Image.BILINEAR)
+    for _ in range(GW + GH):            # 貓蓋住的格子，從上下左右的鄰居補回來
+        空 = [(j, i) for j in range(GH) for i in range(GW) if 格[j][i] is None]
+        if not 空:
+            break
+        for j, i in 空:
+            鄰 = [格[b][a] for b, a in ((j - 1, i), (j + 1, i), (j, i - 1), (j, i + 1))
+                  if 0 <= b < GH and 0 <= a < GW and 格[b][a]]
+            if 鄰:
+                格[j][i] = tuple(round(sum(c[k] for c in 鄰) / len(鄰)) for k in range(3))
+    小 = Image.new("RGB", (GW, GH), 底色)
+    d = 小.load()
+    for j in range(GH):
+        for i in range(GW):
+            d[i, j] = 格[j][i] or 底色
+    return 小.resize((W, H), Image.BICUBIC)
 
 
 def 延伸成正方形(im, box):
@@ -110,6 +117,18 @@ def 延伸成正方形(im, box):
     W, H = im.size
     x0, y0, x1, y1 = box
     S = int(max(x1 - x0, y1 - y0) * (1 + 邊距 * 2))
+    # 不要憑空生出太多背景：每邊最多補 8%。
+    # 貓碰到原圖邊緣時，那個方向本來就被拍斷了，補再多也只是空白，
+    # 而且補越多越容易跟原圖對不起來，出現一條或一塊色差。
+    S = min(S, int(W / 0.84), int(H / 0.84))
+    # 貓已經被拍斷在某一邊時，那個方向不補背景——
+    # 那邊本來就沒有貓可以露出來，補了只是加空白，
+    # 而且那一側取不到背景樣本，補出來的顏色容易跟原圖對不起來。
+    安全 = int(min(W, H) * 0.05)      # 跟背景取樣用的安全邊界一致
+    if x0 <= 安全 or x1 >= W - 安全:
+        S = min(S, W)
+    if y0 <= 安全 or y1 >= H - 安全:
+        S = min(S, H)
     cx, cy = (x0 + x1) // 2, (y0 + y1) // 2
     L, T = cx - S // 2, cy - S // 2           # 方框在原圖上的位置（可能超出去）
 
@@ -139,9 +158,44 @@ def 延伸成正方形(im, box):
     # 把原圖有貓的那塊貼回去
     sx0, sy0 = max(0, L - 左補), max(0, T - 上補)
     sx1, sy1 = min(W, L - 左補 + S), min(H, T - 上補 + S)
-    canvas.paste(im.crop((sx0, sy0, sx1, sy1)),
-                 (sx0 - (L - 左補), sy0 - (T - 上補)))
+    ox, oy = sx0 - (L - 左補), sy0 - (T - 上補)
+    canvas.paste(im.crop((sx0, sy0, sx1, sy1)), (ox, oy))
+
+    # 原圖跟補出來的背景交界處，就算顏色估得再準也會有一點點落差，
+    # 在背景區域做局部柔化把那條抹掉（貓身上不會動到）
+    直縫 = [x for x in (ox, ox + (sx1 - sx0)) if 0 < x < S]
+    橫縫 = [y for y in (oy, oy + (sy1 - sy0)) if 0 < y < S]
+    if 直縫 or 橫縫:
+        bp = bg.load()
+        底色 = bp[min(L + 2, bg.width - 1), min(T + 2, bg.height - 1)]
+        canvas = 柔化接縫(canvas, 直縫, 橫縫, 底色)
     return canvas
+
+
+def 柔化接縫(canvas, 直縫, 橫縫, 底色):
+    S = canvas.size[0]
+    r = max(8, S // 24)
+    糊 = canvas.filter(ImageFilter.GaussianBlur(r / 1.6))
+    罩 = Image.new("L", (S, S), 0)
+    md, px = 罩.load(), canvas.load()
+
+    def 像背景(c):
+        return max(abs(c[i] - 底色[i]) for i in range(3)) < 55
+
+    for sx in 直縫:
+        for x in range(max(0, sx - r), min(S, sx + r)):
+            w = int(255 * (1 - abs(x - sx) / r))
+            for y in range(S):
+                if 像背景(px[x, y]) and w > md[x, y]:
+                    md[x, y] = w
+    for sy in 橫縫:
+        for y in range(max(0, sy - r), min(S, sy + r)):
+            w = int(255 * (1 - abs(y - sy) / r))
+            for x in range(S):
+                if 像背景(px[x, y]) and w > md[x, y]:
+                    md[x, y] = w
+    罩 = 罩.filter(ImageFilter.GaussianBlur(r / 4))
+    return Image.composite(糊, canvas, 罩)
 
 
 def main():
