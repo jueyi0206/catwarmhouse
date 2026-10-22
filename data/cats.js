@@ -699,6 +699,23 @@ window.CAT_DATA = {
       "photos": ["cats/debbie-1.jpg", "cats/debbie-2.jpg", "cats/debbie-3.jpg"],
       "video": "",
       "confirmed": ""
+    },
+    {
+      "id": "heitou",
+      "name": "黑頭",
+      "status": "wait",
+      "sex": "待確認",
+      "age": "待確認",
+      "color": "虎斑帶白",
+      "colorType": "虎斑貓",
+      "feature": "",
+      "personality": "待貓窩補充",
+      "fit": "待貓窩確認",
+      "health": "待貓窩確認",
+      "story": "",
+      "photos": ["cats/heitou-1.jpg", "cats/heitou-2.jpg", "cats/heitou-3.jpg"],
+      "video": "",
+      "confirmed": ""
     }
   ],
 
