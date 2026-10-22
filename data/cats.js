@@ -475,7 +475,7 @@ window.CAT_DATA = {
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
       "story": "",
-      "photos": ["cats/pipi-1.jpg", "cats/pipi-2.jpg"],
+      "photos": ["cats/pipi-1.jpg", "cats/pipi-2.jpg", "cats/pipi-3.jpg"],
       "video": "",
       "confirmed": ""
     },
