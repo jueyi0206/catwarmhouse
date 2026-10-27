@@ -453,7 +453,7 @@ window.CAT_DATA = {
       "age": "待確認",
       "color": "三花",
       "colorType": "三花貓",
-      "feature": "盛事美顏極品貓",
+      "feature": "盛世美顏極品貓",
       "personality": "親人、機靈，動靜皆宜",
       "fit": "待貓窩確認",
       "health": "待貓窩確認",
