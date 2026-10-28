@@ -947,6 +947,7 @@ function initTipDetail() {
 
 /* 圖解手冊閱讀器
    一頁一張圖：左右按鈕、鍵盤方向鍵、手機左右滑都可以翻頁。
+   支援「橫向全畫面」模式：手機直立鎖定時自動 90 度旋轉鋪滿全螢幕。
    網址會記住看到第幾頁（tip.html?id=xxx#p5），可以直接分享某一頁。 */
 function handbookPage(tip, i, small) {
   var n = (i + 1 < 10 ? '0' : '') + (i + 1);
@@ -961,6 +962,9 @@ function handbookHTML(tip) {
         '<img class="hb-img" src="' + handbookPage(tip, 0) + '" alt="" width="1600" height="900">' +
         '<button class="hb-nav hb-prev" type="button" aria-label="上一頁">‹</button>' +
         '<button class="hb-nav hb-next" type="button" aria-label="下一頁">›</button>' +
+        '<button class="hb-fs-enter" type="button" aria-label="橫向全畫面閱讀">⛶ 橫向全畫面</button>' +
+        '<button class="hb-fs-exit" type="button" aria-label="結束全畫面">✕ 結束全畫面</button>' +
+        '<span class="hb-fs-count">1 / ' + pages.length + '</span>' +
       '</div>' +
       '<div class="hb-bar">' +
         '<div class="hb-pager">' +
@@ -970,7 +974,8 @@ function handbookHTML(tip) {
           '<span class="hb-hint">左右滑動可以翻頁</span>' +
         '</div>' +
         '<div class="hb-tools">' +
-          '<a class="hb-tool hb-zoom" href="' + handbookPage(tip, 0) + '" target="_blank" rel="noopener">看大圖</a>' +
+          '<button class="hb-tool hb-tool-primary hb-fs-btn" type="button">⛶ 橫向全畫面</button>' +
+          '<a class="hb-tool hb-zoom" href="' + handbookPage(tip, 0) + '" target="_blank" rel="noopener">看原圖</a>' +
           (tip.pdf ? '<a class="hb-tool" href="' + tip.pdf + '" target="_blank" rel="noopener">下載 PDF</a>' : '') +
         '</div>' +
       '</div>' +
@@ -994,8 +999,10 @@ function initHandbook(root, tip) {
   if (!root) return;
   var pages = tip.pages || [];
   var total = pages.length;
+  var stage = root.querySelector('.hb-stage');
   var img = root.querySelector('.hb-img');
   var count = root.querySelector('.hb-count');
+  var fsCount = root.querySelector('.hb-fs-count');
   var zoom = root.querySelector('.hb-zoom');
   var title = root.querySelector('.hb-title');
   var text = root.querySelector('.hb-text');
@@ -1003,9 +1010,68 @@ function initHandbook(root, tip) {
   var thumbs = strip.querySelectorAll('button');
   var prevs = root.querySelectorAll('.hb-prev');
   var nexts = root.querySelectorAll('.hb-next');
+  var fsBtns = root.querySelectorAll('.hb-fs-enter, .hb-fs-btn');
+  var fsExit = root.querySelector('.hb-fs-exit');
   var now = -1;
+  var isFs = false;
 
   img.addEventListener('load', function () { img.classList.remove('is-loading'); });
+
+  function syncRotation() {
+    if (!isFs) {
+      stage.classList.remove('is-rotated');
+      return;
+    }
+    // 手機直立時（高 > 寬），自動將全畫面容器順時針轉 90 度鋪滿全螢幕
+    var portrait = window.innerHeight > window.innerWidth;
+    stage.classList.toggle('is-rotated', portrait);
+  }
+
+  function enterFs() {
+    isFs = true;
+    stage.classList.add('is-fs');
+    document.body.classList.add('hb-lock');
+    syncRotation();
+    // 若瀏覽器支援原生全螢幕＋鎖定橫向（如 Android Chrome），一併嘗試啟用
+    var req = stage.requestFullscreen || stage.webkitRequestFullscreen;
+    if (req) {
+      try {
+        var p = req.call(stage);
+        if (p && p.then) {
+          p.then(function () {
+            if (screen.orientation && screen.orientation.lock) {
+              screen.orientation.lock('landscape').catch(function () {});
+            }
+            syncRotation();
+          }).catch(function () {});
+        }
+      } catch (e) {}
+    }
+  }
+
+  function exitFs() {
+    if (!isFs) return;
+    isFs = false;
+    stage.classList.remove('is-fs', 'is-rotated', 'ui-hidden');
+    document.body.classList.remove('hb-lock');
+    var docFs = document.fullscreenElement || document.webkitFullscreenElement;
+    if (docFs) {
+      var ex = document.exitFullscreen || document.webkitExitFullscreen;
+      if (ex) { try { ex.call(document); } catch (e) {} }
+    }
+  }
+
+  [].forEach.call(fsBtns, function (b) { b.addEventListener('click', enterFs); });
+  fsExit.addEventListener('click', exitFs);
+  window.addEventListener('resize', syncRotation);
+  document.addEventListener('fullscreenchange', function () {
+    if (!document.fullscreenElement && !document.webkitFullscreenElement && isFs) {
+      // 若使用者按系統返回鍵退出了原生全螢幕，一併結束全畫面狀態
+      exitFs();
+    } else {
+      syncRotation();
+    }
+  });
 
   function go(i, first) {
     i = Math.max(0, Math.min(total - 1, i));
@@ -1018,6 +1084,7 @@ function initHandbook(root, tip) {
     }
     img.alt = '第 ' + (i + 1) + ' 頁：' + pages[i].title;
     count.textContent = (i + 1) + ' / ' + total;
+    fsCount.textContent = (i + 1) + ' / ' + total;
     zoom.href = src;
     title.textContent = 'p.' + (i + 1) + '　' + pages[i].title;
     text.textContent = pages[i].text || '';
@@ -1049,15 +1116,20 @@ function initHandbook(root, tip) {
     if (b) go(parseInt(b.dataset.i, 10));
   });
 
+  // 全畫面下點圖片中間可切換顯示／隱藏控制鈕，方便看清楚邊角文字
+  img.addEventListener('click', function () {
+    if (isFs) stage.classList.toggle('ui-hidden');
+  });
+
   document.addEventListener('keydown', function (e) {
     var tag = (e.target.tagName || '').toLowerCase();
     if (tag === 'input' || tag === 'textarea' || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key === 'Escape' && isFs) { exitFs(); return; }
     if (e.key === 'ArrowLeft') go(now - 1);
     if (e.key === 'ArrowRight') go(now + 1);
   });
 
-  // 手機左右滑翻頁（上下滑還是正常捲動頁面）
-  var stage = root.querySelector('.hb-stage');
+  // 手機滑動翻頁（自動適應 90 度旋轉全畫面與一般模式）
   var sx = 0, sy = 0, touching = false;
   stage.addEventListener('touchstart', function (e) {
     if (e.touches.length !== 1) { touching = false; return; }
@@ -1069,7 +1141,16 @@ function initHandbook(root, tip) {
     touching = false;
     var t = e.changedTouches[0];
     var dx = t.clientX - sx, dy = t.clientY - sy;
-    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) go(now + (dx < 0 ? 1 : -1));
+    if (stage.classList.contains('is-rotated')) {
+      // 順時針轉 90 度時，使用者把手機橫拿左右滑＝螢幕原始座標的上下滑 (dy)
+      if (Math.abs(dy) > 40 && Math.abs(dy) > Math.abs(dx) * 1.2) {
+        go(now + (dy < 0 ? 1 : -1));
+      }
+    } else {
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        go(now + (dx < 0 ? 1 : -1));
+      }
+    }
   }, { passive: true });
 
   var m = /^#p(\d+)$/.exec(location.hash);

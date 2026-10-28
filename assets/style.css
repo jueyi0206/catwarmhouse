@@ -7,7 +7,7 @@
    =========================================================== */
 @font-face {
   font-family: "Huninn";
-  src: url("fonts/huninn-subset.woff2?v=96431689") format("woff2");
+  src: url("fonts/huninn-subset.woff2?v=6ab059ea") format("woff2");
   font-weight: 400 700;
   font-style: normal;
   font-display: swap;
@@ -1437,4 +1437,125 @@ body[class*="theme-"] .cat-sheet {
   .hb-stage .hb-next { right: 8px; }
   .hb-hint { display: none; }
   .hb-thumbs li { flex: 0 0 140px; }
+}
+
+/* 橫向全畫面與 90 度自動轉向模式 */
+body.hb-lock {
+  overflow: hidden;
+  touch-action: none;
+}
+.hb-fs-enter {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, .35);
+  background: rgba(15, 20, 32, .75);
+  color: #fff;
+  font-size: .84rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background .15s ease, transform .15s ease;
+}
+.hb-fs-enter:hover {
+  background: rgba(15, 20, 32, .92);
+  transform: scale(1.04);
+}
+.hb-fs-exit,
+.hb-fs-count {
+  display: none;
+}
+.hb-tool-primary {
+  background: var(--brand);
+  color: #fff;
+  cursor: pointer;
+  font-family: inherit;
+}
+.hb-tool-primary:hover {
+  background: var(--brand-dk);
+}
+
+/* 進入全畫面狀態 */
+.hb-stage.is-fs {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  aspect-ratio: auto;
+  border-radius: 0;
+  border: none;
+  background: #0F1420;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: none;
+}
+/* 手機直向時，自動順時針旋轉 90 度鋪滿全螢幕 */
+.hb-stage.is-fs.is-rotated {
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  width: 100vh;
+  width: 100dvh;
+  height: 100vw;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+.hb-stage.is-fs .hb-fs-enter {
+  display: none;
+}
+.hb-stage.is-fs .hb-fs-exit {
+  display: inline-block;
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  z-index: 3;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, .35);
+  background: rgba(15, 20, 32, .75);
+  color: #fff;
+  font-size: .88rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+}
+.hb-stage.is-fs .hb-fs-count {
+  display: inline-block;
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: rgba(15, 20, 32, .72);
+  color: #fff;
+  font-size: .84rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+.hb-stage.is-fs .hb-nav {
+  width: 48px;
+  height: 48px;
+  font-size: 1.7rem;
+  background: rgba(255, 255, 255, .82);
+  z-index: 3;
+}
+.hb-stage.is-fs .hb-prev { left: 16px; }
+.hb-stage.is-fs .hb-next { right: 16px; }
+
+/* 點一下畫面中央可暫時隱藏按鈕，看清楚邊角細節 */
+.hb-stage.is-fs.ui-hidden .hb-nav,
+.hb-stage.is-fs.ui-hidden .hb-fs-exit,
+.hb-stage.is-fs.ui-hidden .hb-fs-count {
+  opacity: 0;
+  pointer-events: none;
 }
