@@ -127,17 +127,20 @@ def stamp_photos():
     """貓咪照片的網址是 site.js 組出來的，HTML 裡看不到，加不了版本號。
 
     換照片時檔名不變（cream-1.jpg 永遠叫 cream-1.jpg），
-    所以把 images/cats 和 images/adopted 的內容算成一個 hash，
+    所以把 images/cats、images/adopted、images/tips 的內容算成一個 hash，
     寫進 site.js 的 PHOTO_V，換圖後使用者才會重新抓。
     """
     h = hashlib.sha1()
-    for folder in ("images/cats", "images/adopted"):
+    # images/tips 底下是一篇一個資料夾（養貓小知識的圖解手冊），所以要往下找
+    for folder in ("images/cats", "images/adopted", "images/tips"):
         if not os.path.isdir(folder):
             continue
-        for name in sorted(os.listdir(folder)):
-            with open(os.path.join(folder, name), "rb") as f:
-                h.update(name.encode("utf-8"))
-                h.update(f.read())
+        for root, dirs, files in os.walk(folder):
+            dirs.sort()
+            for name in sorted(files):
+                with open(os.path.join(root, name), "rb") as f:
+                    h.update(name.encode("utf-8"))
+                    h.update(f.read())
     ver = h.hexdigest()[:8]
     path = os.path.join("assets", "site.js")
     s = io.open(path, encoding="utf-8").read()

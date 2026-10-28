@@ -68,7 +68,7 @@ var HERO_V = '?v=998d7668';
 // 貓咪照片的版本號。照片換新的時候檔名不變（cream-1.jpg 永遠叫 cream-1.jpg），
 // 沒有版本號的話，看過的人會一直看到瀏覽器快取裡的舊圖。
 // 數字一樣由 tools/更新版本號.py 自動換掉。
-var PHOTO_V = '?v=dd69e791';
+var PHOTO_V = '?v=0117f4d3';
 // 手機版和電腦版的橫幅是兩張不同的圖，這裡記住現在是哪一種螢幕
 var heroWide = window.matchMedia('(min-width: 761px)');
 var _heroExt = null;
@@ -779,26 +779,123 @@ function initShop() {
   }).join('') : '<p class="lead">目前沒有義賣商品。</p>';
 }
 
-/* ---------- 6. 養貓小知識（tips.html、tip.html） ---------- */
+/* ---------- 6. 養貓小知識（tips.html、tip.html、首頁） ----------
+   每一篇有兩種型態（寫在 data/tips.js 的 type）：
+   handbook＝圖解手冊（一頁一張圖，進去是翻頁閱讀器）
+   article ＝文字文章（進去是一般文章版面） */
+function tipTypeLabel(t) {
+  if (t.type === 'handbook') return '圖解手冊・' + (t.pages || []).length + ' 頁';
+  return '文章';
+}
+
+function tipCoverImg(t, alt) {
+  return t.cover
+    ? '<img src="images/' + t.cover + PHOTO_V + '" alt="' + (alt || '') + '" loading="lazy">'
+    : '<span aria-hidden="true">📖</span>';
+}
+
+function tipLabels(t, featured) {
+  return '<div class="tip-labels">' +
+    (featured ? '<span class="tip-badge">精選</span>' : '') +
+    (t.category ? '<span class="chip">' + t.category + '</span>' : '') +
+    '<span class="tip-type">' + tipTypeLabel(t) + '</span>' +
+  '</div>';
+}
+
+// 依上架日期排，新的在前面
+function tipsSorted() {
+  return (window.TIPS_DATA.tips || []).slice().sort(function (a, b) {
+    return (b.date || '').localeCompare(a.date || '');
+  });
+}
+
+function tipCard(t) {
+  return '' +
+    '<a class="cat-card tip-card" href="tip.html?id=' + t.id + '">' +
+      '<div class="cat-photo tip-cover">' + tipCoverImg(t) + '</div>' +
+      '<div class="cat-body">' +
+        tipLabels(t) +
+        '<h3>' + t.title + '</h3>' +
+        '<p class="cat-desc">' + (t.summary || '') + '</p>' +
+        (t.draft ? '<p class="draft-note">草稿・內容待查證</p>' : '') +
+      '</div>' +
+    '</a>';
+}
+
+// 頁面最上面的大卡片（featured: true 的那一篇）
+function tipFeature(t) {
+  var href = 'tip.html?id=' + t.id;
+  return '' +
+    '<article class="tip-feature">' +
+      '<a class="tip-feature-cover" href="' + href + '">' + tipCoverImg(t, t.title + ' 封面') + '</a>' +
+      '<div class="tip-feature-body">' +
+        tipLabels(t, true) +
+        '<h2>' + t.title + '</h2>' +
+        (t.subtitle ? '<p class="tip-sub">' + t.subtitle + '</p>' : '') +
+        '<p>' + (t.summary || '') + '</p>' +
+        '<div class="btn-row">' +
+          '<a class="btn" href="' + href + '">' + (t.type === 'handbook' ? '開始閱讀' : '閱讀文章') + '</a>' +
+          (t.pdf ? '<a class="btn-ghost" href="' + t.pdf + '" target="_blank" rel="noopener">下載 PDF</a>' : '') +
+        '</div>' +
+      '</div>' +
+    '</article>';
+}
+
 function initTipList() {
   var box = document.getElementById('tip-list');
   if (!box || !window.TIPS_DATA) return;
 
+  var all = tipsSorted();
   var limit = parseInt(box.dataset.limit, 10);
-  var list = (window.TIPS_DATA.tips || []);
-  if (limit) list = list.slice(0, limit);
 
-  box.innerHTML = list.length ? list.map(function (t) {
-    return '' +
-      '<a class="cat-card" href="tip.html?id=' + t.id + '">' +
-        '<div class="cat-body">' +
-          (t.category ? '<span class="chip">' + t.category + '</span>' : '') +
-          '<h3>' + t.title + '</h3>' +
-          '<p class="cat-desc">' + (t.summary || '') + '</p>' +
-          (t.draft ? '<p class="draft-note">草稿・內容待查證</p>' : '') +
-        '</div>' +
-      '</a>';
-  }).join('') : '<p class="lead">文章準備中。</p>';
+  // 首頁：只放最新的幾篇
+  if (limit) {
+    box.innerHTML = all.length
+      ? all.slice(0, limit).map(tipCard).join('')
+      : '<p class="lead">文章準備中。</p>';
+    return;
+  }
+
+  var featBox = document.getElementById('tip-featured');
+  var bar = document.getElementById('tip-filters');
+  var more = document.getElementById('tip-more');
+  var feat = all.filter(function (t) { return t.featured; })[0];
+
+  // 分類篩選鈕：照文章裡出現過的分類自動產生，至少兩種分類才顯示
+  var cats = [];
+  all.forEach(function (t) {
+    if (t.category && cats.indexOf(t.category) < 0) cats.push(t.category);
+  });
+
+  function render(f) {
+    var showFeat = feat && f === 'all';
+    if (featBox) featBox.innerHTML = showFeat ? tipFeature(feat) : '';
+    var list = all.filter(function (t) {
+      if (showFeat && t === feat) return false;
+      return f === 'all' || t.category === f;
+    });
+    box.innerHTML = list.map(tipCard).join('');
+    box.hidden = !list.length;
+    if (more) more.hidden = list.length >= 3;
+  }
+
+  if (bar && cats.length >= 2) {
+    bar.innerHTML = '<button class="on" data-filter="all">全部</button>' +
+      cats.map(function (c) { return '<button data-filter="' + c + '">' + c + '</button>'; }).join('');
+    bar.hidden = false;
+    bar.addEventListener('click', function (e) {
+      var btn = e.target.closest ? e.target.closest('button[data-filter]') : null;
+      if (!btn) return;
+      [].forEach.call(bar.querySelectorAll('button'), function (b) { b.classList.toggle('on', b === btn); });
+      render(btn.dataset.filter);
+    });
+  }
+
+  if (!all.length) {
+    box.innerHTML = '<p class="lead">文章準備中。</p>';
+    return;
+  }
+  render('all');
 }
 
 function initTipDetail() {
@@ -815,15 +912,19 @@ function initTipDetail() {
   }
 
   document.title = tip.title + '｜日日暖暖中途貓窩';
+  var isBook = tip.type === 'handbook';
 
   box.innerHTML = '' +
     '<p><a href="tips.html">← 回到養貓小知識</a></p>' +
-    (tip.category ? '<span class="chip">' + tip.category + '</span>' : '') +
-    '<h1>' + tip.title + '</h1>' +
+    tipLabels(tip) +
+    '<h1 class="tip-h1">' + tip.title + '</h1>' +
+    (tip.subtitle ? '<p class="tip-sub">' + tip.subtitle + '</p>' : '') +
     (tip.summary ? '<p class="lead">' + tip.summary + '</p>' : '') +
-    '<div class="article">' +
-      (tip.body || []).map(function (p) { return '<p>' + p + '</p>'; }).join('') +
-    '</div>' +
+    (isBook
+      ? handbookHTML(tip)
+      : '<div class="article">' +
+          (tip.body || []).map(function (p) { return '<p>' + p + '</p>'; }).join('') +
+        '</div>') +
     (tip.sources && tip.sources.length
       ? '<div class="card"><h3>資料來源</h3><ul>' +
         tip.sources.map(function (s) { return '<li>' + s + '</li>'; }).join('') +
@@ -831,7 +932,148 @@ function initTipDetail() {
       : '') +
     (tip.draft
       ? '<div class="todo"><p>這篇是草稿，內容尚未依照三級來源制度查證，<b>不能對外公開</b>。</p></div>'
-      : '');
+      : '') +
+    '<div class="card tip-cta">' +
+      '<h3>準備好了嗎？</h3>' +
+      '<p>貓窩裡還有很多貓咪在等一個家。領養前有任何疑問，都歡迎私訊官方臉書。</p>' +
+      '<div class="btn-row">' +
+        '<a class="btn" href="cats.html">看看等家的貓咪</a>' +
+        '<a class="btn-ghost" href="adopt.html">領養流程</a>' +
+      '</div>' +
+    '</div>';
+
+  if (isBook) initHandbook(box.querySelector('.hb'), tip);
+}
+
+/* 圖解手冊閱讀器
+   一頁一張圖：左右按鈕、鍵盤方向鍵、手機左右滑都可以翻頁。
+   網址會記住看到第幾頁（tip.html?id=xxx#p5），可以直接分享某一頁。 */
+function handbookPage(tip, i, small) {
+  var n = (i + 1 < 10 ? '0' : '') + (i + 1);
+  return 'images/' + tip.dir + (small ? 't' : 'p') + n + '.webp' + PHOTO_V;
+}
+
+function handbookHTML(tip) {
+  var pages = tip.pages || [];
+  return '' +
+    '<div class="hb">' +
+      '<div class="hb-stage">' +
+        '<img class="hb-img" src="' + handbookPage(tip, 0) + '" alt="" width="1600" height="900">' +
+        '<button class="hb-nav hb-prev" type="button" aria-label="上一頁">‹</button>' +
+        '<button class="hb-nav hb-next" type="button" aria-label="下一頁">›</button>' +
+      '</div>' +
+      '<div class="hb-bar">' +
+        '<div class="hb-pager">' +
+          '<button class="hb-step hb-prev" type="button" aria-label="上一頁">‹</button>' +
+          '<span class="hb-count" aria-live="polite">1 / ' + pages.length + '</span>' +
+          '<button class="hb-step hb-next" type="button" aria-label="下一頁">›</button>' +
+          '<span class="hb-hint">左右滑動可以翻頁</span>' +
+        '</div>' +
+        '<div class="hb-tools">' +
+          '<a class="hb-tool hb-zoom" href="' + handbookPage(tip, 0) + '" target="_blank" rel="noopener">看大圖</a>' +
+          (tip.pdf ? '<a class="hb-tool" href="' + tip.pdf + '" target="_blank" rel="noopener">下載 PDF</a>' : '') +
+        '</div>' +
+      '</div>' +
+      '<div class="hb-note">' +
+        '<h2 class="hb-title"></h2>' +
+        '<p class="hb-text"></p>' +
+      '</div>' +
+      '<h3 class="hb-toc-title">本冊目錄</h3>' +
+      '<ol class="hb-thumbs">' +
+        pages.map(function (p, i) {
+          return '<li><button type="button" data-i="' + i + '">' +
+            '<img src="' + handbookPage(tip, i, true) + '" alt="" loading="lazy" width="480" height="270">' +
+            '<span><b>' + (i + 1) + '</b>' + p.title + '</span>' +
+          '</button></li>';
+        }).join('') +
+      '</ol>' +
+    '</div>';
+}
+
+function initHandbook(root, tip) {
+  if (!root) return;
+  var pages = tip.pages || [];
+  var total = pages.length;
+  var img = root.querySelector('.hb-img');
+  var count = root.querySelector('.hb-count');
+  var zoom = root.querySelector('.hb-zoom');
+  var title = root.querySelector('.hb-title');
+  var text = root.querySelector('.hb-text');
+  var strip = root.querySelector('.hb-thumbs');
+  var thumbs = strip.querySelectorAll('button');
+  var prevs = root.querySelectorAll('.hb-prev');
+  var nexts = root.querySelectorAll('.hb-next');
+  var now = -1;
+
+  img.addEventListener('load', function () { img.classList.remove('is-loading'); });
+
+  function go(i, first) {
+    i = Math.max(0, Math.min(total - 1, i));
+    if (i === now) return;
+    now = i;
+    var src = handbookPage(tip, i);
+    if (img.getAttribute('src') !== src) {
+      img.classList.add('is-loading');
+      img.src = src;
+    }
+    img.alt = '第 ' + (i + 1) + ' 頁：' + pages[i].title;
+    count.textContent = (i + 1) + ' / ' + total;
+    zoom.href = src;
+    title.textContent = 'p.' + (i + 1) + '　' + pages[i].title;
+    text.textContent = pages[i].text || '';
+    [].forEach.call(prevs, function (b) { b.disabled = i === 0; });
+    [].forEach.call(nexts, function (b) { b.disabled = i === total - 1; });
+    [].forEach.call(thumbs, function (b, k) {
+      if (k === i) b.setAttribute('aria-current', 'true');
+      else b.removeAttribute('aria-current');
+    });
+    // 縮圖列捲到目前這頁（只捲縮圖列本身，不要讓整個頁面跳動）
+    var cur = thumbs[i];
+    if (cur && strip.scrollTo) {
+      strip.scrollTo({
+        left: cur.parentNode.offsetLeft - (strip.clientWidth - cur.offsetWidth) / 2,
+        behavior: first ? 'auto' : 'smooth'
+      });
+    }
+    // 先載好前後頁，翻頁時不用等
+    [i - 1, i + 1].forEach(function (k) {
+      if (k >= 0 && k < total) new Image().src = handbookPage(tip, k);
+    });
+    if (history.replaceState) history.replaceState(null, '', '#p' + (i + 1));
+  }
+
+  [].forEach.call(prevs, function (b) { b.addEventListener('click', function () { go(now - 1); }); });
+  [].forEach.call(nexts, function (b) { b.addEventListener('click', function () { go(now + 1); }); });
+  strip.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('button[data-i]') : null;
+    if (b) go(parseInt(b.dataset.i, 10));
+  });
+
+  document.addEventListener('keydown', function (e) {
+    var tag = (e.target.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key === 'ArrowLeft') go(now - 1);
+    if (e.key === 'ArrowRight') go(now + 1);
+  });
+
+  // 手機左右滑翻頁（上下滑還是正常捲動頁面）
+  var stage = root.querySelector('.hb-stage');
+  var sx = 0, sy = 0, touching = false;
+  stage.addEventListener('touchstart', function (e) {
+    if (e.touches.length !== 1) { touching = false; return; }
+    touching = true;
+    sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+  }, { passive: true });
+  stage.addEventListener('touchend', function (e) {
+    if (!touching) return;
+    touching = false;
+    var t = e.changedTouches[0];
+    var dx = t.clientX - sx, dy = t.clientY - sy;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) go(now + (dx < 0 ? 1 : -1));
+  }, { passive: true });
+
+  var m = /^#p(\d+)$/.exec(location.hash);
+  go(m ? parseInt(m[1], 10) - 1 : 0, true);
 }
 
 /* ---------- 7. 小遊戲（games.html、養貓小知識頁） ---------- */
