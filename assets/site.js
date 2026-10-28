@@ -824,7 +824,7 @@ function tipCard(t) {
 
 // 頁面最上面的大卡片（featured: true 的那一篇）
 function tipFeature(t) {
-  var href = 'tip.html?id=' + t.id;
+  var href = 'tip.html?id=' + t.id + '&' + PHOTO_V.slice(1);
   return '' +
     '<article class="tip-feature">' +
       '<a class="tip-feature-cover" href="' + href + '">' + tipCoverImg(t, t.title + ' 封面') + '</a>' +
@@ -1116,9 +1116,10 @@ function initHandbook(root, tip) {
     if (b) go(parseInt(b.dataset.i, 10));
   });
 
-  // 全畫面下點圖片中間可切換顯示／隱藏控制鈕，方便看清楚邊角文字
+  // 點擊圖片：未全畫面時直接進入橫向全畫面；全畫面下則切換顯示／隱藏控制鈕
   img.addEventListener('click', function () {
     if (isFs) stage.classList.toggle('ui-hidden');
+    else enterFs();
   });
 
   document.addEventListener('keydown', function (e) {
