@@ -732,15 +732,41 @@ function initNews() {
   if (limit) list = list.slice(0, limit);
 
   box.innerHTML = list.length ? list.map(function (n) {
+    var linkBtn = '';
+    if (n.link) {
+      var defaultLabel = '查看詳情 →';
+      if (n.link.indexOf('instagram.com') > -1) {
+        defaultLabel = '前往 Instagram 查看詳情 →';
+      } else if (n.link.indexOf('facebook.com') > -1) {
+        defaultLabel = '前往 Facebook 查看原文 →';
+      } else if (n.link.indexOf('accupass.com') > -1) {
+        defaultLabel = '前往 Accupass 活動頁 →';
+      }
+      var label = n.linkText || defaultLabel;
+      linkBtn = '<p class="news-action"><a class="news-link-btn" href="' + n.link + '" target="_blank" rel="noopener">' + label + '</a></p>';
+    }
+
+    var eventBox = '';
+    if (n.event) {
+      eventBox = '<div class="news-event-box">' +
+        (n.event.time ? '<div class="news-event-row"><span class="news-event-icon">📅</span><strong>活動時間：</strong><span>' + n.event.time + '</span></div>' : '') +
+        (n.event.location ? '<div class="news-event-row"><span class="news-event-icon">📍</span><strong>活動地點：</strong><span>' + n.event.location + '</span></div>' : '') +
+        (n.event.fee ? '<div class="news-event-row"><span class="news-event-icon">🎫</span><strong>入場方式：</strong><span>' + n.event.fee + '</span></div>' : '') +
+        (n.event.notes ? '<div class="news-event-row"><span class="news-event-icon">💡</span><strong>溫馨提醒：</strong><span>' + n.event.notes + '</span></div>' : '') +
+      '</div>';
+    }
+
     return '' +
-      '<article class="news-item' + (n.demo ? ' is-demo' : '') + '">' +
+      '<article class="news-item' + (n.demo ? ' is-demo' : '') + (n.featured ? ' is-featured' : '') + '">' +
         '<div class="news-head">' +
           '<time>' + n.date + '</time>' +
           (n.category ? '<span class="chip">' + n.category + '</span>' : '') +
+          (n.featured ? '<span class="chip chip-accent">近期焦點活動</span>' : '') +
         '</div>' +
         '<h3>' + n.title + '</h3>' +
-        '<p>' + (n.body || '') + '</p>' +
-        (n.link ? '<p><a href="' + n.link + '" target="_blank" rel="noopener">看臉書原文 →</a></p>' : '') +
+        eventBox +
+        '<p class="news-body">' + (n.body || '').replace(/\n/g, '<br>') + '</p>' +
+        linkBtn +
       '</article>';
   }).join('') : '<p class="lead">目前沒有消息。</p>';
 }
