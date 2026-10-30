@@ -132,6 +132,11 @@ def stamp_photos():
     """
     h = hashlib.sha1()
     # images/tips 底下是一篇一個資料夾（養貓小知識的圖解手冊），所以要往下找
+    for name in sorted(os.listdir("images")):
+        if name.startswith(("game-", "shop-")) and os.path.isfile(os.path.join("images", name)):
+            with open(os.path.join("images", name), "rb") as f:
+                h.update(name.encode("utf-8"))
+                h.update(f.read())
     for folder in ("images/cats", "images/adopted", "images/tips"):
         if not os.path.isdir(folder):
             continue
