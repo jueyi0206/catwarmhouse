@@ -337,7 +337,7 @@ window.CAT_DATA = {
       "feature": "微甜系美貓",
       "personality": "娃娃般的身形，迷人討喜",
       "fit": "待貓窩確認",
-      "health": "疫苗 ☑、節育 ☑",
+      "health": "疫苗 ☑、節育 ☑、貓愛滋",
       "story": "",
       "photos": ["cats/beier-1.jpg"],
       "video": "",
