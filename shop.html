@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>義賣小舖｜日日暖暖中途貓窩</title>
-<meta name="description" content="日日暖暖中途貓窩的義賣商品，所得用於照顧中途貓咪。">
+<title>公益商品｜日日暖暖中途貓窩</title>
+<meta name="description" content="日日暖暖中途貓窩的公益商品，僅於送養會現場擺出，販售所得全數用於貓窩日常的開銷。">
 <!-- 貼到 FB／LINE 時的預覽圖與標題。
      ⚠️ 網域確定後，要把下面 og:image 換成完整網址（例如 https://日日暖暖的網域/images/logo-share.jpg），
      只寫相對路徑 FB 抓不到圖。 -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="義賣小舖｜日日暖暖中途貓窩">
-<meta property="og:description" content="日日暖暖中途貓窩的義賣商品，所得用於照顧中途貓咪。">
+<meta property="og:title" content="公益商品｜日日暖暖中途貓窩">
+<meta property="og:description" content="日日暖暖中途貓窩的公益商品，僅於送養會現場擺出，販售所得全數用於貓窩日常的開銷。">
 <meta property="og:image" content="images/logo-share.jpg">
 <!-- 製作中，先不讓搜尋引擎收錄。正式上線時刪掉下面這一行。 -->
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="images/favicon.png?v=e05dc69b" type="image/png">
-<link rel="stylesheet" href="assets/style.css?v=1302ae7a">
+<link rel="stylesheet" href="assets/style.css?v=3ee673b4">
 </head>
 <body>
 
@@ -43,7 +43,7 @@
         <li><a href="adopt.html">領養流程</a></li>
         <li><a href="news.html">最新消息</a></li>
         <li><a href="tips.html">養貓小知識</a></li>
-        <li><a href="shop.html" aria-current="page">義賣小舖</a></li>
+        <li><a href="shop.html" aria-current="page">公益商品</a></li>
         <li><a href="about.html">關於我們</a></li>
         <li><a href="support.html">支持我們</a></li>
       </ul>
@@ -54,20 +54,75 @@
 <main id="main" class="paw-bg">
 
   <div class="wrap section">
-    <h1>義賣小舖</h1>
-    <p class="lead">義賣所得用於照顧中途的貓咪。<br>
-       買一件東西，也是幫忙的一種方式。</p>
+    <h1>公益商品</h1>
+    <p class="lead">每一份帶回家的小物，都是支撐貓窩日常的溫暖力量。<br>
+       所有公益商品賣出的款項，<b>全數用於貓窩日常的開銷</b>。</p>
 
-    <div class="card">
-      <h3>怎麼購買</h3>
-      <p id="shop-howto">待貓窩確認購買方式後填寫</p>
+    <!-- 主視覺：送養會現場限定公益小攤 -->
+    <div class="shop-feature card">
+      <div class="shop-feature-img">
+        <img src="images/shop-booth.jpg?v=1e4e0ace" alt="日日暖暖於送養會現場擺設的「貓奴」公益商品攤位" loading="eager">
+      </div>
+      <div class="shop-feature-body">
+        <span class="chip chip-accent">送養會現場限定</span>
+        <h2>老屋八角窗下的「貓奴」公益小攤</h2>
+        <p id="shop-howto">我們的公益商品目前僅於「送養會舉辦當下」在現場擺出販售（暫無提供網路商城或郵寄服務）。所賣出的款項全數用於貓窩日常的開銷，歡迎在送養會當天來老屋看看貓咪，順道來我們的公益小攤尋寶！</p>
+        <div class="shop-highlights">
+          <div class="shop-hl-item">
+            <strong>📍 販售管道：僅限送養會現場</strong>
+            <span>每次送養會當下於現場擺攤，每場展售的手作與周邊花色依現場陳列為準。</span>
+          </div>
+          <div class="shop-hl-item">
+            <strong>🐾 款項用途：100% 貓窩日常開銷</strong>
+            <span>所賣出的款項<b>全數用於貓窩日常的開銷</b>（包含中途貓咪的伙食、貓砂與日常照護）。</span>
+          </div>
+        </div>
+        <div class="btn-row" style="margin-top:16px">
+          <a class="btn" href="news.html">看近期送養會時間與地點 →</a>
+        </div>
+      </div>
     </div>
 
+    <!-- 現場常見好物一覽 -->
+    <h2>現場常見的公益商品</h2>
+    <p class="lead">每場送養會擺出的品項略有不同，以下是攤位上常見的人氣好物：</p>
     <div id="shop-list" class="cat-grid"></div>
 
-    <h2>不想買東西，也可以這樣幫忙</h2>
+    <!-- 送養會現場環境 & 與其他愛貓團體互動 -->
+    <h2>來送養會現場，除了逛公益商品還能做什麼？</h2>
+    <p class="lead">即使家裡暫時無法養貓，也非常歡迎在送養會當天來現場走走、一起幫浪貓加油！</p>
+
+    <div class="shop-scene-list">
+      <article class="shop-scene-card">
+        <div class="shop-scene-img">
+          <img src="images/shop-venue.jpg?v=276a895d" alt="日日暖暖送養會現場環境與認養流程看板" loading="lazy">
+        </div>
+        <div class="shop-scene-body">
+          <span class="chip">送養會現場環境</span>
+          <h3>🏠 走進舒適老屋，認識等家的貓咪</h3>
+          <p>我們的公益商品小攤就設在送養會場地內。現場空間明亮舒適，設有清楚的「認養五步驟」說明看板與志工引導。</p>
+          <p>不論您是認真考慮認養新家人，或是單純想來看看貓咪、選購公益商品支持貓窩日常開銷，都非常歡迎前來交流。</p>
+        </div>
+      </article>
+
+      <article class="shop-scene-card">
+        <div class="shop-scene-img">
+          <img src="images/shop-interact.jpg?v=e9689d89" alt="送養會現場「給貓咪的小情書」與友團互動推廣活動" loading="lazy">
+        </div>
+        <div class="shop-scene-body">
+          <span class="chip">友團共好・公益推廣</span>
+          <h3>💌 與愛貓團體互動，一起幫助更多浪貓</h3>
+          <p>除了貓窩自己的送養與公益商品，我們也不定期與其他愛貓團體交流互動、協助推廣別人的浪貓公益活動——因為只要能幫助到浪貓，我們都樂意一起出力！</p>
+          <p>現場常有「給貓咪的小情書」投遞、集章互動換小禮等溫馨企劃，讓大家在輕鬆溫暖的氛圍中一起為浪貓發聲。</p>
+        </div>
+      </article>
+    </div>
+
+    <h2>其他支持貓窩的方式</h2>
+    <p>除了在送養會現場選購公益商品，您也可以透過成為志工或幫忙轉貼分享，幫等家的孩子們多創造一次被看見的機會。</p>
     <div class="btn-row">
-      <a class="btn-ghost" href="support.html">當志工、幫忙分享</a>
+      <a class="btn-ghost" href="support.html">當志工、幫忙分享 →</a>
+      <a class="btn-ghost" href="cats.html">看看等家的貓咪 →</a>
     </div>
   </div>
 
@@ -95,7 +150,7 @@
           <li><a href="adopt.html">領養流程</a></li>
           <li><a href="news.html">最新消息</a></li>
           <li><a href="tips.html">養貓小知識</a></li>
-          <li><a href="shop.html">義賣小舖</a></li>
+          <li><a href="shop.html">公益商品</a></li>
           <li><a href="adopted.html">找到家的貓</a></li>
           <li><a href="games.html">貓咪小遊戲</a></li>
           <li><a href="about.html">關於我們</a></li>
@@ -111,7 +166,7 @@
 </footer>
 
 <script src="data/cats.js?v=731fd9f0"></script>
-<script src="data/shop.js?v=f6c32ecd"></script>
-<script src="assets/site.js?v=56b9c547"></script>
+<script src="data/shop.js?v=de06280b"></script>
+<script src="assets/site.js?v=3ae8277a"></script>
 </body>
 </html>

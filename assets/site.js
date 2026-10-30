@@ -39,7 +39,7 @@ function initNav() {
    只問一次，答案記起來。 */
 // ?v= 的數字由 tools/更新版本號.py 自動換掉（見下面 HERO_V 那一行）
 /* ===========================================================
-   義賣小舖要不要出現在網站上
+   公益商品要不要出現在網站上
 
    true  ＝ 正常顯示
    false ＝ 整個藏起來（選單、首頁那張卡片、頁尾的連結都不見）
@@ -48,16 +48,16 @@ function initNav() {
    頁面本身不會被刪掉，改回 true 隨時可以放出來。
    （直接輸入 shop.html 的網址還是進得去，只是沒有任何地方連到它。）
    =========================================================== */
-var 顯示義賣小舖 = true;
+var 顯示公益商品 = true;
 
 function applyShopSwitch() {
-  if (顯示義賣小舖) return;
+  if (顯示公益商品) return;
   // 選單、頁尾裡的連結（整個項目一起藏）
   document.querySelectorAll('a[href="shop.html"]').forEach(function (a) {
     var box = a.closest('li') || a.closest('.card') || a;
     box.style.display = 'none';
   });
-  // 沒有連結、但講的是義賣的區塊，在 HTML 標了 data-shop
+  // 沒有連結、但講的是公益商品的區塊，在 HTML 標了 data-shop
   document.querySelectorAll('[data-shop]').forEach(function (el) {
     el.style.display = 'none';
   });
@@ -771,11 +771,11 @@ function initNews() {
   }).join('') : '<p class="lead">目前沒有消息。</p>';
 }
 
-/* ---------- 5. 義賣商品（shop.html） ---------- */
+/* ---------- 5. 公益商品（shop.html） ---------- */
 var SHOP_STATUS = {
-  on:   { text: '販售中', cls: 'tag-ok'   },
-  soon: { text: '準備中', cls: 'tag-wait' },
-  out:  { text: '已售完', cls: 'tag-done' }
+  on:   { text: '送養會現場限定', cls: 'tag-ok'   },
+  soon: { text: '準備中',         cls: 'tag-wait' },
+  out:  { text: '已售完',         cls: 'tag-done' }
 };
 
 function initShop() {
@@ -789,7 +789,7 @@ function initShop() {
   box.innerHTML = items.length ? items.map(function (it) {
     var s = SHOP_STATUS[it.status] || SHOP_STATUS.soon;
     var photo = it.photo
-      ? '<img src="images/' + it.photo + '" alt="' + it.name + '">'
+      ? '<img src="images/' + it.photo + PHOTO_V + '" alt="' + it.name + '" loading="lazy">'
       : '<span aria-hidden="true">🎁</span>';
     return '' +
       '<div class="cat-card" style="cursor:default">' +
@@ -799,10 +799,10 @@ function initShop() {
           '<h3>' + it.name + '</h3>' +
           (it.price ? '<p class="price">' + it.price + '</p>' : '') +
           '<p class="cat-desc">' + (it.desc || '') + '</p>' +
-          (it.link ? '<p style="margin-top:10px"><a href="' + it.link + '" target="_blank" rel="noopener">前往購買 →</a></p>' : '') +
+          (it.link ? '<p style="margin-top:10px"><a href="' + it.link + '" target="_blank" rel="noopener">查看詳情 →</a></p>' : '') +
         '</div>' +
       '</div>';
-  }).join('') : '<p class="lead">目前沒有義賣商品。</p>';
+  }).join('') : '<p class="lead">目前尚無商品資訊。</p>';
 }
 
 /* ---------- 6. 養貓小知識（tips.html、tip.html、首頁） ----------
