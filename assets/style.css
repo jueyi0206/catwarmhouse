@@ -293,6 +293,29 @@ h3 { font-size: 1.1rem; margin: 1.6em 0 .4em; }
   margin: 0 0 10px;
 }
 .cat-desc { font-size: .92rem; margin: 0; }
+.cat-health {
+  font-size: .84rem;
+  color: var(--ink-soft);
+  margin: 8px 0 0;
+  padding-top: 8px;
+  border-top: 1px dashed var(--line);
+}
+.chk-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.15em;
+  height: 1.15em;
+  margin-left: 2px;
+  border: 1.5px solid var(--ok);
+  border-radius: 3px;
+  background: #EAF5EE;
+  color: var(--ok);
+  font-size: .85em;
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: -1px;
+}
 
 /* 狀態標籤 */
 .tag {

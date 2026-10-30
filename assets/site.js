@@ -179,6 +179,11 @@ function photosOf(cat) {
   return cat.photo ? [cat.photo] : [];
 }
 
+function formatHealthHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/☑/g, '<span class="chk-box" aria-label="已完成">✓</span>');
+}
+
 /* ---------- 把一隻貓畫成一張卡片 ---------- */
 function catCard(cat) {
   // 照片：有填 photo 就用照片，沒填就顯示一個貓咪圖示佔位
@@ -198,6 +203,10 @@ function catCard(cat) {
     ? '<span class="tag tag-color">' + cat.colorType + '</span>'
     : '';
 
+  var healthLine = (cat.health && cat.health !== '待貓窩確認')
+    ? '<p class="cat-health">' + formatHealthHtml(cat.health) + '</p>'
+    : '';
+
   return '' +
     '<a class="cat-card" href="cat.html?id=' + cat.id + '">' +
       '<div class="cat-photo">' + photo + '</div>' +
@@ -206,6 +215,7 @@ function catCard(cat) {
         '<h3>' + cat.name + '</h3>' +
         (meta ? '<p class="cat-meta">' + meta + '</p>' : '') +
         '<p class="cat-desc">' + (cat.personality || '') + '</p>' +
+        healthLine +
       '</div>' +
     '</a>';
 }
@@ -677,7 +687,7 @@ function initCatDetail() {
     ['特徵',     cat.feature],
     ['個性',     cat.personality],
     ['適合的家', cat.fit],
-    ['健康狀況', cat.health]
+    ['健康狀況', formatHealthHtml(cat.health)]
   ].filter(function (r) { return r[1] && !還沒拿到.test(String(r[1]).trim()); });
 
   // 整段內容包在一張半透明白卡片裡（.cat-sheet），
