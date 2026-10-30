@@ -524,7 +524,7 @@ window.CAT_DATA = {
       "feature": "敦厚呆萌小哥",
       "personality": "溫和但怕生，不挑嘴好照顧",
       "fit": "待貓窩確認",
-      "health": "疫苗 ☑、節育 ☑、貓愛滋",
+      "health": "疫苗 ☑、節育 ☑",
       "story": "",
       "photos": ["cats/xiaozhi-1.jpg", "cats/xiaozhi-2.jpg"],
       "video": "",
