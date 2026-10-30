@@ -1184,7 +1184,7 @@ function initHandbook(root, tip) {
   go(m ? parseInt(m[1], 10) - 1 : 0, true);
 }
 
-/* ---------- 7. 小遊戲（games.html、養貓小知識頁） ---------- */
+/* ---------- 7. 小遊戲（shop.html、games.html） ---------- */
 function initGames() {
   var box = document.getElementById('game-list');
   if (!box || !window.GAMES_DATA) return;

@@ -26,7 +26,7 @@ window.GAMES_DATA = {
     {
       "id": "antarctic-cats",
       "name": "南極大冒險",
-      "desc": "待補一句話說明這款在玩什麼。",
+      "desc": "帶著貓咪在冰原上展開刺激大冒險！手機和電腦都能直接點開遊玩。",
       "url": "https://jueyi0206.github.io/antarctic-cats/",
       "cover": "",
       "note": "網頁遊戲，檔案較大，建議在 Wi-Fi 環境下玩"
