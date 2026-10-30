@@ -666,7 +666,10 @@ function initCatDetail() {
       story.map(function (t) { return '<p>' + t + '</p>'; }).join('')
     : '';
 
-  // 資料表：空的欄位不顯示，避免一整排「待確認」
+  // 資料表：還沒拿到的欄位不顯示，避免一整排「待確認」。
+  // 之前只濾掉空字串，但「待確認」是有內容的字串，所以還是會印出來。
+  // 貓窩把資料給了、把「待確認」換成真的內容，那一列就會自己出現。
+  var 還沒拿到 = /^(待確認|待貓窩確認|待貓窩補充|待貓窩提供|年齡不詳|待補)$/;
   var rows = [
     ['性別',     cat.sex],
     ['年齡',     cat.age],
@@ -675,7 +678,7 @@ function initCatDetail() {
     ['個性',     cat.personality],
     ['適合的家', cat.fit],
     ['健康狀況', cat.health]
-  ].filter(function (r) { return r[1]; });
+  ].filter(function (r) { return r[1] && !還沒拿到.test(String(r[1]).trim()); });
 
   // 整段內容包在一張半透明白卡片裡（.cat-sheet），
   // 不管背後是雪地還是黑夜，字都讀得清楚。
