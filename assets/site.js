@@ -1184,7 +1184,7 @@ function initHandbook(root, tip) {
   go(m ? parseInt(m[1], 10) - 1 : 0, true);
 }
 
-/* ---------- 7. 小遊戲（shop.html、games.html） ---------- */
+/* ---------- 7. 小遊戲（games.html） ---------- */
 function initGames() {
   var box = document.getElementById('game-list');
   if (!box || !window.GAMES_DATA) return;
@@ -1195,12 +1195,13 @@ function initGames() {
 
   box.innerHTML = list.length ? list.map(function (g) {
     var cover = g.cover
-      ? '<img src="images/' + g.cover + '" alt="' + g.name + '">'
-      : '<span aria-hidden="true">🎮</span>';
+      ? '<img src="images/' + g.cover + PHOTO_V + '" alt="' + g.name + '">'
+      : '<span aria-hidden="true">' + (g.icon || '🎮') + '</span>';
     return '' +
       '<a class="cat-card" href="' + g.url + '" target="_blank" rel="noopener">' +
         '<div class="cat-photo">' + cover + '</div>' +
         '<div class="cat-body">' +
+          '<span class="tag tag-ok">網頁遊戲・免下載</span>' +
           '<h3>' + g.name + ' ↗</h3>' +
           '<p class="cat-desc">' + (g.desc || '') + '</p>' +
           (g.note ? '<p class="draft-note" style="color:var(--ink-soft);font-weight:400">' + g.note + '</p>' : '') +
