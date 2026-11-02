@@ -18,6 +18,13 @@ SRC  = os.path.join(HERE, "_去背用", "沙龍照")
 OUT  = os.path.join(HERE, "images", "cats")
 邊距 = 0.07          # 貓的四周留多少空白（佔貓本身大小的比例）
 
+# 例外：少數照片不是純色棚拍背景（例如拍在毛毯上），
+# 自動偵測會因為白毛跟米色背景對比太低而只抓到頭部，裁出來過緊。
+# 這裡直接指定要裁的方框（原圖座標 x0,y0,x1,y1），跳過自動偵測。
+手動框 = {
+    "瀏海_1": (0, 0, 1508, 1508),   # 真實照片、毛毯背景，取全寬的正方形
+}
+
 
 def 找貓(im):
     """用邊緣強度找出貓的範圍。
@@ -111,12 +118,14 @@ def 背景圖(im, box):
     return 小.resize((W, H), Image.BICUBIC)
 
 
-def 延伸成正方形(im, box):
+def 延伸成正方形(im, box, 指定=False):
     """把畫面補成正方形，貓置中。先鋪一張背景估計圖，再把原圖貼上去，
     所以不管貓怎麼靠邊、佔多滿，都不會有填不到的空白。"""
     W, H = im.size
     x0, y0, x1, y1 = box
     S = int(max(x1 - x0, y1 - y0) * (1 + 邊距 * 2))
+    if 指定:                          # 手動指定的方框照原樣用，不加邊距
+        S = max(x1 - x0, y1 - y0)
     # 不要憑空生出太多背景：每邊最多補 8%。
     # 貓碰到原圖邊緣時，那個方向本來就被拍斷了，補再多也只是空白，
     # 而且補越多越容易跟原圖對不起來，出現一條或一塊色差。
@@ -219,13 +228,14 @@ def main():
             print("  ⚠ 網站上沒有這隻貓，跳過：", f)
             continue
         im = ImageOps.exif_transpose(Image.open(os.path.join(SRC, f))).convert("RGB")
-        box = 找貓(im)
+        檔名 = os.path.splitext(f)[0]
+        box = 手動框.get(檔名) or 找貓(im)
         W, H = im.size
         占比 = (box[2] - box[0]) * (box[3] - box[1]) / (W * H)
         if 只檢查:
             print(f"  {f:<16} {W}x{H}  貓占畫面 {占比:.0%}  框 {box}")
             continue
-        out = 延伸成正方形(im, box).resize((800, 800), Image.LANCZOS)
+        out = 延伸成正方形(im, box, 檔名 in 手動框).resize((800, 800), Image.LANCZOS)
         out = out.filter(ImageFilter.UnsharpMask(radius=1.2, percent=50, threshold=3))
         out.save(os.path.join(OUT, f"{cid}-{序}.jpg"),
                  quality=84, optimize=True, subsampling=1)     # 不帶 EXIF
