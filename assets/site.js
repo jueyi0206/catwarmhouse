@@ -686,7 +686,6 @@ function initCatDetail() {
     ['花色',     cat.color],
     ['特徵',     cat.feature],
     ['個性',     cat.personality],
-    ['適合的家', cat.fit],
     ['健康狀況', formatHealthHtml(cat.health)]
   ].filter(function (r) { return r[1] && !還沒拿到.test(String(r[1]).trim()); });
 
