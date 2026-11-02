@@ -446,23 +446,6 @@ window.CAT_DATA = {
       "confirmed": "2026-10-30"
     },
     {
-      "id": "corona",
-      "name": "可樂娜",
-      "status": "wait",
-      "sex": "母",
-      "age": "1歲+",
-      "color": "三花",
-      "colorType": "三花貓",
-      "feature": "盛事美顏極品貓",
-      "personality": "親人、機靈，動靜皆宜",
-      "fit": "待貓窩確認",
-      "health": "疫苗 ☑、節育 ☑",
-      "story": "",
-      "photos": ["cats/corona-1.jpg", "cats/corona-2.jpg", "cats/corona-3.jpg"],
-      "video": "",
-      "confirmed": "2026-10-30"
-    },
-    {
       "id": "pipi",
       "name": "皮皮",
       "status": "wait",
@@ -878,6 +861,21 @@ window.CAT_DATA = {
   // （從官方 FB／IG 整理來的，要附上原貼文連結）：
   //   "source": "https://www.facebook.com/…"
     "adopted": [
+    {
+      "id": "corona",
+      "name": "可樂娜",
+      "status": "home",
+      "colorType": "三花貓",
+      "homeDate": "2026-11-01",
+      "story": [
+        "可樂娜是貓窩裡最上相的孩子之一，圖鑑上給她的稱號是「盛事美顏極品貓」——白淨的臉線、一圈一圈的虎斑尾巴，加上一雙圓亮的綠眼睛，怎麼拍都好看。",
+        "她的個性親人又機靈，動靜皆宜：想玩的時候跑得飛快，想撒嬌的時候就會安安靜靜窩到你手邊。疫苗與節育都已經完成，健康狀況一直很穩定。",
+        "2026 年 11 月 1 日，可樂娜遇到了願意陪她一輩子的家人。祝福她在新家繼續當那個最上相、也最被疼愛的女孩。"
+      ],
+      "photos": ["adopted/corona-1.jpg", "adopted/corona-2.jpg"],
+      "sources": [],
+      "confirmed": ""
+    },
     {
       "id": "zhizhi",
       "name": "梔梔",
