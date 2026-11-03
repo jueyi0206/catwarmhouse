@@ -537,7 +537,7 @@ window.CAT_DATA = {
       "id": "mimi",
       "name": "大咪",
       "status": "wait",
-      "sex": "母",
+      "sex": "公",
       "age": "10歲+",
       "color": "虎斑帶白",
       "colorType": "虎斑貓",
