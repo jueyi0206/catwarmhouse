@@ -385,7 +385,7 @@ window.CAT_DATA = {
       "personality": "討喜圓臉，享受久摸，快樂翻滾",
       "health": "疫苗 ☑、節育 ☑",
       "story": "",
-      "photos": ["cats/zhuzhu-1.jpg"],
+      "photos": ["cats/zhuzhu-1.jpg", "cats/zhuzhu-2.jpg"],
       "video": "",
       "confirmed": "2026-10-30"
     },
