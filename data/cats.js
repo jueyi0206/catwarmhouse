@@ -569,7 +569,7 @@ window.CAT_DATA = {
       "id": "xiaoya",
       "name": "小牙",
       "status": "wait",
-      "sex": "公",
+      "sex": "母",
       "age": "4歲+",
       "color": "黑白（賓士）",
       "colorType": "賓士貓",
