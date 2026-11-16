@@ -40,7 +40,7 @@ window.SHOP_DATA = {
       "name": "日日暖暖彈口收納包",
       "price": "送養會現場販售",
       "desc": "日日暖暖專屬 Logo 設計，彈性開口也能完全貼合，方便易取，可裝耳機、零錢、鑰匙等隨身小物。",
-      "photo": "",
+      "photo": "shop-item-4.jpg",
       "status": "on",
       "link": ""
     }
