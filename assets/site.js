@@ -68,7 +68,7 @@ var HERO_V = '?v=998d7668';
 // 貓咪照片的版本號。照片換新的時候檔名不變（cream-1.jpg 永遠叫 cream-1.jpg），
 // 沒有版本號的話，看過的人會一直看到瀏覽器快取裡的舊圖。
 // 數字一樣由 tools/更新版本號.py 自動換掉。
-var PHOTO_V = '?v=2f6ab61f';
+var PHOTO_V = '?v=8aace6f0';
 // 手機版和電腦版的橫幅是兩張不同的圖，這裡記住現在是哪一種螢幕
 var heroWide = window.matchMedia('(min-width: 761px)');
 var _heroExt = null;
@@ -800,20 +800,35 @@ function initShop() {
   var items = window.SHOP_DATA.items || [];
   box.innerHTML = items.length ? items.map(function (it) {
     var s = SHOP_STATUS[it.status] || SHOP_STATUS.soon;
-    var photo = it.photo
-      ? '<img src="images/' + it.photo + PHOTO_V + '" alt="' + it.name + '" loading="lazy">'
-      : '<span aria-hidden="true">🎁</span>';
+
+    // photos 是陣列（1～2 張）；舊格式只有單一個 photo 也照樣吃
+    var pics = it.photos || (it.photo ? [it.photo] : []);
+    pics = pics.slice(0, 2);
+
+    var photoBox;
+    if (pics.length) {
+      photoBox =
+        '<div class="shop-item-photos' + (pics.length === 1 ? ' one' : '') + '">' +
+          pics.map(function (f, i) {
+            return '<img src="images/' + f + PHOTO_V + '" alt="' + it.name +
+                   '（第 ' + (i + 1) + ' 張）" loading="lazy">';
+          }).join('') +
+        '</div>';
+    } else {
+      photoBox = '<div class="shop-item-photos one no-photo"><span aria-hidden="true">🎁</span></div>';
+    }
+
     return '' +
-      '<div class="cat-card" style="cursor:default">' +
-        '<div class="cat-photo">' + photo + '</div>' +
-        '<div class="cat-body">' +
+      '<article class="shop-item">' +
+        photoBox +
+        '<div class="shop-item-body">' +
           '<span class="tag ' + s.cls + '">' + s.text + '</span>' +
           '<h3>' + it.name + '</h3>' +
           (it.price ? '<p class="price">' + it.price + '</p>' : '') +
           '<p class="cat-desc">' + (it.desc || '') + '</p>' +
           (it.link ? '<p style="margin-top:10px"><a href="' + it.link + '" target="_blank" rel="noopener">查看詳情 →</a></p>' : '') +
         '</div>' +
-      '</div>';
+      '</article>';
   }).join('') : '<p class="lead">目前尚無商品資訊。</p>';
 }
 

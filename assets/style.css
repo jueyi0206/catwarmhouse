@@ -7,7 +7,7 @@
    =========================================================== */
 @font-face {
   font-family: "Huninn";
-  src: url("fonts/huninn-subset.woff2?v=b53be009") format("woff2");
+  src: url("fonts/huninn-subset.woff2?v=5cae25ee") format("woff2");
   font-weight: 400 700;
   font-style: normal;
   font-display: swap;
@@ -584,6 +584,76 @@ h3 { font-size: 1.1rem; margin: 1.6em 0 .4em; }
   font-weight: 700;
   color: var(--accent-dk);
   margin: 0 0 8px;
+}
+
+/* ---------- 公益商品卡片（一個商品 1～2 張照片） ----------
+   兩張照片時左右併排，各自正方形；只有一張時拉成一整條寬版（2:1）。
+   手機固定單欄，照片才不會小到看不出賣什麼。 */
+.shop-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 22px;
+  margin: 24px 0 36px;
+}
+.shop-item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.shop-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(38, 49, 74, .14);
+}
+.shop-item-photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;                     /* 兩張照片中間留一條細縫 */
+  background: var(--line);
+}
+.shop-item-photos.one { grid-template-columns: 1fr; gap: 0; }
+.shop-item-photos img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  background: var(--band-bg);
+}
+.shop-item-photos.one img { aspect-ratio: 2 / 1; }
+.shop-item-photos.no-photo {
+  aspect-ratio: 2 / 1;
+  display: grid;
+  place-items: center;
+  background: var(--band-bg);
+  color: #B6C5E0;
+  font-size: 2.6rem;
+}
+.shop-item-body {
+  padding: 18px 20px 22px;
+  flex: 1;
+}
+.shop-item-body h3 {
+  margin: 10px 0 4px;
+  font-size: 1.18rem;
+}
+.shop-item-body .price { margin-bottom: 8px; }
+.shop-item-body .cat-desc { line-height: 1.75; }
+
+@media (max-width: 760px) {
+  .shop-items { grid-template-columns: 1fr; gap: 16px; }
+  .shop-item-body { padding: 14px 16px 18px; }
+  /* 貓咪卡片在手機版把說明壓成兩行，商品說明要完整看到，這裡解開 */
+  .shop-item-body .cat-desc {
+    display: block;
+    -webkit-line-clamp: none;
+    overflow: visible;
+    font-size: .9rem;
+    line-height: 1.7;
+  }
 }
 
 .shop-feature {
