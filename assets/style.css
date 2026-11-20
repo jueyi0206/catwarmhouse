@@ -353,6 +353,47 @@ h3 { font-size: 1.1rem; margin: 1.6em 0 .4em; }
   font-weight: 700;
 }
 
+/* 年份快捷鈕用 <a> 不是 <button>（點了是跳頁內錨點），樣式沿用同一套 */
+.filters a {
+  display: inline-block;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink-soft);
+  border-radius: 999px;
+  padding: 7px 16px;
+  font-size: .88rem;
+  text-decoration: none;
+}
+.filters a:hover { border-color: var(--brand); color: var(--brand-dk); }
+
+/* ---------- 找到家的貓：依年份分段（adopted.html） ----------
+   56 篇排成一長串要捲十幾個畫面，分段之後才有地圖可循。 */
+.year-block {
+  /* 點年份鈕跳過來時，標題不要被固定頁首蓋住 */
+  scroll-margin-top: 86px;
+}
+.year-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 34px 0 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--line);
+}
+.year-block:first-child .year-head { margin-top: 18px; }
+.year-count {
+  font-size: .86rem;
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+.year-block .cat-grid { margin-top: 18px; }
+
+@media (max-width: 760px) {
+  .year-head { margin-top: 26px; }
+  .year-block .cat-grid { margin-top: 12px; }
+}
+
 /* ---------- 一般內容區塊 ---------- */
 /* 注意：只設上下，不要寫成 padding: 10px 0 40px，
    那會把 .wrap 的左右留白蓋掉，手機上文字會貼到螢幕邊緣。*/

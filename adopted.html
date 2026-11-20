@@ -18,7 +18,7 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <link rel="icon" href="images/favicon.png?v=e05dc69b" type="image/png">
-<link rel="stylesheet" href="assets/style.css?v=13afea88">
+<link rel="stylesheet" href="assets/style.css?v=bd91cbd2">
 </head>
 <body>
 
@@ -57,8 +57,11 @@
     <p class="lead">牠們曾經在這裡等，現在都有自己的家了。<br>
        這一頁是為了讓還在考慮的人知道：這件事真的會發生。</p>
 
-    <!-- 名單由 data/cats.js 的 adopted 自動產生。
-         還是空的時候，下面這張「整理中」的卡片會留著。 -->
+    <!-- 年份快捷鈕與名單都由 data/cats.js 的 adopted 自動產生
+         （程式在 assets/site.js 的 initAdoptedList）。
+         名單還是空的時候，下面那張「整理中」的卡片會留著，快捷鈕也不會出現。 -->
+    <div id="adopted-years" aria-label="跳到某一年"></div>
+
     <div id="adopted-list">
       <div class="card" style="text-align:center; padding:48px 26px">
         <p style="font-size:3rem; margin:0">🏡</p>
@@ -112,6 +115,6 @@
 </footer>
 
 <script src="data/cats.js?v=d1f5a048"></script>
-<script src="assets/site.js?v=bfb5867a"></script>
+<script src="assets/site.js?v=8fb577fc"></script>
 </body>
 </html>

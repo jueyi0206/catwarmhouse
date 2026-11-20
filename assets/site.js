@@ -365,6 +365,13 @@ function adoptedShown() {
   });
 }
 
+/* 一篇有可能是好幾隻一起送出的（名字用「、」隔開，例如「勇哥、小戴」），
+   要算「幾隻找到家」就得拆開算，不能直接數篇數。 */
+function 一篇幾隻(cat) { return String(cat.name || '').split('、').length; }
+function 找到家幾隻() {
+  return adoptedShown().reduce(function (sum, c) { return sum + 一篇幾隻(c); }, 0);
+}
+
 /* ---------- 找到家的貓 ----------
    用法：在頁面放 <div id="adopted-list"></div>
    資料來自 data/cats.js 的 adopted（貓咪送養後整段搬過去）。
@@ -381,8 +388,38 @@ function initAdoptedList() {
     return (b.homeDate || '').localeCompare(a.homeDate || '');
   });
 
-  box.className = 'cat-grid';
-  box.innerHTML = list.map(adoptedCard).join('');
+  // 2026-11-20：56 篇排成一長串要捲十幾個畫面，改成依年份分段。
+  // 年份順序照 list 出現的順序走（已經由新到舊），日期不詳的自然落在最後。
+  var years = [], group = {};
+  list.forEach(function (cat) {
+    var y = cat.homeDate ? cat.homeDate.slice(0, 4) : '未定';
+    if (!group[y]) { group[y] = []; years.push(y); }
+    group[y].push(cat);
+  });
+
+  function 段落標題(y) { return y === '未定' ? '年份待確認' : y + ' 年'; }
+
+  box.className = 'year-blocks';
+  box.innerHTML = years.map(function (y) {
+    var cats = group[y];
+    var n = cats.reduce(function (sum, c) { return sum + 一篇幾隻(c); }, 0);
+    return '' +
+      '<section class="year-block" id="y' + y + '">' +
+        '<h2 class="year-head">' + 段落標題(y) +
+          '<span class="year-count">' + n + ' 隻找到家</span>' +
+        '</h2>' +
+        '<div class="cat-grid">' + cats.map(adoptedCard).join('') + '</div>' +
+      '</section>';
+  }).join('');
+
+  // 年份快捷鈕：點了跳到那一年。沒有這個容器就不做。
+  var bar = document.getElementById('adopted-years');
+  if (bar) {
+    bar.className = 'filters year-jump';
+    bar.innerHTML = years.map(function (y) {
+      return '<a href="#y' + y + '">' + (y === '未定' ? '年份待確認' : y) + '</a>';
+    }).join('');
+  }
 }
 
 /* 一隻貓一則故事：照片在左、文字在右，手機上則是上下排。
@@ -530,7 +567,7 @@ function initStats() {
 
   var map = {
     'stat-wait':    cats.length,                               // 等家的貓咪一律都是等家中
-    'stat-adopted': adoptedShown().length
+    'stat-adopted': 找到家幾隻()                           // 篇數≠隻數，要拆開算
   };
 
   Object.keys(map).forEach(function (id) {
