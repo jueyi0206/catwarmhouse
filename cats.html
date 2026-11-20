@@ -66,6 +66,13 @@
   <div class="paw-bg">
   <div class="wrap section">
 
+    <!-- 數字由 data/cats.js 自動計算（程式在 assets/site.js 的 initStats），
+         首頁也是同一組 id。「已找到家」算的是隻數不是篇數。 -->
+    <div class="stats">
+      <div class="stat"><b id="stat-wait">—</b><span>正在等家</span></div>
+      <div class="stat"><b id="stat-adopted">—</b><span>已找到家</span></div>
+    </div>
+
     <!-- 篩選鈕由 assets/site.js 照 data/cats.js 的「_毛色分類」自動產生，
          要加分類改資料檔就好，這裡不用動。 -->
     <div class="filters" id="cat-filters" aria-label="依毛色篩選"></div>

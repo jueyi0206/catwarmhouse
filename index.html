@@ -82,6 +82,16 @@
     <div id="cat-list" data-limit="4" class="cat-grid"></div>
     <p><a class="btn-ghost" href="cats.html">看全部的貓咪 →</a></p>
 
+    <!-- ===== 找到家的貓（最近 12 隻縮圖） =====
+         縮圖由 assets/site.js 照 data/cats.js 的 adopted 自動產生，
+         排成兩列、只放 data-limit 指定的隻數，完整名單在 adopted.html。 -->
+    <h2>也看看已經找到家的貓</h2>
+    <p class="lead">牠們曾經也在等家的名單上。</p>
+    <div class="home-strip-wrap"><div id="adopted-strip" data-limit="12"></div></div>
+    <p class="btn-row" style="margin-top:4px">
+      <a class="btn-ghost" href="adopted.html">看全部找到家的貓 →</a>
+    </p>
+
   </div>
 
   <!-- ===== 領養流程簡版 ===== -->
