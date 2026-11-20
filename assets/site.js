@@ -68,7 +68,7 @@ var HERO_V = '?v=998d7668';
 // 貓咪照片的版本號。照片換新的時候檔名不變（cream-1.jpg 永遠叫 cream-1.jpg），
 // 沒有版本號的話，看過的人會一直看到瀏覽器快取裡的舊圖。
 // 數字一樣由 tools/更新版本號.py 自動換掉。
-var PHOTO_V = '?v=8aace6f0';
+var PHOTO_V = '?v=ce52ae45';
 // 手機版和電腦版的橫幅是兩張不同的圖，這裡記住現在是哪一種螢幕
 var heroWide = window.matchMedia('(min-width: 761px)');
 var _heroExt = null;
@@ -357,6 +357,14 @@ function initPaw() {
   });
 }
 
+/* 找到家的貓：hide: true 的先不上架（例如還沒有照片的），
+   官網四個地方（列表、首頁縮圖條、數字統計、單貓頁）都要跳過。 */
+function adoptedShown() {
+  return (window.CAT_DATA && window.CAT_DATA.adopted || []).filter(function (c) {
+    return !c.hide;
+  });
+}
+
 /* ---------- 找到家的貓 ----------
    用法：在頁面放 <div id="adopted-list"></div>
    資料來自 data/cats.js 的 adopted（貓咪送養後整段搬過去）。
@@ -365,7 +373,7 @@ function initAdoptedList() {
   var box = document.getElementById('adopted-list');
   if (!box || !window.CAT_DATA) return;
 
-  var list = window.CAT_DATA.adopted || [];
+  var list = adoptedShown();
   if (!list.length) return;        // 空的就不要蓋掉「整理中」的訊息
 
   // 新的排前面。沒填日期的排最後，不會把有日期的擠掉。
@@ -439,7 +447,7 @@ function initAdoptedStrip() {
   var box = document.getElementById('adopted-strip');
   if (!box || !window.CAT_DATA) return;
 
-  var list = (window.CAT_DATA.adopted || []).slice().sort(function (a, b) {
+  var list = adoptedShown().slice().sort(function (a, b) {
     return (b.homeDate || '').localeCompare(a.homeDate || '');
   });
   var limit = parseInt(box.dataset.limit, 10);
@@ -522,7 +530,7 @@ function initStats() {
 
   var map = {
     'stat-wait':    cats.length,                               // 等家的貓咪一律都是等家中
-    'stat-adopted': (window.CAT_DATA.adopted || []).length
+    'stat-adopted': adoptedShown().length
   };
 
   Object.keys(map).forEach(function (id) {
@@ -640,7 +648,7 @@ function initCatDetail() {
 
   // 從網址取得 ?id=xxx
   var id = new URLSearchParams(location.search).get('id');
-  var all = (window.CAT_DATA.cats || []).concat(window.CAT_DATA.adopted || []);
+  var all = (window.CAT_DATA.cats || []).concat(adoptedShown());
   var cat = all.filter(function (c) { return c.id === id; })[0];
 
   if (!cat) {

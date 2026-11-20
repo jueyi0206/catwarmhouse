@@ -7,7 +7,7 @@
    =========================================================== */
 @font-face {
   font-family: "Huninn";
-  src: url("fonts/huninn-subset.woff2?v=5cae25ee") format("woff2");
+  src: url("fonts/huninn-subset.woff2?v=bbad8e58") format("woff2");
   font-weight: 400 700;
   font-style: normal;
   font-display: swap;
@@ -1304,7 +1304,13 @@ body[class*="theme-"] .cat-sheet {
    手機上可以橫向滑動，不會把頁面撐長。
    =========================================================== */
 .home-strip {
-  display: flex;
+  /* 2026-11-20：找到家的貓從 7 隻變成 56 隻，一行拉太長，
+     改成 grid 由上往下填兩列、填滿再往右長一欄，橫向長度直接砍一半。 */
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(2, auto);
+  grid-auto-columns: 96px;
+  justify-content: start;
   gap: 14px;
   margin: 16px 0 18px;
   overflow-x: auto;
