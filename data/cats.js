@@ -1690,7 +1690,11 @@ window.CAT_DATA = {
         "認養牠的家人是養貓新手，來貓窩和牠互動了幾次後，帶著忐忑又期待的心情把牠抱回家試住。毛豆在新家適應得很好，第二天就能無憂無慮地睡在小姊姊身旁。",
         "渾身散發幸福感的毛豆，也就這樣幸福地定居下來了。"
       ],
-      "photos": ["adopted/maodou-c.jpg", "adopted/maodou-1.jpg"],
+      "photos": [
+        "adopted/maodou-1.jpg",
+        "adopted/maodou-2.jpg",
+        "adopted/maodou-3.jpg"
+      ],
       "sources": [
         {
           "label": "送養日（官方 FB）",
