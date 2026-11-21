@@ -788,6 +788,24 @@ window.CAT_DATA = {
       "photos": ["cats/brook-1.jpg"],
       "video": "",
       "confirmed": "2026-10-30"
+    },
+    {
+      "id": "qiumei",
+      "name": "秋妹",
+      "status": "wait",
+      "sex": "母",
+      "age": "2個月",
+      "color": "虎斑帶白",
+      "colorType": "虎斑貓",
+      "feature": "秋天的寶貝",
+      "personality": "食量佳、較為膽小、喜歡趴臥姿",
+      "health": "",
+      "story": "",
+      "photos": [
+        "cats/qiumei-1.jpg"
+      ],
+      "video": "",
+      "confirmed": ""
     }
   ],
 
