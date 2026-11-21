@@ -1862,7 +1862,7 @@ window.CAT_DATA = {
         "滷蛋和貢丸是一對兄妹，一起被帶到了新家。",
         "很開心兄妹倆可以繼續作伴，繼續一起打打鬧鬧地玩耍。謝謝新爸媽和我們一起愛牠們。"
       ],
-      "photos": ["adopted/ludan-c.jpg", "adopted/ludan-1.jpg"],
+      "photos": ["adopted/ludan-1.jpg", "adopted/ludan-2.jpg", "adopted/ludan-3.jpg"],
       "sources": [
         {
           "label": "原貼文（官方 FB）",
@@ -1880,7 +1880,7 @@ window.CAT_DATA = {
         "胖虎被接到駁二附近的新家，即將成為一隻文青貓。",
         "到新家兩天，牠就開始會撒嬌了，適應得很好。謝謝胖虎的新媽咪和我們一起愛牠。"
       ],
-      "photos": ["adopted/panghu-c.jpg", "adopted/panghu-1.jpg"],
+      "photos": ["adopted/panghu-1.jpg", "adopted/panghu-2.jpg", "adopted/panghu-3.jpg"],
       "sources": [
         {
           "label": "原貼文（官方 FB）",
