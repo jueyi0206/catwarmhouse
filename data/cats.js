@@ -790,6 +790,24 @@ window.CAT_DATA = {
       "confirmed": "2026-10-30"
     },
     {
+      "id": "qiufeng",
+      "name": "秋楓",
+      "status": "wait",
+      "sex": "公",
+      "age": "2個月",
+      "color": "虎斑帶白",
+      "colorType": "虎斑貓",
+      "feature": "秋天的寶貝",
+      "personality": "食量佳、活動力強、容易緊張",
+      "health": "",
+      "story": "",
+      "photos": [
+        "cats/qiufeng-1.jpg"
+      ],
+      "video": "",
+      "confirmed": ""
+    },
+    {
       "id": "qiumei",
       "name": "秋妹",
       "status": "wait",
