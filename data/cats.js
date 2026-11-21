@@ -162,7 +162,7 @@ window.CAT_DATA = {
       "health": "疫苗 ☑",
       "story": "",
       "photos": ["cats/doudou-1.jpg", "cats/doudou-2.jpg", "cats/doudou-3.jpg"],
-      "video": "",
+      "video": "https://www.youtube.com/shorts/5JEbxS2Q43Y",
       "confirmed": "2026-10-30"
     },
     {
@@ -322,7 +322,7 @@ window.CAT_DATA = {
       "health": "疫苗 ☑",
       "story": "",
       "photos": ["cats/queen-1.jpg", "cats/queen-2.jpg", "cats/queen-3.jpg"],
-      "video": "",
+      "video": "https://www.youtube.com/shorts/ceK8QjwIC34",
       "confirmed": "2026-10-30"
     },
     {
