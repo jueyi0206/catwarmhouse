@@ -174,6 +174,12 @@ function checkColorTypes(cats) {
 /* ---------- 取得一隻貓的照片清單 ----------
    新寫法是 photos: ["a.jpg", "b.jpg", "c.jpg"]，
    舊的 photo: "a.jpg" 也還能用，會當成只有一張。 */
+/* 每隻貓自己的網頁：cat/<id>.html（tools/產生貓咪頁.py 產生，跑更新版本號時自動做）。
+   以前是 cat.html?id=xxx，那種網址 FB／LINE 的分享預覽抓不到貓的照片和名字。 */
+function catUrl(cat) {
+  return 'cat/' + encodeURIComponent(cat.id) + '.html';
+}
+
 function photosOf(cat) {
   if (cat.photos && cat.photos.length) return cat.photos.filter(Boolean);
   return cat.photo ? [cat.photo] : [];
@@ -208,7 +214,7 @@ function catCard(cat) {
     : '';
 
   return '' +
-    '<a class="cat-card" href="cat.html?id=' + cat.id + '">' +
+    '<a class="cat-card" href="' + catUrl(cat) + '">' +
       '<div class="cat-photo">' + photo + '</div>' +
       '<div class="cat-body">' +
         tag +
@@ -466,7 +472,7 @@ function adoptedCard(cat) {
   if (teaser.length > 46) teaser = teaser.slice(0, 46) + '…';
 
   return '' +
-    '<a class="cat-card" href="cat.html?id=' + cat.id + '">' +
+    '<a class="cat-card" href="' + catUrl(cat) + '">' +
       '<div class="cat-photo">' + photo + '</div>' +
       '<div class="cat-body">' +
         (cat.homeDate ? '<span class="tag tag-done">已找到家</span>' : '') +
@@ -497,7 +503,7 @@ function initAdoptedStrip() {
     var photo = first
       ? '<img src="images/' + first + PHOTO_V + '" alt="" loading="lazy">'
       : '<span aria-hidden="true">🐈</span>';
-    return '<a class="home-chip" href="cat.html?id=' + cat.id + '">' +
+    return '<a class="home-chip" href="' + catUrl(cat) + '">' +
              '<span class="home-photo">' + photo + '</span>' +
              '<span class="home-name">' + cat.name + '</span>' +
            '</a>';
@@ -683,10 +689,18 @@ function initCatDetail() {
   var box = document.getElementById('cat-detail');
   if (!box || !window.CAT_DATA) return;
 
-  // 從網址取得 ?id=xxx
-  var id = new URLSearchParams(location.search).get('id');
+  // 哪一隻貓：cat/<id>.html 會在 <body data-cat-id> 寫好；
+  // 舊網址 cat.html?id=xxx 則從網址取得
+  var params = new URLSearchParams(location.search);
+  var id = document.body.dataset.catId || params.get('id');
   var all = (window.CAT_DATA.cats || []).concat(adoptedShown());
   var cat = all.filter(function (c) { return c.id === id; })[0];
+
+  // 舊網址自動轉到新網址（stay=1 是 404 頁轉回來的，代表新網頁還沒產生，就留在這裡）
+  if (cat && !document.body.dataset.catId && !params.get('stay')) {
+    location.replace(catUrl(cat));
+    return;
+  }
 
   if (!cat) {
     box.innerHTML =
@@ -696,7 +710,8 @@ function initCatDetail() {
     return;
   }
 
-  document.title = cat.name + '｜日日暖暖中途貓窩';
+  // 標題格式要跟 tools/產生貓咪頁.py 寫進 HTML 的一樣
+  document.title = cat.name + (cat.status === 'home' ? '｜找到家的貓' : '｜等家的貓咪') + '｜日日暖暖中途貓窩';
 
   // 依毛色套用背景主題（白貓→雪地、黑貓→夜晚…）。
   // 對應表寫在 data/cats.js 的「_毛色主題」，背景圖本身寫在 style.css。

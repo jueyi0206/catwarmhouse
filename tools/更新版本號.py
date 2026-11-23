@@ -11,6 +11,7 @@
 
 什麼時候要跑：
     改過 assets/ 或 data/ 裡的檔案之後，推上 GitHub 之前跑一次。
+    最後會順便產生每隻貓的網頁（cat/<id>.html）和 sitemap.xml，見 tools/產生貓咪頁.py。
 
 怎麼跑（在專案資料夾開終端機）：
     python tools/更新版本號.py
@@ -252,6 +253,16 @@ def main():
     print("更新了 " + str(changed) + " 個網頁")
 
     check_font()
+
+    # 每隻貓自己的網頁（cat/<id>.html）和 sitemap.xml 是照 cat.html 和 data/cats.js 產生的，
+    # 要在上面把 cat.html 的版本號更新完之後才做，產生出來的頁面版本號才會是新的。
+    print()
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "gen_cat_pages", os.path.join(ROOT, "tools", "產生貓咪頁.py"))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    mod.main()
 
 
 if __name__ == "__main__":
