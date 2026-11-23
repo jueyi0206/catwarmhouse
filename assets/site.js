@@ -441,8 +441,9 @@ function initAdoptedList() {
 function homeDateLine(cat) {
   if (!cat.homeDate) return '';
   function 寫(v, 全年) {
+    // 只知道年月的（例如 "2025-12"）就不寫日
     var d = v.split('-');
-    return (全年 ? d[0] + ' 年 ' : '') + (+d[1]) + ' 月 ' + (+d[2]) + ' 日';
+    return (全年 ? d[0] + ' 年 ' : '') + (+d[1]) + ' 月' + (d[2] ? ' ' + (+d[2]) + ' 日' : '');
   }
   if (!cat.inDate) return 寫(cat.homeDate, true) + '　找到家';
   var 跨年 = cat.inDate.slice(0, 4) !== cat.homeDate.slice(0, 4);
