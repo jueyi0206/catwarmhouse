@@ -4,8 +4,7 @@
 由志工瑞億協助製作，內容以貓窩官方公告為準。
 
 > 已上線：https://catwarmhouse.org
-> 用 AI 助手改網站之前，請先讀 **`AGENTS.md`**（Antigravity 用）或 `CLAUDE.md`（Claude 用）。
-> 改完 `data/` 一定要跑 `python tools/更新版本號.py`。
+> 改完 `data/` 一定要跑 `python tools/更新版本號.py`（詳見 `data/貓咪資料怎麼改.md`）。
 
 ---
 
