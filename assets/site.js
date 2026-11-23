@@ -68,7 +68,7 @@ var HERO_V = '?v=998d7668';
 // 貓咪照片的版本號。照片換新的時候檔名不變（cream-1.jpg 永遠叫 cream-1.jpg），
 // 沒有版本號的話，看過的人會一直看到瀏覽器快取裡的舊圖。
 // 數字一樣由 tools/更新版本號.py 自動換掉。
-var PHOTO_V = '?v=accddcae';
+var PHOTO_V = '?v=fb583fc4';
 // 手機版和電腦版的橫幅是兩張不同的圖，這裡記住現在是哪一種螢幕
 var heroWide = window.matchMedia('(min-width: 761px)');
 var _heroExt = null;
@@ -93,7 +93,7 @@ function setHero(filter) {
   // 路徑要用網頁本身算出來的絕對網址。
   // 直接寫 "images/hero/..." 的話，瀏覽器會當成相對於 style.css 的位置
   // （變成 assets/images/hero/...），圖就找不到了。
-  var base = new URL('images/hero/', location.href).href;
+  var base = new URL('images/hero/', document.baseURI).href;
   var ext = heroExt();
   // 橫幅換新圖時檔名不變，沒有版本號的話使用者會繼續看到快取裡的舊圖
   var v = HERO_V;
@@ -131,7 +131,7 @@ function setHero(filter) {
       paw.insertBefore(layer, paw.firstChild);
     }
     // 直接換整張圖，不是改顏色——改顏色時瀏覽器不一定會重繪遮罩
-    var pawUrl = new URL('images/paws/' + (TONE[name] ? name : 'all') + '.svg', location.href).href;
+    var pawUrl = new URL('images/paws/' + (TONE[name] ? name : 'all') + '.svg', document.baseURI).href;
     layer.style.setProperty('--paw-art', 'url("' + pawUrl + '")');
   }
 
@@ -178,6 +178,11 @@ function checkColorTypes(cats) {
    以前是 cat.html?id=xxx，那種網址 FB／LINE 的分享預覽抓不到貓的照片和名字。 */
 function catUrl(cat) {
   return 'cat/' + encodeURIComponent(cat.id) + '.html';
+}
+
+/* 養貓小知識也一樣：tip/<id>.html。草稿（draft）不產生網頁，繼續用舊網址。 */
+function tipUrl(t) {
+  return t.draft ? 'tip.html?id=' + t.id : 'tip/' + encodeURIComponent(t.id) + '.html';
 }
 
 function photosOf(cat) {
@@ -274,7 +279,7 @@ function initCatList() {
       if (warmed[name]) return;
       warmed[name] = true;
       var suffix = heroWide.matches ? '-d' : '-m';
-      new Image().src = new URL('images/hero/' + name + suffix + heroExt() + HERO_V, location.href).href;
+      new Image().src = new URL('images/hero/' + name + suffix + heroExt() + HERO_V, document.baseURI).href;
     }
   }
 
@@ -357,8 +362,9 @@ function initPaw() {
     if (box.querySelector(':scope > .paw-layer')) return;
     var layer = document.createElement('div');
     layer.className = 'paw-layer';
+    // 用 document.baseURI 而不是 location.href：cat/、tip/ 底下的頁面有 <base href="/">
     layer.style.setProperty('--paw-art',
-      'url("' + new URL('images/paws/all.svg', location.href).href + '")');
+      'url("' + new URL('images/paws/all.svg', document.baseURI).href + '")');
     box.insertBefore(layer, box.firstChild);
   });
 }
@@ -924,7 +930,7 @@ function tipsSorted() {
 
 function tipCard(t) {
   return '' +
-    '<a class="cat-card tip-card" href="tip.html?id=' + t.id + '">' +
+    '<a class="cat-card tip-card" href="' + tipUrl(t) + '">' +
       '<div class="cat-photo tip-cover">' + tipCoverImg(t) + '</div>' +
       '<div class="cat-body">' +
         tipLabels(t) +
@@ -937,7 +943,7 @@ function tipCard(t) {
 
 // 頁面最上面的大卡片（featured: true 的那一篇）
 function tipFeature(t) {
-  var href = 'tip.html?id=' + t.id + '&' + PHOTO_V.slice(1);
+  var href = tipUrl(t);
   return '' +
     '<article class="tip-feature">' +
       '<a class="tip-feature-cover" href="' + href + '">' + tipCoverImg(t, t.title + ' 封面') + '</a>' +
@@ -1015,8 +1021,16 @@ function initTipDetail() {
   var box = document.getElementById('tip-detail');
   if (!box || !window.TIPS_DATA) return;
 
-  var id = new URLSearchParams(location.search).get('id');
+  // tip/<id>.html 會在 <body data-tip-id> 寫好；舊網址 tip.html?id=xxx 從網址取得
+  var params = new URLSearchParams(location.search);
+  var id = document.body.dataset.tipId || params.get('id');
   var tip = (window.TIPS_DATA.tips || []).filter(function (t) { return t.id === id; })[0];
+
+  // 舊網址自動轉到新網址（保留 #p5 這種頁碼；stay=1 是 404 頁轉回來的）
+  if (tip && !tip.draft && !document.body.dataset.tipId && !params.get('stay')) {
+    location.replace(tipUrl(tip) + location.hash);
+    return;
+  }
 
   if (!tip) {
     box.innerHTML = '<h1>找不到這篇文章</h1>' +
@@ -1024,7 +1038,7 @@ function initTipDetail() {
     return;
   }
 
-  document.title = tip.title + '｜日日暖暖中途貓窩';
+  document.title = tip.title + '｜養貓小知識｜日日暖暖中途貓窩';   // 跟 tools/產生貓咪頁.py 一致
   var isBook = tip.type === 'handbook';
 
   box.innerHTML = '' +
@@ -1219,7 +1233,7 @@ function initHandbook(root, tip) {
     [i - 1, i + 1].forEach(function (k) {
       if (k >= 0 && k < total) new Image().src = handbookPage(tip, k);
     });
-    if (history.replaceState) history.replaceState(null, '', '#p' + (i + 1));
+    if (history.replaceState) history.replaceState(null, '', location.pathname + location.search + '#p' + (i + 1));   // 要寫完整路徑：tip/ 頁面有 <base href="/">，只寫 #p 會變成首頁網址
   }
 
   [].forEach.call(prevs, function (b) { b.addEventListener('click', function () { go(now - 1); }); });

@@ -9,11 +9,12 @@
 <link rel="icon" href="/images/favicon.png?v=e05dc69b" type="image/png">
 <link rel="stylesheet" href="/assets/style.css?v=a7110849">
 <script>
-// 每隻貓的網頁 cat/<id>.html 是工具產生的。如果新增了貓卻還沒產生（忘了跑 tools/更新版本號.py），
-// 先轉到舊式網址 cat.html?id=<id> 顯示，不讓人看到「找不到這一頁」。
+// 每隻貓的網頁 cat/<id>.html、每篇小知識 tip/<id>.html 是工具產生的。
+// 如果新增了卻還沒產生（忘了跑 tools/更新版本號.py），
+// 先轉到舊式網址 cat.html?id=<id>／tip.html?id=<id> 顯示，不讓人看到「找不到這一頁」。
 (function () {
-  var m = /^\/cat\/([^\/]+)\.html$/.exec(location.pathname);
-  if (m) location.replace('/cat.html?id=' + m[1] + '&stay=1');
+  var m = /^\/(cat|tip)\/([^\/]+)\.html$/.exec(location.pathname);
+  if (m) location.replace('/' + m[1] + '.html?id=' + m[2] + '&stay=1' + location.hash);
 })();
 </script>
 </head>
