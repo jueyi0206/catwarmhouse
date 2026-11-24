@@ -15,7 +15,7 @@
 window.CAT_DATA = {
   "_說明": "這是全站貓咪資料的唯一來源。新增、修改、下架貓咪都只改這個檔，網頁會自動更新。欄位意義與操作步驟請看同資料夾的『貓咪資料怎麼改.md』。",
   "_狀態可用值": "wait=等家中（放在『等家的貓咪』頁）/ home=已找到家（放在『找到家的貓』頁）。網頁上不顯示狀態標籤，因為等家的貓咪一律都是等家中。",
-  "_最後更新": "2026-11-10",
+  "_最後更新": "2026-11-24",
 
   // 「等家的貓咪」頁的毛色篩選鈕，就是照這個清單產生的。
   // 要新增、改名、調順序，改這一行就好，網頁會自動跟著變。
@@ -802,7 +802,9 @@ window.CAT_DATA = {
       "health": "",
       "story": "",
       "photos": [
-        "cats/qiufeng-1.jpg"
+        "cats/qiufeng-1.jpg",
+        "cats/qiufeng-2.jpg",
+        "cats/qiufeng-3.jpg"
       ],
       "video": "",
       "confirmed": ""
@@ -820,7 +822,9 @@ window.CAT_DATA = {
       "health": "",
       "story": "",
       "photos": [
-        "cats/qiumei-1.jpg"
+        "cats/qiumei-1.jpg",
+        "cats/qiumei-2.jpg",
+        "cats/qiumei-3.jpg"
       ],
       "video": "",
       "confirmed": ""
