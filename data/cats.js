@@ -577,7 +577,7 @@ window.CAT_DATA = {
       "personality": "胃口極佳，窈窕身形，不老妹妹頭",
       "health": "疫苗 ☑、節育 ☑",
       "story": "",
-      "photos": ["cats/meimei-1.jpg", "cats/meimei-2.jpg"],
+      "photos": ["cats/meimei-1.jpg", "cats/meimei-2.jpg", "cats/meimei-3.jpg"],
       "video": "",
       "confirmed": "2026-10-30"
     },
