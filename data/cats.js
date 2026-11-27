@@ -249,7 +249,7 @@ window.CAT_DATA = {
       "id": "dangdang",
       "name": "噹噹",
       "status": "wait",
-      "sex": "公",
+      "sex": "母",
       "age": "3歲+",
       "color": "黑白（乳牛）",
       "colorType": "賓士貓",
