@@ -289,7 +289,7 @@ window.CAT_DATA = {
       "personality": "娃娃般的身形，迷人討喜",
       "health": "疫苗 ☑、節育 ☑、貓愛滋",
       "story": "",
-      "photos": ["cats/beier-1.jpg"],
+      "photos": ["cats/beier-1.jpg", "cats/beier-2.jpg", "cats/beier-3.jpg"],
       "video": "",
       "confirmed": "2026-10-30"
     },
