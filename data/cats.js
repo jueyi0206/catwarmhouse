@@ -401,7 +401,7 @@ window.CAT_DATA = {
       "personality": "睡到自然醒，再默默清盤，是日常",
       "health": "疫苗 ☑、節育 ☑",
       "story": "",
-      "photos": ["cats/xiaohu-1.jpg", "cats/xiaohu-2.jpg"],
+      "photos": ["cats/xiaohu-1.jpg", "cats/xiaohu-2.jpg", "cats/xiaohu-3.jpg"],
       "video": "",
       "confirmed": "2026-10-30"
     },
