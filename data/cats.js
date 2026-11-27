@@ -497,7 +497,7 @@ window.CAT_DATA = {
       "personality": "靦腆文靜，腳步輕快，性格溫潤",
       "health": "疫苗 ☑、節育 ☑",
       "story": "",
-      "photos": ["cats/quanquan-1.jpg"],
+      "photos": ["cats/quanquan-1.jpg", "cats/quanquan-2.jpg", "cats/quanquan-3.jpg", "cats/quanquan-4.jpg"],
       "video": "",
       "confirmed": "2026-10-30"
     },
