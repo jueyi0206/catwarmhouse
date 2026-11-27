@@ -449,7 +449,7 @@ window.CAT_DATA = {
       "personality": "溫和但怕生，不挑嘴好照顧",
       "health": "疫苗 ☑、節育 ☑",
       "story": "",
-      "photos": ["cats/xiaozhi-1.jpg", "cats/xiaozhi-2.jpg"],
+      "photos": ["cats/xiaozhi-1.jpg", "cats/xiaozhi-2.jpg", "cats/xiaozhi-3.jpg"],
       "video": "",
       "confirmed": "2026-10-30"
     },
