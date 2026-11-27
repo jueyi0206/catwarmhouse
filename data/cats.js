@@ -513,7 +513,7 @@ window.CAT_DATA = {
       "personality": "友善乖巧、親人，喜安靜自居",
       "health": "疫苗 ☑、節育 ☑",
       "story": "",
-      "photos": ["cats/mimi-1.jpg", "cats/mimi-2.jpg"],
+      "photos": ["cats/mimi-1.jpg", "cats/mimi-2.jpg", "cats/mimi-3.jpg"],
       "video": "",
       "confirmed": "2026-10-30"
     },
