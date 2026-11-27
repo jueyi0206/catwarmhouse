@@ -15,7 +15,7 @@
 window.CAT_DATA = {
   "_說明": "這是全站貓咪資料的唯一來源。新增、修改、下架貓咪都只改這個檔，網頁會自動更新。欄位意義與操作步驟請看同資料夾的『貓咪資料怎麼改.md』。",
   "_狀態可用值": "wait=等家中（放在『等家的貓咪』頁）/ home=已找到家（放在『找到家的貓』頁）。網頁上不顯示狀態標籤，因為等家的貓咪一律都是等家中。",
-  "_最後更新": "2026-11-25",
+  "_最後更新": "2026-11-27",
 
   // 「等家的貓咪」頁的毛色篩選鈕，就是照這個清單產生的。
   // 要新增、改名、調順序，改這一行就好，網頁會自動跟著變。
@@ -115,22 +115,6 @@ window.CAT_DATA = {
       "story": "",
       "photos": ["cats/jill-1.jpg", "cats/jill-2.jpg", "cats/jill-3.jpg"],
       "video": "",
-      "confirmed": "2026-10-30"
-    },
-    {
-      "id": "jinbao",
-      "name": "進寶",
-      "status": "wait",
-      "sex": "母",
-      "age": "2歲",
-      "color": "黑貓",
-      "colorType": "黑貓",
-      "feature": "性感零極限美模",
-      "personality": "嗆辣親柔並存，帥美魅力兼容；脾氣古怪情緒切換快，偶爾討摸享受、低吼時請勿靠近",
-      "health": "疫苗 ☑、節育 ☑",
-      "story": "",
-      "photos": ["cats/jinbao-1.jpg", "cats/jinbao-2.jpg", "cats/jinbao-3.jpg"],
-      "video": "https://www.youtube.com/shorts/6IAKYtvc5WA",
       "confirmed": "2026-10-30"
     },
     {
@@ -821,6 +805,23 @@ window.CAT_DATA = {
   // （從官方 FB／IG 整理來的，要附上原貼文連結）：
   //   "source": "https://www.facebook.com/…"
     "adopted": [
+    {
+      "id": "jinbao",
+      "name": "進寶",
+      "status": "home",
+      "homeDate": "2026-11",
+      "sex": "母",
+      "age": "2歲",
+      "color": "黑貓",
+      "colorType": "黑貓",
+      "feature": "性感零極限美模",
+      "personality": "嗆辣親柔並存，帥美魅力兼容；脾氣古怪情緒切換快，偶爾討摸享受、低吼時請勿靠近",
+      "health": "疫苗 ☑、節育 ☑",
+      "story": "",
+      "photos": ["cats/jinbao-1.jpg", "cats/jinbao-2.jpg", "cats/jinbao-3.jpg"],
+      "video": "https://www.youtube.com/shorts/6IAKYtvc5WA",
+      "confirmed": "⚠️ 2026-11-27 瑞億說已送養，送養日只知道 11 月；故事、送養貼文連結改天補"
+    },
     {
       "id": "ponkan",
       "name": "椪柑",
