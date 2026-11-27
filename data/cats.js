@@ -337,7 +337,7 @@ window.CAT_DATA = {
       "personality": "精實高挑，溫文儒雅不做怪",
       "health": "疫苗 ☑、節育 ☑",
       "story": "",
-      "photos": ["cats/chocolate-1.jpg", "cats/chocolate-2.jpg"],
+      "photos": ["cats/chocolate-1.jpg", "cats/chocolate-2.jpg", "cats/chocolate-3.jpg"],
       "video": "",
       "confirmed": "2026-10-30"
     },
